@@ -1,0 +1,6 @@
+poetry-cache-build:
+  image: docker:stable
+  stage: build
+  script:
+    - docker build -t $IMAGE:0.0.0 .
+    - docker push $IMAGE:0.0.0

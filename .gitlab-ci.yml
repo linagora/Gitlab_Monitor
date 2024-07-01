@@ -1,0 +1,40 @@
+include:
+ - local: '/templates/poetry_cache.yml'
+
+variables:
+  PROJECT_PATH: ./gitlab_monitor
+  IMAGE: $NEXUS_URL/gso-nexus.linagora.com/gitlab_monitor:0.0.0
+
+default:
+  tags:
+    - shared
+
+stages:
+  - build
+  - code_quality
+  - test
+  - release
+
+build-cache:
+  extends: .poetry_cache
+
+build-package:
+  image: $IMAGE
+  stage: build
+  script:
+    - poetry build -f wheel
+  artifacts:
+    paths:
+      - dist/*.whl
+
+build-documentation:
+  extends: .sphinx_doc
+
+linter_code_quality:
+  extends: .linter
+
+unit_tests:
+  extends: .tests
+
+nexus_release:
+  extends: .nexus

@@ -1,0 +1,54 @@
+# licence : EUPL
+# - Flavien Perez
+
+
+[tool.poetry]
+name = "Gitlab Monitor"
+version = "0.0.0"
+description = "Application ayant pour but de monitorer gitlab"
+license = "EUPL"
+authors = ["Flavien Perez"]
+readme = "README.md"
+homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"
+classifiers = [ "Development Status :: 1 - Planning"]
+
+[tool.poetry.dependencies]
+python="3.11.4"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = ">=3.6.2"
+flake8 = ">=7.0.0"
+black = ">=24.2.0"
+isort = ">=5.13.2"
+pycln = ">=2.4.0"
+pylint = ">=3.1.0"
+mypy = ">=1.8.0"
+bandit = ">=1.7.7"
+twine = ">=5.0.0"
+pytest = ">=8.0.2"
+sphinx = ">=7.2.6"
+pytest-cov = ">=4.1.0"
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ['tests/', 'doc/*.*']
+
+[tool.isort]
+profile = "black"
+force_single_line = true
+lines_after_imports = 2
+line_length = 80
+skip = [".gitignore", ".dockerignore", "doc/conf.py", ".venv/"]
+
+[tool.pylint.MASTER]
+ignore-paths = '^doc/.*$'
+
+[tool.bandit]
+exclude = ['*/tests/*']
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+

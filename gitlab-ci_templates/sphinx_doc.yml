@@ -1,0 +1,11 @@
+sphinx_build:
+  image: $IMAGE
+  stage: build
+  variables:
+    SPHINX_SOURCE: "./doc"
+    SPHINX_OUTPUT: "doc_build"
+  script:
+    - sphinx-build -b html ${SPHINX_SOURCE} ${SPHINX_OUTPUT}
+  artifacts:
+    paths:
+      - ${SPHINX_OUTPUT}
