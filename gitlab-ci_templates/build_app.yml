@@ -1,4 +1,4 @@
-app-build:
+build_app:
   stage: build
   variables:
     DEPENDENCIES_IMAGE: "gitlab-monitor-dependencies"

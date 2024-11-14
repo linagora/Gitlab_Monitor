@@ -1,6 +1,8 @@
-poetry-cache-build:
+build_cache:
   image: docker:stable
   stage: build
+  services:
+    - docker:19.03.12-dind
   variables:
     IMAGE_NAME: "gitlab-monitor-dependencies"
     DOCKERFILE: "Dockerfile.dependencies"
