@@ -39,7 +39,7 @@ build-documentation:
 
 build-app:
   extends: app-build
-  needs: ["build_dependencies"]
+  needs: ["build-cache"]
 
 ####################################################################
 #                       CODE QUALITY JOBS                          #
