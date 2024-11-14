@@ -9,7 +9,7 @@ variables:
 
 default:
   tags:
-    - docker
+    - stage
   image: $IMAGE
 
 stages:
