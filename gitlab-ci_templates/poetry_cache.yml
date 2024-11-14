@@ -9,6 +9,8 @@ build_cache:
     HARBOR_URL: "docker-registry.linagora.com"
     PROJECT_NAME: "gitlab-monitor"
     TAG: "1.0.0-dev"
+  before_script:
+    - docker info
   script:
     - docker build -t $IMAGE_NAME -f $DOCKERFILE .
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_URL
