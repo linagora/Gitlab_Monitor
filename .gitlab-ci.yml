@@ -1,40 +1,61 @@
 include:
- - local: '/templates/poetry_cache.yml'
+ - local: '/gitlab-ci_templates/poetry_cache.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
-  IMAGE: $NEXUS_URL/gso-nexus.linagora.com/gitlab_monitor:0.0.0
+  IMAGE: $HARBOR_IMAGE #récupérer l'image sur harbor (image du poetry cache)
 
 default:
   tags:
-    - shared
+    - docker
+  image: $IMAGE
 
 stages:
   - build
-  - code_quality
-  - test
-  - release
+  # - code_quality
+  # - test
+  # - release
 
+####################################################################
+#                           BUILD JOBS                             #
+####################################################################
+
+#construire l'image docker pour le cache
 build-cache:
   extends: .poetry_cache
 
-build-package:
-  image: $IMAGE
-  stage: build
-  script:
-    - poetry build -f wheel
-  artifacts:
-    paths:
-      - dist/*.whl
+# build-package:
+#   stage: build
+#   script:
+#     - poetry build -f wheel
+#   artifacts:
+#     paths:
+#       - dist/*.whl
 
 build-documentation:
   extends: .sphinx_doc
 
-linter_code_quality:
-  extends: .linter
+build-app:
+  extends: .build_app
+  needs: ["build_dependencies"]
 
-unit_tests:
-  extends: .tests
+####################################################################
+#                       CODE QUALITY JOBS                          #
+####################################################################
 
-nexus_release:
-  extends: .nexus
+# linter_code_quality:
+#   extends: .linter # a revoir avec le .tests pour trivy et bandit
+
+# ####################################################################
+# #                            TEST JOBS                             #
+# ####################################################################
+
+# unit_tests:
+#   extends: .tests # a revoir
+
+# ####################################################################
+# #                       DEPLOY/RELEASE JOBS                        #
+# ####################################################################
+
+# k8s-deploy:
+#   extends: .k8s_deploy # a implémenter

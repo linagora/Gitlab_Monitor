@@ -23,15 +23,15 @@ py-trivy:
   image: $IMAGE
   stage: test
   script:
-    - mkdir -p -m 777 reports
-    - apt-get update
-    - apt-get install -y wget apt-transport-https gnupg lsb-release
-    - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key      
-     | apt-key add -
-    - echo "deb https://aquasecurity.github.io/trivy-repo/deb      
-     $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list
-    - apt-get update
-    - apt-get install trivy
+    # - mkdir -p -m 777 reports
+    # - apt-get update
+    # - apt-get install -y wget apt-transport-https gnupg lsb-release
+    # - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key      
+    #  | apt-key add -
+    # - echo "deb https://aquasecurity.github.io/trivy-repo/deb      
+    #  $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list
+    # - apt-get update
+    # - apt-get install trivy
     - poetry export -f requirements.txt --without-hashes --output reports/requirements.txt
     - ls $PROJECT_PATH
     - trivy fs --scanners vuln,secret,config $PROJECT_PATH -o report_trivy.json

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from dependency_injector.wiring import Provide, inject
 from services.call_gitlab import GitlabAPIService
-from services.containers import Container
+from containers import Container
 from services.repository import SQLAlchemyProjectRepository
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 

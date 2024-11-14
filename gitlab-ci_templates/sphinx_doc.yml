@@ -1,5 +1,4 @@
 sphinx_build:
-  image: $IMAGE
   stage: build
   variables:
     SPHINX_SOURCE: "./doc"

@@ -1,5 +1,5 @@
 """Module qui va contenir les entités de la base 
-de donnée.
+de donnée. (reprendre schéma bdd)
     """
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Table, create_engine

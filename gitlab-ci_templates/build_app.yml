@@ -1,14 +1,15 @@
-poetry-cache-build:
-  image: docker:stable
+app-build:
   stage: build
   variables:
-    IMAGE_NAME: "gitlab-monitor-dependencies"
-    DOCKERFILE: "Dockerfile.dependencies"
+    DEPENDENCIES_IMAGE: "gitlab-monitor-dependencies"
+    IMAGE_NAME: "gitlab-monitor-app"
+    DOCKERFILE: "Dockerfile.app"
     HARBOR_URL: "docker-registry.linagora.com"
     PROJECT_NAME: "gitlab-monitor"
     TAG: "1.0.0-dev"
   script:
-    - docker build -t $IMAGE_NAME -f $DOCKERFILE .
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_URL
+    - docker pull $DEPENDENCIES_IMAGE:$TAG
+    - docker build --build-arg DEPENDENCIES_TAG:$TAG -t $IMAGE_NAME:$TAG -f $DOCKERFILE .
     - docker tag $IMAGE_NAME:$TAG $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$TAG
     - docker push $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$TAG

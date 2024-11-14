@@ -31,3 +31,8 @@ mypy:
   artifacts:
     reports:
       junit: report_mypy.xml
+
+# a ajouter dans un stage sécurité avec slsa niveau 1 (available provenance)
+bandit:
+
+trivy:
