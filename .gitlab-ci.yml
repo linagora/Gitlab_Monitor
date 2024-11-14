@@ -1,5 +1,7 @@
 include:
- - local: '/gitlab-ci_templates/poetry_cache.yml'
+ - local: '/gitlab-ci_templates/.poetry_cache.yml'
+ - local: '/gitlab-ci_templates/sphinx_doc.yml'
+ - local: '/gitlab-ci_templates/build_app.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
@@ -22,7 +24,7 @@ stages:
 
 #construire l'image docker pour le cache
 build-cache:
-  extends: .poetry_cache
+  extends: poetry-cache-build
 
 # build-package:
 #   stage: build
@@ -33,10 +35,10 @@ build-cache:
 #       - dist/*.whl
 
 build-documentation:
-  extends: .sphinx_doc
+  extends: .sphinx-build
 
 build-app:
-  extends: .build_app
+  extends: .app-build
   needs: ["build_dependencies"]
 
 ####################################################################

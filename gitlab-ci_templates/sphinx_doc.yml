@@ -1,4 +1,4 @@
-sphinx_build:
+sphinx-build:
   stage: build
   variables:
     SPHINX_SOURCE: "./doc"

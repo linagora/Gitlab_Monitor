@@ -10,7 +10,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$POETRY_HOME/bin:$PATH"
 LABEL licence="EUPL"
 LABEL description=""
 LABEL equipe="Flavien Perez, Maïlys Jara"
-LABEL version="0.0.0"
+LABEL version="1.0.0"
 
 COPY ./pyproject.toml .
 
