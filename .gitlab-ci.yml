@@ -35,10 +35,10 @@ build-cache:
 #       - dist/*.whl
 
 build-documentation:
-  extends: .sphinx-build
+  extends: sphinx-build
 
 build-app:
-  extends: .app-build
+  extends: app-build
   needs: ["build_dependencies"]
 
 ####################################################################
