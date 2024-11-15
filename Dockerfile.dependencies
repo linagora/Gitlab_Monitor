@@ -15,7 +15,7 @@ LABEL version="1.0.0"
 COPY ./pyproject.toml .
 
 RUN apt update &&\
-    apt install --no-install-recommends -y \
+apt install --no-install-recommends -y \
     build-essential \
     libffi-dev \
     libssh-dev \
@@ -33,4 +33,4 @@ RUN pip install --no-cache-dir \
         sphinx-rtd-theme \
         sphinx-autodoc-typehints
 
-CMD ["bash"]
+#CMD ["bash"]
