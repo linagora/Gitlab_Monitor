@@ -25,7 +25,6 @@ stages:
 #                           BUILD JOBS                             #
 ####################################################################
 
-#construire l'image docker pour le cache
 build-cache:
   extends: build_cache
 
@@ -39,6 +38,7 @@ build-cache:
 
 build-documentation:
   extends: build_documentation
+  needs: ["build-cache"]
 
 build-app:
   extends: build_app

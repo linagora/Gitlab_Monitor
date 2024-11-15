@@ -33,4 +33,4 @@ RUN pip install --no-cache-dir \
         sphinx-rtd-theme \
         sphinx-autodoc-typehints
 
-#CMD ["bash"]
+CMD ["bash"]
