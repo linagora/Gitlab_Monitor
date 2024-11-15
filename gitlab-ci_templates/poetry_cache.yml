@@ -12,7 +12,7 @@ build_cache:
   before_script:
     - docker info
   script:
-    - docker build -t $IMAGE_NAME -f $DOCKERFILE .
+    - docker build -t $IMAGE_NAME:$TAG -f $DOCKERFILE .
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_URL
     - docker tag $IMAGE_NAME:$TAG $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$TAG
     - docker push $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$TAG
