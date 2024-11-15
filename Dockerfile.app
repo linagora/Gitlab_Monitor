@@ -1,5 +1,6 @@
 # Image qui build l'app/ le code source
 
+ARG dependencies
 FROM python:3.12-slim-bullseye
 
 WORKDIR /app
