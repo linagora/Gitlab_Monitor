@@ -6,6 +6,8 @@ include:
 variables:
   PROJECT_PATH: ./gitlab_monitor
   IMAGE: $HARBOR_IMAGE #récupérer l'image sur harbor (image du poetry cache)
+  DOCKER_TLS_CERTDIR: "/certs"
+
 
 default:
   tags:
