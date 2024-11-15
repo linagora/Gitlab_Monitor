@@ -10,7 +10,7 @@ build_cache:
     HARBOR_URL: "docker-registry.linagora.com"
     PROJECT_NAME: "gitlab-monitor"
     TAG: "1.0.0-dev"
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "/certs"
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
   before_script:
