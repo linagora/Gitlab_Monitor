@@ -8,7 +8,7 @@ WORKDIR /app
 ENV VIRTUAL_ENV="/opt/venv"
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-COPY --from=dependencies $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --from=${dependencies} $VIRTUAL_ENV $VIRTUAL_ENV
 
 COPY . /app
 
