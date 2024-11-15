@@ -5,14 +5,15 @@ include:
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
-  IMAGE: $HARBOR_IMAGE #récupérer l'image sur harbor (image du poetry cache)
+  HARBOR_REGISTRY: "docker-registry.linagora.com"
+  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dependencies"
   DOCKER_TLS_CERTDIR: "/certs"
-
+  CACHE_TAG: "1.0.0-dev"
 
 default:
   tags:
     - stage
-  image: $IMAGE
+  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
   - build
