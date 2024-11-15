@@ -25,6 +25,7 @@ stages:
 #                           BUILD JOBS                             #
 ####################################################################
 
+# Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
 build-cache:
   extends: build_cache
 
@@ -38,11 +39,9 @@ build-cache:
 
 build-documentation:
   extends: build_documentation
-  needs: ["build-cache"]
 
 build-app:
   extends: build_app
-  needs: ["build-cache"]
 
 ####################################################################
 #                       CODE QUALITY JOBS                          #

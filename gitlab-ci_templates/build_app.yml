@@ -4,17 +4,20 @@ build_app:
   services:
     - docker:24.0.5-dind
   variables:
-    DEPENDENCIES_IMAGE: "gitlab-monitor-dependencies"
     IMAGE_NAME: "gitlab-monitor-app"
     DOCKERFILE: "Dockerfile.app"
-    HARBOR_URL: "docker-registry.linagora.com"
     PROJECT_NAME: "gitlab-monitor"
     APP_TAG: "1.0.0-dev"
   before_script:
     - docker info
   script:
-    - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_URL
-    - docker pull $DEPENDENCIES_IMAGE:$APP_TAG
-    - docker build --build-arg $DEPENDENCIES_IMAGE:$APP_TAG -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
-    - docker tag $IMAGE_NAME:$APP_TAG $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
-    - docker push $HARBOR_URL/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
+    - echo "Authenticating to Harbor"
+    - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_REGISTRY
+    - echo "Pulling cache image"
+    - docker pull $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG || echo "No cache image found"
+    - echo "Building the application image"
+    - docker build --build-arg dependencies="$HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG" -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
+    - echo "Tag the application image"
+    - docker tag $IMAGE_NAME:$APP_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
+    - echo "Pushing the application image"
+    - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
