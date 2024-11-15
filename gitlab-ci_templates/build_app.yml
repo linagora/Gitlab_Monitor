@@ -1,5 +1,7 @@
 build_app:
   stage: build
+  services:
+    - docker:24.0.5-dind
   variables:
     DEPENDENCIES_IMAGE: "gitlab-monitor-dependencies"
     IMAGE_NAME: "gitlab-monitor-app"
@@ -7,6 +9,8 @@ build_app:
     HARBOR_URL: "docker-registry.linagora.com"
     PROJECT_NAME: "gitlab-monitor"
     APP_TAG: "1.0.0-dev"
+  before_script:
+    - docker info
   script:
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_URL
     - docker pull $DEPENDENCIES_IMAGE:$APP_TAG
