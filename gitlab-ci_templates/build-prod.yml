@@ -3,8 +3,8 @@
   services:
     - docker:24.0.5-dind
   variables:
-    IMAGE_NAME: "gitlab-monitor-app"
-    DOCKERFILE: "Dockerfile.app"
+    IMAGE_NAME: "gitlab-monitor-prod"
+    DOCKERFILE: "Dockerfile.prod"
     PROJECT_NAME: "gitlab-monitor"
     APP_TAG: "1.0.0-dev"
   before_script:
@@ -15,7 +15,7 @@
     - echo "Pulling cache image"
     - docker pull $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG || echo "No cache image found"
     - echo "Building the application image"
-    - docker build --build-arg dependencies="$HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG" -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
+    - docker build -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
     - echo "Tag the application image"
     - docker tag $IMAGE_NAME:$APP_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
     - echo "Pushing the application image"

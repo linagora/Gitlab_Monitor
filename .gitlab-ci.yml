@@ -1,12 +1,12 @@
 include:
- - local: '/gitlab-ci_templates/poetry_cache.yml'
- - local: '/gitlab-ci_templates/sphinx_doc.yml'
- - local: '/gitlab-ci_templates/build_app.yml'
+ - local: '/gitlab-ci_templates/build-dev.yml'
+ - local: '/gitlab-ci_templates/build-doc.yml'
+ - local: '/gitlab-ci_templates/build-prod.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
   HARBOR_REGISTRY: "docker-registry.linagora.com"
-  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dependencies"
+  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
   DOCKER_TLS_CERTDIR: "/certs"
   CACHE_TAG: "1.0.0-dev"
 
@@ -26,18 +26,18 @@ stages:
 ####################################################################
 
 # Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
-build-cache:
+build-dev-env:
   stage: build
-  extends: .build_cache
+  extends: .build_dev_env
 
 build-documentation:
   stage: build
   extends: .build_documentation
   needs: []
 
-build-app:
+build-prod_env:
   stage: build
-  extends: .build_app
+  extends: .build_prod_env
   needs: []
 
 # build-package:
