@@ -1,7 +1,7 @@
 include:
- - local: '/gitlab-ci_templates/poetry_cache.yml'
+#  - local: '/gitlab-ci_templates/poetry_cache.yml'
  - local: '/gitlab-ci_templates/sphinx_doc.yml'
-#  - local: '/gitlab-ci_templates/build_app.yml'
+ - local: '/gitlab-ci_templates/build_app.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
