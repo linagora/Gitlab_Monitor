@@ -26,11 +26,11 @@ stages:
 ####################################################################
 
 # Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
-# build-cache:
-#   stage: build
-#   extends: build_cache
-#   script:
-#     - echo "Building cache"
+build-cache:
+  stage: build
+  extends: .build_cache
+  script:
+    - echo "Building cache"
 
 # build-package:
 #   stage: build
@@ -43,14 +43,14 @@ stages:
 
 build-documentation:
   stage: build
-  extends: build_documentation
+  extends: .build_documentation
   script:
     - echo "Building documentation"
   needs: []
 
 build-app:
   stage: build
-  extends: build_app
+  extends: .build_app
   script:
     - echo "Building app"
   needs: []

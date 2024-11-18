@@ -1,4 +1,4 @@
-build_documentation:
+.build_documentation:
   variables:
     SPHINX_SOURCE: "./doc"
     SPHINX_OUTPUT: "doc_build"
