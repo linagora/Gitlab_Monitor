@@ -17,7 +17,7 @@ default:
 
 stages:
   - build
-  # - code_quality
+  - code_quality
   # - test
   # - release
 
@@ -26,9 +26,9 @@ stages:
 ####################################################################
 
 # Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
-build-dev-env:
-  stage: build
-  extends: .build_dev_env
+# build-dev-env:
+#   stage: build
+#   extends: .build_dev_env
 
 build-documentation:
   stage: build
@@ -53,8 +53,8 @@ build-prod-env:
 #                       CODE QUALITY JOBS                          #
 ####################################################################
 
-# linter_code_quality:
-#   extends: .linter # a revoir avec le .tests pour trivy et bandit
+linter_code_quality:
+  extends: .linter # a revoir avec le .tests pour trivy et bandit
 
 # ####################################################################
 # #                            TEST JOBS                             #
