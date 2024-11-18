@@ -30,15 +30,6 @@ build-cache:
   stage: build
   extends: .build_cache
 
-# build-package:
-#   stage: build
-#   script:
-#     - poetry build -f wheel
-#   artifacts:
-#     paths:
-#       - dist/*.whl
-#   needs: []
-
 build-documentation:
   stage: build
   extends: .build_documentation
@@ -48,6 +39,15 @@ build-app:
   stage: build
   extends: .build_app
   needs: []
+
+# build-package:
+#   stage: build
+#   script:
+#     - poetry build -f wheel
+#   artifacts:
+#     paths:
+#       - dist/*.whl
+#   needs: []
 
 ####################################################################
 #                       CODE QUALITY JOBS                          #

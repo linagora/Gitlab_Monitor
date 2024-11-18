@@ -15,22 +15,22 @@ LABEL version="1.0.0"
 COPY ./pyproject.toml .
 
 RUN apt update &&\
-apt install --no-install-recommends -y \
+    apt install --no-install-recommends -y \
     build-essential \
     libffi-dev \
     libssh-dev \
     python3-dev \
     git && \
-python3 -m venv $VIRTUAL_ENV && \
-pip install --no-cache-dir \
+    python3 -m venv $VIRTUAL_ENV && \
+    pip install --no-cache-dir \
     poetry==1.6.1 \
     setuptools==65.3.0 \
     pip==22.2.2 --upgrade && \
-poetry install --no-root
+    poetry install --no-root
 
 RUN pip install --no-cache-dir \
-        sphinx \
-        sphinx-rtd-theme \
-        sphinx-autodoc-typehints
+    sphinx \
+    sphinx-rtd-theme \
+    sphinx-autodoc-typehints
 
 CMD ["/bin/bash"]
