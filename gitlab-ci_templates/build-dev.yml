@@ -1,4 +1,4 @@
-.build_prod_env:
+.build_dev_env:
   image: docker:24.0.5
   services:
     - docker:24.0.5-dind
