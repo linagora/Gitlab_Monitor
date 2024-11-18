@@ -29,8 +29,6 @@ stages:
 build-cache:
   stage: build
   extends: .build_cache
-  script:
-    - echo "Building cache"
 
 # build-package:
 #   stage: build
@@ -44,15 +42,11 @@ build-cache:
 build-documentation:
   stage: build
   extends: .build_documentation
-  script:
-    - echo "Building documentation"
   needs: []
 
 build-app:
   stage: build
   extends: .build_app
-  script:
-    - echo "Building app"
   needs: []
 
 ####################################################################
