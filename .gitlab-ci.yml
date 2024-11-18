@@ -35,7 +35,7 @@ build-documentation:
   extends: .build_documentation
   needs: []
 
-build-prod_env:
+build-prod-env:
   stage: build
   extends: .build_prod_env
   needs: []
