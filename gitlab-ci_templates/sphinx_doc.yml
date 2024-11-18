@@ -1,5 +1,4 @@
 build_documentation:
-  stage: build
   variables:
     SPHINX_SOURCE: "./doc"
     SPHINX_OUTPUT: "doc_build"

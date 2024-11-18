@@ -27,6 +27,7 @@ stages:
 
 # Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
 # build-cache:
+#    stage: build
 #   extends: build_cache
 
 # build-package:
@@ -38,9 +39,11 @@ stages:
 #       - dist/*.whl
 
 build-documentation:
+  stage: build
   extends: build_documentation
 
 build-app:
+  stage: build
   extends: build_app
 
 ####################################################################

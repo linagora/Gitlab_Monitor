@@ -1,6 +1,5 @@
 build_cache:
   image: docker:24.0.5
-  stage: build
   services:
     - docker:24.0.5-dind
   variables:
