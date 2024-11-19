@@ -22,3 +22,7 @@
   artifacts:
     paths:
       - report_trivy.json
+
+.slsa-1:
+  script:
+    - echo "slsa 1 a mettre en place"

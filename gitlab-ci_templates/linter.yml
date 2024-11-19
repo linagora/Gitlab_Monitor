@@ -4,38 +4,35 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-variables:
-  CI_PROJECT_PATH: "linagora/devops/gitlab-manager/gitlab-monitor-dev"
-
 .py-lint:
   before_script:
     - pylint --version
   script:
-    - pylint --output-format=colorized $CI_PROJECT_PATH
+    - pylint --output-format=colorized .
 
 .py-black:
   before_script:
     - black --version
   script:
-    - black $CI_PROJECT_PATH --check --diff
+    - black . --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort $CI_PROJECT_PATH --check-only --profile=black
+    - isort . --check-only --profile=black
 
 .pycln:
   before_script:
     - pycln --version
   script:
-    - pycln $CI_PROJECT_PATH
+    - pycln .
 
 .mypy:
   before_script:
     - mypy --version
   script:
-    - mypy $CI_PROJECT_PATH --junit-xml report_mypy.xml
+    - mypy . --junit-xml report_mypy.xml
   artifacts:
     reports:
       junit: report_mypy.xml
