@@ -4,6 +4,9 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+variables:
+  CI_PROJECT_PATH: "linagora/devops/gitlab-manager/gitlab-monitor-dev"
+
 .py-lint:
   before_script:
     - pylint --version

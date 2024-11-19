@@ -1,16 +1,12 @@
 # STAGE SECURITY
 py-bandit:
-  image: $IMAGE
-  stage: test
   script:
-    - bandit -c pyproject.toml -r $PROJECT_PATH -f xml -o bandit_report.xml
+    - bandit -c pyproject.toml -r $CI_PROJECT_PATH -f xml -o bandit_report.xml
   artifacts:
     reports:
       junit: bandit_report.xml
 
 py-trivy:
-  image: $IMAGE
-  stage: test
   script:
     # - mkdir -p -m 777 reports
     # - apt-get update
