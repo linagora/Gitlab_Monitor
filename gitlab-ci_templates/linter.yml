@@ -5,24 +5,32 @@
 # # - Maïlys Jara mjara@linagora.com
 
 .py-lint:
+  before_script:
+    - pylint --version
   script:
-    - pip install pylint
     - pylint --output-format=colorized $CI_PROJECT_PATH
 
 .py-black:
+  before_script:
+    - black --version
   script:
     - black $CI_PROJECT_PATH --check --diff
 
 .py-isort:
-
+  before_script:
+    - isort --version
   script:
     - isort $CI_PROJECT_PATH --check-only --profile=black
 
 .pycln:
+  before_script:
+    - pycln --version
   script:
     - pycln $CI_PROJECT_PATH
 
 .mypy:
+  before_script:
+    - mypy --version
   script:
     - mypy $CI_PROJECT_PATH --junit-xml report_mypy.xml
   artifacts:
