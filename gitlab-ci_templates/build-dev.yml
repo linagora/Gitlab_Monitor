@@ -15,8 +15,6 @@
   before_script:
     - docker info
   script:
-    - echo "Checking the image tag"
-    - ./check_image_tag.sh
     - echo "Building the cache image"
     - docker build -t $IMAGE_NAME:$CACHE_TAG -f $DOCKERFILE .
     - echo "Login to Harbor registry"

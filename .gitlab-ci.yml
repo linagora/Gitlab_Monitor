@@ -64,22 +64,27 @@ build-prod-env:
 py-lint:
   stage: code_quality
   extends: .py-lint
+  needs: []
 
 py-black:
   stage: code_quality
   extends: .py-black
+  needs: []
 
 py-isort:
   stage: code_quality
   extends: .py-isort
+  needs: []
 
 pycln:
   stage: code_quality
   extends: .pycln
+  needs: []
 
 mypy:
   stage: code_quality
   extends: .mypy
+  needs: []
 
 # ####################################################################
 # #                            TEST JOBS                             #
