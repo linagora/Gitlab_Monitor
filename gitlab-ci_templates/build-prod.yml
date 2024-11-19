@@ -18,8 +18,6 @@
   script:
     - echo "Authenticating to Harbor"
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_REGISTRY
-    - echo "Pulling cache image"
-    - docker pull $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG || echo "No cache image found"
     - echo "Building the application image"
     - docker build -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
     - echo "Tag the application image"
