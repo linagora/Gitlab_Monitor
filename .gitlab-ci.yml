@@ -8,6 +8,8 @@ include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
  - local: '/gitlab-ci_templates/build-prod.yml'
+ - local: '/gitlab-ci_templates/linter.yml'
+
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
@@ -59,8 +61,25 @@ build-prod-env:
 #                       CODE QUALITY JOBS                          #
 ####################################################################
 
-# linter_code_quality:
-#   extends: .linter # a revoir avec le .tests pour trivy et bandit
+py-lint:
+  stage: code_quality
+  extends: .py-lint
+
+py-black:
+  stage: code_quality
+  extends: .py-black
+
+py-isort:
+  stage: code_quality
+  extends: .py-isort
+
+pycln:
+  stage: code_quality
+  extends: .pycln
+
+mypy:
+  stage: code_quality
+  extends: .mypy
 
 # ####################################################################
 # #                            TEST JOBS                             #

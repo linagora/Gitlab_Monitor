@@ -4,41 +4,27 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-py-lint:
-  stage: code_quality
-  image: $IMAGE
+.py-lint:
   script:
     - pip install pylint
-    - pylint --output-format=colorized $PROJECT_PATH
+    - pylint --output-format=colorized $CI_PROJECT_PATH
 
-py-black:
-  stage: code_quality
-  image: $IMAGE
+.py-black:
   script:
-    - black $PROJECT_PATH --check --diff
+    - black $CI_PROJECT_PATH --check --diff
 
-py-isort:
-  image: $IMAGE
-  stage: code_quality
-  script:
-    - isort $PROJECT_PATH --check-only --profile=black
+.py-isort:
 
-pycln:
-  image: $IMAGE
-  stage: code_quality
   script:
-    - pycln $PROJECT_PATH
+    - isort $CI_PROJECT_PATH --check-only --profile=black
 
-mypy:
-  image: $IMAGE
-  stage: code_quality
+.pycln:
   script:
-    - mypy $PROJECT_PATH --junit-xml report_mypy.xml
+    - pycln $CI_PROJECT_PATH
+
+.mypy:
+  script:
+    - mypy $CI_PROJECT_PATH --junit-xml report_mypy.xml
   artifacts:
     reports:
       junit: report_mypy.xml
-
-# a ajouter dans un stage sécurité avec slsa niveau 1 (available provenance)
-bandit:
-
-trivy:

@@ -14,11 +14,6 @@ LABEL version="1.0.0"
 
 COPY ./pyproject.toml .
 
-RUN pip install --no-cache-dir \
-    sphinx \
-    sphinx-rtd-theme \
-    sphinx-autodoc-typehints
-
 RUN apt update &&\
     apt install --no-install-recommends -y \
     build-essential \
@@ -32,5 +27,10 @@ RUN apt update &&\
     setuptools==65.3.0 \
     pip==22.2.2 --upgrade && \
     poetry install --no-root
+
+RUN pip install --no-cache-dir \
+    sphinx \
+    sphinx-rtd-theme \
+    sphinx-autodoc-typehints
 
 CMD ["/bin/bash"]
