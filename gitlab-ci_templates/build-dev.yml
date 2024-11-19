@@ -26,6 +26,6 @@
     - echo "Pushing the cache image"
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
   rules:
-    - script:
-        - ./check_image_tag.sh
-      when: on_success
+    - changes:
+        - Dockerfile.dev
+        - pyproject.toml
