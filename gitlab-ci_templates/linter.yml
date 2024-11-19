@@ -14,13 +14,15 @@
   before_script:
     - black --version
   script:
+    - black .
     - black . --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort . --check-only --profile=black
+    - isort .
+    - isort . --check-only
 
 .pycln:
   before_script:
