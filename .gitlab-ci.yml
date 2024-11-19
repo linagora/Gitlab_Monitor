@@ -14,7 +14,7 @@ variables:
   HARBOR_REGISTRY: "docker-registry.linagora.com"
   IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
   DOCKER_TLS_CERTDIR: "/certs"
-  CACHE_TAG: "1.1.0-dev"
+  CACHE_TAG: "1.0.0-dev"
 
 default:
   tags:

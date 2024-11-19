@@ -15,6 +15,8 @@
   before_script:
     - docker info
   script:
+    - echo "Checking the image tag"
+    - ./check_image_tag.sh
     - echo "Building the cache image"
     - docker build -t $IMAGE_NAME:$CACHE_TAG -f $DOCKERFILE .
     - echo "Login to Harbor registry"
@@ -24,6 +26,6 @@
     - echo "Pushing the cache image"
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
   rules:
-    - changes:
-        - $CI_PROJECT_DIR/.gitlab-ci.yml
-      when: always
+    - script:
+        - ./check_image_tag.sh
+      when: on_success
