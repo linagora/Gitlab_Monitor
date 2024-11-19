@@ -9,6 +9,7 @@ include:
  - local: '/gitlab-ci_templates/build-doc.yml'
  - local: '/gitlab-ci_templates/build-prod.yml'
  - local: '/gitlab-ci_templates/linter.yml'
+ - local: '/gitlab-ci_templates/security.yml'
 
 
 variables:
