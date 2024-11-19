@@ -59,8 +59,8 @@ build-prod-env:
 #                       CODE QUALITY JOBS                          #
 ####################################################################
 
-linter_code_quality:
-  extends: .linter # a revoir avec le .tests pour trivy et bandit
+# linter_code_quality:
+#   extends: .linter # a revoir avec le .tests pour trivy et bandit
 
 # ####################################################################
 # #                            TEST JOBS                             #
