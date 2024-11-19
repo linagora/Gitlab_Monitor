@@ -1,4 +1,6 @@
 .py-bandit:
+  before_script:
+    - bandit --version
   script:
     - bandit -c pyproject.toml -r $CI_PROJECT_PATH -f xml -o bandit_report.xml
   artifacts:
@@ -6,23 +8,18 @@
       junit: bandit_report.xml
 
 .py-trivy:
+  before_script:
+    - poetry --version
+    - trivy --version
   script:
-    # - mkdir -p -m 777 reports
-    # - apt-get update
-    # - apt-get install -y wget apt-transport-https gnupg lsb-release
-    # - wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key      
-    #  | apt-key add -
-    # - echo "deb https://aquasecurity.github.io/trivy-repo/deb      
-    #  $(lsb_release -sc) main" | tee -a /etc/apt/sources.list.d/trivy.list
-    # - apt-get update
-    # - apt-get install trivy
     - poetry export -f requirements.txt --without-hashes --output reports/requirements.txt
-    - ls $PROJECT_PATH
-    - trivy fs --scanners vuln,secret,config $PROJECT_PATH -o report_trivy.json
+    - ls $CI_PROJECT_PATH
+    - trivy fs --scanners vuln,secret,config $CI_PROJECT_PATH -o report_trivy.json
   artifacts:
     paths:
       - report_trivy.json
 
 .slsa-1:
   script:
-    - echo "slsa 1 a mettre en place"
+    - echo "commit SHA actuel est $CI_COMMIT_SHA, id du pipeline $CI_PIPELINE_ID"
+#ajouter un script de verification des provenances comme dans task-manager
