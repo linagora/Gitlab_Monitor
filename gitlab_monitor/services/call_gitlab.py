@@ -1,3 +1,18 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
+
+
 """Module qui va contenir la logique métier d'appel à l'api gitlab,
 project et sensé être mon DTO
 """

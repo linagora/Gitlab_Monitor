@@ -1,3 +1,18 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
+
+
 from dependency_injector import containers, providers
 from services.bdd import Database
 from services.call_gitlab import GitlabAPIService

@@ -1,3 +1,9 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
 .build_dev_env:
   image: docker:24.0.5
   services:
@@ -13,3 +19,7 @@
     - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_REGISTRY
     - docker tag $IMAGE_NAME:$CACHE_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
+  rules:
+    - changes:
+        - $CI_PROJECT_DIR/.gitlab-ci.yml
+      when: always

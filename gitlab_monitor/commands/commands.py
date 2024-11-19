@@ -1,3 +1,18 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
+
+
 from command_mapper import CommandMapper
 from controller.controller import Command
 from services.bdd import Database

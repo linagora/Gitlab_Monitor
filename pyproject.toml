@@ -1,4 +1,18 @@
-# licence : EUPL
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
+
+# licence : Apache 2.0
 # - Flavien Perez
 
 
@@ -6,7 +20,7 @@
 name = "Gitlab Monitor"
 version = "0.0.0"
 description = "Application ayant pour but de monitorer gitlab"
-license = "EUPL"
+license = "Apache 2.0"
 authors = ["Flavien Perez"]
 readme = "README.md"
 homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"
@@ -14,11 +28,11 @@ classifiers = [ "Development Status :: 1 - Planning"]
 
 [tool.poetry.dependencies]
 python="3.11.4"
+dependency-injector = "^4.43.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.6.2"
-flake8 = ">=7.0.0"
 black = ">=24.2.0"
 isort = ">=5.13.2"
 pycln = ">=2.4.0"

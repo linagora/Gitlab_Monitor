@@ -1,3 +1,16 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
 repos:
   - repo: local
     hooks:
@@ -24,12 +37,6 @@ repos:
         args:
           - --config=pyproject.toml
           - .
-      - id: flake8
-        name: flake8
-        entry: flake8
-        language: python
-        types: [python]
-        args: ["--config",".flake8"]
       - id: pylint
         name: pylint
         entry: pylint

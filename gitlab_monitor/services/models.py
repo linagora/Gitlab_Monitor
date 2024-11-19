@@ -1,3 +1,18 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : Apache 2.0
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
+
+
+
+
+
 """Module qui va contenir les entités de la base 
 de donnée. (reprendre schéma bdd)
     """

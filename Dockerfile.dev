@@ -23,7 +23,7 @@ RUN apt update &&\
     git && \
     python3 -m venv $VIRTUAL_ENV && \
     pip install --no-cache-dir \
-    poetry==1.6.1 \
+    poetry==1.8.4 \ 
     setuptools==65.3.0 \
     pip==22.2.2 --upgrade && \
     poetry install --no-root
