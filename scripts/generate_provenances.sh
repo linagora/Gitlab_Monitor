@@ -3,11 +3,11 @@ set -e
 
 mkdir -p build
 
-tar -czf build/task-manager.tar ./code_final
+tar -czf build/gitlab-monitor.tar ./gitlab-monitor
 
 cat <<EOF > build/provenance.json
 {
-  "artifact": "build/task-manager.tar",
+  "artifact": "build/gitlab-monitor.tar",
   "commit": "$CI_COMMIT_SHA",
   "pipeline": "$CI_PIPELINE_ID",
 }

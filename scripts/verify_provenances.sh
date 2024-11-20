@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-ARTIFACT_FILE="build/task-manager.tar"
+ARTIFACT_FILE="build/gitlab-monitor.tar"
 PROVENANCE_FILE="build/provenance.json"
 
 if [ ! -f "$ARTIFACT_FILE" ]; then
