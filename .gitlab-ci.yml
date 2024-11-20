@@ -96,7 +96,7 @@ py-trivy:
 slsa-1:
   stage: test
   extends: .slsa-1
-  needs: []
+  needs: [build-prod-env]
 
 # ##################################################################
 # #                    BUILD PACKAGES STAGE                        #
