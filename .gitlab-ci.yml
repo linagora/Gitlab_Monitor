@@ -132,4 +132,5 @@ trigger_pipeline:
   stage: production
   script:
     - 'curl --fail --request POST --form token=$TRIGGER_TOKEN_PIPELINE --form ref=main "https://ci.linagora.com/linagora/devops/gitlab-manager/gitlab-monitor-deploy"'
+  needs: []
 # ajouter une rule et un environement ?
