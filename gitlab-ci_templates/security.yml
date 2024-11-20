@@ -7,7 +7,7 @@
   before_script:
     - bandit --version
   script:
-    - bandit -c pyproject.toml -r $CI_PROJECT_PATH -f xml -o bandit_report.xml
+    - bandit -c pyproject.toml -r . -f xml -o bandit_report.xml
   artifacts:
     reports:
       junit: bandit_report.xml
@@ -19,7 +19,7 @@
   before_script:
     - trivy --version
   script:
-    - trivy fs --scanners vuln,secret,config $CI_PROJECT_PATH -o report_trivy.json
+    - trivy fs --scanners vuln,secret,config . -o report_trivy.json
   artifacts:
     paths:
       - report_trivy.json
