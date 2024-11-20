@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 py-pytest:
   image: $IMAGE
   stage: test

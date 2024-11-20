@@ -5,18 +5,6 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
-
-
-
-
-
-# licence : Apache 2.0
-# - Flavien Perez
-
-
 [tool.poetry]
 name = "Gitlab Monitor"
 version = "0.0.0"

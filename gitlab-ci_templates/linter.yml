@@ -4,37 +4,35 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
 .py-lint:
   before_script:
     - pylint --version
   script:
-    - pylint --output-format=colorized .
+    - pylint --output-format=colorized ./gitlab_monitor/
 
 .py-black:
   before_script:
     - black --version
   script:
-    - black . --check --diff
+    - black ./gitlab_monitor/ --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort . --check-only
+    - isort ./gitlab_monitor/ --check-only
 
 .pycln:
   before_script:
     - pycln --version
   script:
-    - pycln --check .
-# TODO: supprimer l'application de pycln et mettre un check
+    - pycln --check ./gitlab_monitor/
 
 .mypy:
   before_script:
     - mypy --version
   script:
-    - mypy . --junit-xml report_mypy.xml
+    - mypy ./gitlab_monitor/ --junit-xml report_mypy.xml
   artifacts:
     reports:
       junit: report_mypy.xml

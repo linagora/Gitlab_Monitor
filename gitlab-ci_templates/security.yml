@@ -3,11 +3,12 @@
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 .py-bandit:
   before_script:
     - bandit --version
   script:
-    - bandit -c pyproject.toml -r . -f xml -o bandit_report.xml || true
+    - bandit -c pyproject.toml -r ./gitlab_monitor/ -f xml -o bandit_report.xml #|| true
   artifacts:
     reports:
       junit: bandit_report.xml
@@ -19,7 +20,7 @@
   before_script:
     - trivy --version
   script:
-    - trivy fs --scanners vuln,secret,config . -o report_trivy.json
+    - trivy fs --scanners vuln,secret,config ./gitlab_monitor/ -o report_trivy.json
   artifacts:
     paths:
       - report_trivy.json

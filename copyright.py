@@ -6,16 +6,13 @@
 import os
 import re
 
-
-# Be careful the following string is gonna be erased during this script execution
-# So if you want to keep it, you should add it again at the end of the execution
 COPYRIGHT_NOTICE = """
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 """
-
+EXCLUDED_FILES = ["copyright.py"]
 
 def add_or_replace_copyright(file_path):
     with open(file_path, "r+") as file:
@@ -29,7 +26,7 @@ def add_or_replace_copyright(file_path):
 def process_directory(directory):
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith((".py", ".yaml", ".yml", ".toml")):
+            if file.endswith((".py", ".yaml", ".yml", ".toml")) and file not in EXCLUDED_FILES:
                 file_path = os.path.join(root, file)
                 add_or_replace_copyright(file_path)
 
