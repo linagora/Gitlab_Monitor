@@ -13,12 +13,10 @@
       junit: bandit_report.xml
 
 .py-trivy:
+  image: aquasec/trivy:latest
   before_script:
-    - poetry --version
     - trivy --version
   script:
-    - poetry export -f requirements.txt --without-hashes --output reports/requirements.txt
-    - ls $CI_PROJECT_PATH
     - trivy fs --scanners vuln,secret,config $CI_PROJECT_PATH -o report_trivy.json
   artifacts:
     paths:

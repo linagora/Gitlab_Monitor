@@ -7,7 +7,7 @@ ENV POETRY_HOME="/opt/poetry"
 ENV VIRTUAL_ENV="/opt/project"
 ENV PATH="$VIRTUAL_ENV/bin:$POETRY_HOME/bin:$PATH"
 
-LABEL licence="EUPL"
+LABEL licence="Apache 2.0"
 LABEL description="Image servant de cache pour les dépendances du projet"
 LABEL equipe="Flavien Perez, Maïlys Jara"
 LABEL version="1.0.0"
@@ -32,11 +32,5 @@ RUN pip install --no-cache-dir \
     sphinx \
     sphinx-rtd-theme \
     sphinx-autodoc-typehints
-
-RUN wget -qO - "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/' | xargs -I {} wget https://github.com/aquasecurity/trivy/releases/download/v{}/trivy_{VERSION}_Linux-64bit.tar.gz && \
-    tar -zxvf trivy_${VERSION}_Linux-64bit.tar.gz && \
-    mv trivy /usr/local/bin/ && \
-    rm trivy_${VERSION}_Linux-64bit.tar.gz
-
 
 CMD ["/bin/bash"]
