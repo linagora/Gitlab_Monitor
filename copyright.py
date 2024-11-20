@@ -14,6 +14,7 @@ COPYRIGHT_NOTICE = """
 """
 EXCLUDED_FILES = ["copyright.py"]
 
+
 def add_or_replace_copyright(file_path):
     with open(file_path, "r+") as file:
         content = file.read()
@@ -26,7 +27,10 @@ def add_or_replace_copyright(file_path):
 def process_directory(directory):
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith((".py", ".yaml", ".yml", ".toml")) and file not in EXCLUDED_FILES:
+            if (
+                file.endswith((".py", ".yaml", ".yml", ".toml"))
+                and file not in EXCLUDED_FILES
+            ):
                 file_path = os.path.join(root, file)
                 add_or_replace_copyright(file_path)
 
