@@ -26,3 +26,9 @@
     - docker tag $IMAGE_NAME:$APP_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
     - echo "Pushing the application image"
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
+    - echo "generate slsa 1 necessary files"
+    - ./scripts/generate_provenances.sh #possibilité d'ajouter une ligne "dependancies" dans le json (avec les dépendances utilisés dans le code - voir pip freeze)
+  artifacts:
+    paths:
+      - build/task-manager.tar
+      - build/provenance.json

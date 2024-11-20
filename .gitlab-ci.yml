@@ -124,6 +124,7 @@ slsa-1:
 #     - python3 setup.py sdist bdist_wheel
 #     - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/* #dist/nom_du_fichier_version-concernée.whl
 #   needs: [build-package]
+
 # ##################################################################
 # #                 PRODUCTION STAGE: DEPLOY                       #
 # ##################################################################
