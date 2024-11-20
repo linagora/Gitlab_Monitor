@@ -28,7 +28,7 @@
     - pycln --version
   script:
     - pycln .
-# TODO: supprimer l'application et mettre un check
+# TODO: supprimer l'application de pycln et mettre un check
 
 .mypy:
   before_script:
