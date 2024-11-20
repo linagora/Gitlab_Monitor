@@ -13,8 +13,9 @@
       junit: bandit_report.xml
 
 .py-trivy:
-  image: aquasec/trivy:latest
-  entrypoint: [""]
+  image:
+    name: aquasec/trivy:latest
+    entrypoint: [""]
   before_script:
     - trivy --version
   script:
