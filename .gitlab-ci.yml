@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
@@ -112,11 +113,14 @@ slsa-1:
 # ##################################################################
 
 # unit_tests:
-#   extends: .tests # a revoir
+#   extends: .tests # TODO: mettre à jour avant l'ajout de le feature tester
 
 # ##################################################################
 # #                      DEPLOY/RELEASE JOBS                       #
 # ##################################################################
 
 # k8s-deploy:
-#   extends: .k8s_deploy # a implémenter
+#   extends: .k8s_deploy # TODO: a implémenter
+
+# docker-deploy:
+#   extends: .docker_deploy # TODO: a implémenter

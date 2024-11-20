@@ -1,22 +1,14 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
-
-
-
-
-
 # main.py
 
 from commands import cli
 from containers import Container
+
 from gitlab_monitor import __app_name__
 
 

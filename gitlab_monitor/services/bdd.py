@@ -1,16 +1,7 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
-
-
-
-
-
-
-
-
 
 
 from services.models import Base

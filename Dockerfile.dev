@@ -33,8 +33,8 @@ RUN pip install --no-cache-dir \
     sphinx-rtd-theme \
     sphinx-autodoc-typehints
 
-RUN wget https://github.com/aquasecurity/trivy/releases/download/v0.40.0/trivy_0.40.0_Linux-64bit.deb && \
-    dpkg -i trivy_0.40.0_Linux-64bit.deb && \
-    rm trivy_0.40.0_Linux-64bit.deb
+RUN export TRIVY_VERSION=$(wget -qO - "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/') && \
+    echo $TRIVY_VERSION && \
+    wget --no-verbose https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz -O - | tar -zxvf -
 
 CMD ["/bin/bash"]

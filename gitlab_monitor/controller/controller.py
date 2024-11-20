@@ -1,24 +1,18 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
 
+from abc import ABC
+from abc import abstractmethod
 
-
-
-
-
-
-
-
-from abc import ABC, abstractmethod
-
-from dependency_injector.wiring import Provide, inject
-from services.call_gitlab import GitlabAPIService
 from containers import Container
+from dependency_injector.wiring import Provide
+from dependency_injector.wiring import inject
+from services.call_gitlab import GitlabAPIService
 from services.repository import SQLAlchemyProjectRepository
+
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 
 infos depuis le controller ou plutot le controller lui envoie les infos et 

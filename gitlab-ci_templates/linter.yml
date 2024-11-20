@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 .py-lint:
   before_script:
     - pylint --version
@@ -14,14 +15,12 @@
   before_script:
     - black --version
   script:
-    - black .
     - black . --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort .
     - isort . --check-only
 
 .pycln:
@@ -29,6 +28,7 @@
     - pycln --version
   script:
     - pycln .
+# TODO: supprimer l'application et mettre un check
 
 .mypy:
   before_script:

@@ -1,21 +1,15 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
-
-
-
-
-
-from gitlab_monitor import __app_name__, __version__
-from gitlab_monitor.commandes import commands
 from typer.testing import CliRunner
+
+from gitlab_monitor import __app_name__
+from gitlab_monitor import __version__
+from gitlab_monitor.commandes import commands
+
 
 runner = CliRunner()
 

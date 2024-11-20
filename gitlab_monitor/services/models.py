@@ -1,25 +1,22 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
-
-
-
-
-
 """Module qui va contenir les entités de la base 
 de donnée. (reprendre schéma bdd)
     """
 
-from sqlalchemy import Column, ForeignKey, Integer, String, Table, create_engine
+from sqlalchemy import Column
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy import Table
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
 
 Base = declarative_base()
 

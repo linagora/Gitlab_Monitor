@@ -4,10 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
-
-
 .build_documentation:
   variables:
     SPHINX_SOURCE: "./doc"

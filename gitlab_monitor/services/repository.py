@@ -1,20 +1,13 @@
-
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
-
-
-
-
-
-from abc import ABC, abstractmethod
-from typing import List, Optional
+from abc import ABC
+from abc import abstractmethod
+from typing import List
+from typing import Optional
 
 from dto import ProjectDTO
 from models import Project
