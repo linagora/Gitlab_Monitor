@@ -13,7 +13,6 @@ include:
  - local: '/gitlab-ci_templates/linter.yml'
  - local: '/gitlab-ci_templates/security.yml'
 
-
 variables:
   PROJECT_PATH: ./gitlab_monitor
   HARBOR_REGISTRY: "docker-registry.linagora.com"
@@ -28,16 +27,15 @@ default:
 
 stages:
   - build
-  - code_quality
-  - security
-  # - test
-  # - release
+  - test
+  - package-build
+  - publish
+  - production
 
 # ##################################################################
-# #                         BUILD JOBS                             #
+# #                 BUILD STAGE: BUILD & TESTS                     #
 # ##################################################################
 
-# Stage long qui construit l'image de cache utilisé dans les autres jobs, peut être mis en commentaire si l'image n'a pas subit de changement
 build-dev-env:
   stage: build
   extends: .build_dev_env
@@ -52,8 +50,60 @@ build-prod-env:
   extends: .build_prod_env
   needs: []
 
-# build-package:
+# unit_tests:
 #   stage: build
+#   extends: .tests # TODO: a impléménter avant chaque feature
+
+# ##################################################################
+# #            TEST STAGE: CODE QUALITY & SECURITY                 #
+# ##################################################################
+
+py-lint:
+  stage: test
+  extends: .py-lint
+  needs: []
+
+py-black:
+  stage: test
+  extends: .py-black
+  needs: []
+
+py-isort:
+  stage: test
+  extends: .py-isort
+  needs: []
+
+pycln:
+  stage: test
+  extends: .pycln
+  needs: []
+
+mypy:
+  stage: test
+  extends: .mypy
+  needs: []
+
+py-bandit:
+  stage: test
+  extends: .py-bandit
+  needs: []
+
+py-trivy:
+  stage: test
+  extends: .py-trivy
+  needs: []
+
+slsa-1:
+  stage: test
+  extends: .slsa-1
+  needs: []
+
+# ##################################################################
+# #                    BUILD PACKAGES STAGE                        #
+# ##################################################################
+
+# build-package:
+#   stage: build-package
 #   script:
 #     - poetry build -f wheel
 #   artifacts:
@@ -62,66 +112,24 @@ build-prod-env:
 #   needs: []
 
 # ##################################################################
-# #                     CODE QUALITY JOBS                          #
+# #                   PUBLISH PACKAGES STAGE                       #
 # ##################################################################
 
-py-lint:
-  stage: code_quality
-  extends: .py-lint
-  needs: []
-
-py-black:
-  stage: code_quality
-  extends: .py-black
-  needs: []
-
-py-isort:
-  stage: code_quality
-  extends: .py-isort
-  needs: []
-
-pycln:
-  stage: code_quality
-  extends: .pycln
-  needs: []
-
-mypy:
-  stage: code_quality
-  extends: .mypy
-  needs: []
-
+# publish-package:
+#   stage: publish
+#   before_script:
+#     - pip install twine
+#   script:
+#     - rm -rf dist/* # good practice : au lieu de cette ligne changer le "dist/*" plus bas
+#     - python3 setup.py sdist bdist_wheel
+#     - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/* #dist/nom_du_fichier_version-concernée.whl
+#   needs: [build-package]
 # ##################################################################
-# #                       SECURITY JOBS                            #
+# #                 PRODUCTION STAGE: DEPLOY                       #
 # ##################################################################
 
-py-bandit:
-  stage: security
-  extends: .py-bandit
-  needs: []
-
-py-trivy:
-  stage: security
-  extends: .py-trivy
-  needs: []
-
-slsa-1:
-  stage: security
-  extends: .slsa-1
-  needs: []
-
-# ##################################################################
-# #                           TEST JOBS                            #
-# ##################################################################
-
-# unit_tests:
-#   extends: .tests # TODO: mettre à jour avant l'ajout de le feature tester
-
-# ##################################################################
-# #                      DEPLOY/RELEASE JOBS                       #
-# ##################################################################
-
-# k8s-deploy:
-#   extends: .k8s_deploy # TODO: a implémenter
-
-# docker-deploy:
-#   extends: .docker_deploy # TODO: a implémenter
+trigger_pipeline:
+  stage: production
+  script:
+    - 'curl --fail --request POST --form token=$TRIGGER_TOKEN_PIPELINE --form ref=main "https://ci.linagora.com/linagora/devops/gitlab-manager/gitlab-monitor-deploy"'
+# ajouter une rule et un environement ?
