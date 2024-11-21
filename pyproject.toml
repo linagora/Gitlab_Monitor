@@ -5,12 +5,13 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 [tool.poetry]
 name = "Gitlab Monitor"
-version = "0.0.0"
+version = "1.0.0"
 description = "Application ayant pour but de monitorer gitlab"
 license = "Apache 2.0"
-authors = ["Flavien Perez"]
+authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
 homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"
 classifiers = [ "Development Status :: 1 - Planning"]

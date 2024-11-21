@@ -6,6 +6,7 @@
 import os
 import re
 
+
 COPYRIGHT_NOTICE = """
 # # --- Copyright (c) 2024 Linagora
 # # licence       : Apache 2.0
@@ -36,4 +37,4 @@ def process_directory(directory):
 
 
 if __name__ == "__main__":
-    process_directory(".")
+    process_directory("../.")
