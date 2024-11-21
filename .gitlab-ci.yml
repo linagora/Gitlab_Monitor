@@ -19,7 +19,7 @@ variables:
   IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
   DOCKER_TLS_CERTDIR: "/certs"
   CACHE_TAG: "1.0.0-dev"
-  CODE_SOURCE: "./gitlab-monitor/"
+  CODE_SOURCE: "./gitlab_monitor/"
 
 default:
   tags:
