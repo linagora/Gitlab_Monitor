@@ -109,6 +109,7 @@ build-package:
   before_script:
     - poetry --version
   script:
+    - ls
     - poetry build -f wheel
   artifacts:
     paths:
