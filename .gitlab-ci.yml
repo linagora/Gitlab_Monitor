@@ -109,7 +109,7 @@ build-package:
   before_script:
     - poetry --version
   script:
-    - poetry build -f wheel
+    - poetry build
   artifacts:
     paths:
       - dist/*.whl

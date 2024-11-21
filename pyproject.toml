@@ -7,7 +7,7 @@
 
 
 [tool.poetry]
-name = "Gitlab Monitor"
+name = "gitlab_monitor"
 version = "1.0.0"
 description = "Application ayant pour but de monitorer gitlab"
 license = "Apache 2.0"
