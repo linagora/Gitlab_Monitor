@@ -1,5 +1,5 @@
-# Image docker contenant les sources du projet python utilisé afin d'optimiser la 
-# vitesse d'éxécution d'une pipeline.
+# Image docker contenant les sources du projet python utilisé afin d'optimiser
+# la vitesse d'éxécution d'une pipeline.
 
 FROM python:3.11.4-slim-bullseye AS builder
 WORKDIR /app
