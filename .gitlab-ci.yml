@@ -128,7 +128,7 @@ publish-package:
   script:
     - rm -rf dist/* # good practice : au lieu de cette ligne changer le "dist/*" plus bas
     - python3 ./scripts/setup_package.py sdist bdist_wheel
-    - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/* #dist/nom_du_fichier_version-concernée.whl
+    - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/* --verbose #dist/nom_du_fichier_version-concernée.whl
   needs: [build-package]
 
 # ##################################################################
