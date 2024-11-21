@@ -14,15 +14,13 @@
   before_script:
     - black --version
   script:
-    - ls $CODE_SOURCE
-    - black ./gitlab_monitor/ --check --diff
     - black $CODE_SOURCE --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort .$CODE_SOURCE --check-only
+    - isort $CODE_SOURCE --check-only
 
 .pycln:
   before_script:
