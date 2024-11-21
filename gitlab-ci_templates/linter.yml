@@ -8,31 +8,31 @@
   before_script:
     - pylint --version
   script:
-    - pylint --output-format=colorized ./gitlab_monitor/
+    - pylint --output-format=colorized $CODE_SOURCE
 
 .py-black:
   before_script:
     - black --version
   script:
-    - black ./gitlab_monitor/ --check --diff
+    - black $CODE_SOURCE --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort ./gitlab_monitor/ --check-only
+    - isort .$CODE_SOURCE --check-only
 
 .pycln:
   before_script:
     - pycln --version
   script:
-    - pycln --check ./gitlab_monitor/
+    - pycln --check $CODE_SOURCE
 
 .mypy:
   before_script:
     - mypy --version
   script:
-    - mypy ./gitlab_monitor/ --junit-xml report_mypy.xml
+    - mypy $CODE_SOURCE --junit-xml report_mypy.xml
   artifacts:
     reports:
       junit: report_mypy.xml

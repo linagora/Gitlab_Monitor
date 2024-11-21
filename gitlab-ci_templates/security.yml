@@ -8,7 +8,7 @@
   before_script:
     - bandit --version
   script:
-    - bandit -c pyproject.toml -r ./gitlab_monitor/ -f xml -o bandit_report.xml #|| true
+    - bandit -c pyproject.toml -r $CODE_SOURCE -f xml -o bandit_report.xml
   artifacts:
     reports:
       junit: bandit_report.xml
@@ -20,7 +20,7 @@
   before_script:
     - trivy --version
   script:
-    - trivy fs --scanners vuln,secret,config ./gitlab_monitor/ -o report_trivy.json
+    - trivy fs --scanners vuln,secret,config $CODE_SOURCE -o report_trivy.json
   artifacts:
     paths:
       - report_trivy.json
