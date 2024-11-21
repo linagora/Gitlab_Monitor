@@ -15,6 +15,9 @@ authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
 homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"
 classifiers = [ "Development Status :: 1 - Planning"]
+packages = [
+    { include = "gitlab_monitor" }
+]
 
 [tool.poetry.dependencies]
 python="3.11.4"
