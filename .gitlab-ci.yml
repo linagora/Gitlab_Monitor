@@ -119,7 +119,7 @@ build-package:
 # #                   PUBLISH PACKAGES STAGE                       #
 # ##################################################################
 
-# TODO: utilisation de twine ?
+# TODO: Fix Error 405: Method Not Allowed (response from NEXUS)
 publish-package:
   stage: publish
   before_script:
@@ -136,8 +136,8 @@ publish-package:
 # ##################################################################
 
 # TODO: créer un runner pour deploy. Ajouter une rule et un environement ?
-trigger_pipeline:
+trigger_multiproject:
   stage: production
-  script:
-    - 'curl --fail --request POST --form token=$TRIGGER_TOKEN_PIPELINE --form ref=main "https://ci.linagora.com/linagora/devops/gitlab-manager/gitlab-monitor-deploy"'
+  trigger:
+    project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
   needs: []
