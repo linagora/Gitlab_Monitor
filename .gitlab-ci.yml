@@ -105,7 +105,7 @@ slsa-1:
 
 # TODO:
 build-package:
-  stage: build-package
+  stage: package-build
   before_script:
     - poetry --version
   script:
