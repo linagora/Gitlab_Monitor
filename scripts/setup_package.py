@@ -13,6 +13,6 @@ setup(
     description="Package du projet gitlab-monitor, pour nexus",
     author="mailys",
     author_email="mjara@linagora.com",
-    packages=find_packages(),
+    packages=find_packages(include=["gitlab_monitor", "gitlab_monitor.*"]),
     python_requires=">=3.6",
 )
