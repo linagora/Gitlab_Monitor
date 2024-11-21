@@ -124,6 +124,7 @@ publish-package:
   stage: publish
   before_script:
     - twine --version
+    - wheel version
   script:
     - rm -rf dist/* # good practice : au lieu de cette ligne changer le "dist/*" plus bas
     - python3 ./scripts/setup_package.py sdist bdist_wheel
