@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name="gitlab-monitor-package",
-    version="1.0",
+    version="1.1",
     description="Package du projet gitlab-monitor, pour nexus",
     author="mailys",
     author_email="mjara@linagora.com",
