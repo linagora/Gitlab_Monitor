@@ -16,7 +16,7 @@ from services.repository import SQLAlchemyProjectRepository
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 
 infos depuis le controller ou plutot le controller lui envoie les infos et 
-indique qu'elle commande executer
+indique quelle commande executer
 
 L'idée ici est d'utiliser un design pattern qui va ressembler au Command Pattern
 pour avoir une interface entre la ligne de commande et le controller, je ne souhaite
