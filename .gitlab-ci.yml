@@ -131,7 +131,7 @@ publish-package:
 # #                 PRODUCTION STAGE: DEPLOY                       #
 # ##################################################################
 
-# TODO: Ajouter des conditions ? (needs, rules, environment, etc)
+# TODO: Ajouter des conditions ? (rules, environment, etc)
 trigger_multiproject:
   stage: production
   trigger:
