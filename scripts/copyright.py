@@ -29,7 +29,7 @@ def process_directory(directory):
     for root, _, files in os.walk(directory):
         for file in files:
             if (
-                file.endswith((".py", ".yaml", ".yml", ".toml"))
+                file.endswith((".py", ".yaml", ".yml", ".toml", ".sh"))
                 and file not in EXCLUDED_FILES
             ):
                 file_path = os.path.join(root, file)

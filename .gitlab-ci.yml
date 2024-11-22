@@ -4,8 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
 include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
@@ -53,7 +51,7 @@ build-prod-env:
 
 # unit_tests:
 #   stage: build
-#   extends: .tests # TODO: a impléménter avant chaque feature
+#   extends: .tests # TODO: a implémenter avant chaque feature
 
 # ##################################################################
 # #            TEST STAGE: CODE QUALITY & SECURITY                 #
@@ -103,7 +101,6 @@ slsa-1:
 # #                    BUILD PACKAGES STAGE                        #
 # ##################################################################
 
-# TODO:
 build-package:
   stage: package-build
   before_script:
