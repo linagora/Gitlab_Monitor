@@ -4,7 +4,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from dto import ProjectDTO
+from gitlab_monitor.services.dto import ProjectDTO
 
 
 class Mapper:
@@ -13,8 +13,9 @@ class Mapper:
         """Recupere les valeurs de l'api pour en faire un DTO"""
         project_id = project_data.id
         name = project_data.name
+        path = project_data.path_with_namespace
         description = project_data.description
-        release = project_data.release
+        release = project_data.releases_access_level
         visibility = project_data.visibility
         created_at = project_data.created_at
         updated_at = project_data.updated_at
@@ -22,6 +23,7 @@ class Mapper:
         return ProjectDTO(
             project_id=project_id,
             name=name,
+            path=path,
             description=description,
             release=release,
             visibility=visibility,

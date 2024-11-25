@@ -4,7 +4,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from controller.controller import GetProjectsCommand
+from controller import GetProjectsCommand
 
 
 class CommandMapper:

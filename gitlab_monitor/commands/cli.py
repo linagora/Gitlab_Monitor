@@ -6,11 +6,11 @@
 
 from typing import Optional
 
-import typer
-from commands.commands import CLICommand
-
+from commands import CLICommand
 from gitlab_monitor import __app_name__
 from gitlab_monitor import __version__
+
+import typer
 
 
 app = typer.Typer()

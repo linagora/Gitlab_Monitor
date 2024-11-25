@@ -10,12 +10,13 @@ from dataclasses import dataclass
 @dataclass
 class ProjectDTO:
     """C'est un data object transfert, il sert à stocker les information
-    en mémoire afin de sérialiser pour sérialiser plus simplement les données.
+    en mémoire afin de sérialiser plus simplement les données.
     Cela rajoute une couche d'abstraction supplémentaire afin de pouvoir mieux
     découpler le code pouvoir avant de les stocker en base de donnée."""
 
     project_id: int
     name: str
+    path: str
     description: str
     release: str
     visibility: int
@@ -37,6 +38,14 @@ class ProjectDTO:
     @name.setter
     def name(self, value: str) -> str:
         self._name = value
+
+    @property
+    def path(self) -> str:
+        return self._path
+
+    @path.setter
+    def path(self, value: str) -> str:
+        self._path = value
 
     @property
     def description(self) -> str:

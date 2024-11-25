@@ -5,10 +5,10 @@
 
 
 from command_mapper import CommandMapper
-from controller.controller import Command
-from services.bdd import Database
-from services.call_gitlab import GitlabAPIService
-from services.repository import SQLAlchemyProjectRepository
+from controller import Command
+from bdd import Database
+from call_gitlab import GitlabAPIService
+from repository import SQLAlchemyProjectRepository
 
 
 """Module qui va récupérer les entrées utilisateurs puis les envoyer au module controller"""

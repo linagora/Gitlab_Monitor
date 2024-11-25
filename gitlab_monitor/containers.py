@@ -3,13 +3,12 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+from bdd import Database
+from call_gitlab import GitlabAPIService
+from mapper import Mapper
+from repository import SQLAlchemyProjectRepository
 
-from dependency_injector import containers
-from dependency_injector import providers
-from services.bdd import Database
-from services.call_gitlab import GitlabAPIService
-from services.mapper import Mapper
-from services.repository import SQLAlchemyProjectRepository
+from dependency_injector import containers, providers
 
 
 class Container(containers.DeclarativeContainer):

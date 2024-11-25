@@ -43,6 +43,7 @@ class Project(Base):
 
     project_id = Column(Integer, primary_key=True)
     name = Column(String)
+    path = Column(String)
     description = Column(String)
     release = Column(String)
     visibility = Column(String)

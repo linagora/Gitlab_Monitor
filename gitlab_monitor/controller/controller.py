@@ -8,10 +8,11 @@ from abc import ABC
 from abc import abstractmethod
 
 from containers import Container
-from dependency_injector.wiring import Provide
-from dependency_injector.wiring import inject
-from services.call_gitlab import GitlabAPIService
-from services.repository import SQLAlchemyProjectRepository
+from call_gitlab import GitlabAPIService
+from repository import SQLAlchemyProjectRepository
+
+from dependency_injector.wiring import Provide, inject
+
 
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 
