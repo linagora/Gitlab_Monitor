@@ -29,3 +29,7 @@ class GitlabAPIService:
             project_DTO = self._mapper.from_gitlab_api(self._mapper, project)
             projects_DTO.append(project_DTO)
         return projects_DTO
+
+    def get_project_by_id(self, project_id):
+        project = self.gitlab_instance.projects.get(project_id)
+        return self._mapper.from_gitlab_api(self._mapper, project)

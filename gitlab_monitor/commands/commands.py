@@ -4,11 +4,8 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from command_mapper import CommandMapper
-from controller import Command
-from bdd import Database
-from call_gitlab import GitlabAPIService
-from repository import SQLAlchemyProjectRepository
+from gitlab_monitor.commands.command_mapper import CommandMapper
+from gitlab_monitor.controller.controller import Command
 
 
 """Module qui va récupérer les entrées utilisateurs puis les envoyer au module controller"""

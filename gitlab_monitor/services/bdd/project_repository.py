@@ -1,36 +1,10 @@
-# # --- Copyright (c) 2024 Linagora
-# # licence       : Apache 2.0
-# # - Flavien Perez fperez@linagora.com
-# # - Maïlys Jara mjara@linagora.com
-
-
-from abc import ABC
-from abc import abstractmethod
 from typing import Optional
 
-from dto import ProjectDTO
-from models import Project
+from gitlab_monitor.services.bdd.repository import Repository
+from gitlab_monitor.services.dto import ProjectDTO
+from gitlab_monitor.services.bdd.models import Project
 
 from sqlalchemy.orm import Session
-
-
-class Repository(ABC):
-    @abstractmethod
-    def get_by_id(self, project_id: int) -> Optional[ProjectDTO]:
-        pass
-
-    @abstractmethod
-    def create(self, project_dto: ProjectDTO) -> None:
-        pass
-
-    @abstractmethod
-    def update(self, project_dto: ProjectDTO) -> None:
-        pass
-
-    @abstractmethod
-    def delete(self, project_id: int) -> None:
-        pass
-
 
 class SQLAlchemyProjectRepository(Repository):
     def __init__(self, session: Session):
@@ -45,6 +19,7 @@ class SQLAlchemyProjectRepository(Repository):
             return ProjectDTO(
                 project_id=project.project_id,
                 name=project.name,
+                path=project.path,
                 description=project.description,
                 release=project.release,
                 visibility=project.visibility,
@@ -56,23 +31,30 @@ class SQLAlchemyProjectRepository(Repository):
 
     def create(self, project_dto: ProjectDTO) -> None:
         # Implémentation pour créer un nouveau projet
-        existing_project = (
-            self.session.query(Project)
-            .filter(Project.project_id == project_dto.project_id)
-            .first()
-        )
-        if not existing_project:
-            project = Project(
-                project_id=project_dto.project_id,
-                name=project_dto.name,
-                description=project_dto.description,
-                release=project_dto.release,
-                visibility=project_dto.visibility,
-                created_at=project_dto.created_at,
-                updated_at=project_dto.updated_at,
+        try:
+            existing_project = (
+                self.session.query(Project)
+                .filter(Project.project_id == project_dto.project_id)
+                .first()
             )
-        self.session.add(project)
-        self.session.commit()
+            if not existing_project:
+                project = Project(
+                    project_id=project_dto.project_id,
+                    name=project_dto.name,
+                    path=project_dto.path,
+                    description=project_dto.description,
+                    release=project_dto.release,
+                    visibility=project_dto.visibility,
+                    created_at=project_dto.created_at,
+                    updated_at=project_dto.updated_at,
+                )
+                self.session.add(project)
+                self.session.commit()
+                print(f"Project created in DB: {project.name}")
+            else:
+                self.update(project_dto)
+        except Exception as e:
+            print(f"Error during project creation in DB: {e}")
 
     def update(self, project_dto: ProjectDTO) -> None:
         project = (
@@ -82,11 +64,14 @@ class SQLAlchemyProjectRepository(Repository):
         )
         if project:
             project.name = project_dto.name
+            project.path = project_dto.path
             project.description = project_dto.description
             project.release = project_dto.release
             project.visibility = project_dto.visibility
             project.updated_at = project_dto.updated_at
             self.session.commit()
+            print(f"Project updated in DB: {project.name}")
+
         else:
             raise Exception("Project not found")
 

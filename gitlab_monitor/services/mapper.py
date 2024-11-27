@@ -6,7 +6,6 @@
 
 from gitlab_monitor.services.dto import ProjectDTO
 
-
 class Mapper:
     @staticmethod
     def from_gitlab_api(self, project_data) -> ProjectDTO:

@@ -3,16 +3,16 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+import os
+from abc import ABC, abstractmethod
 
-from abc import ABC
-from abc import abstractmethod
 
-from containers import Container
-from call_gitlab import GitlabAPIService
-from repository import SQLAlchemyProjectRepository
+from gitlab_monitor.services.mapper import Mapper
+from gitlab_monitor.services.call_gitlab import GitlabAPIService
+from gitlab_monitor.services.bdd.project_repository import SQLAlchemyProjectRepository
+from gitlab_monitor.services.bdd.bdd import Database
 
-from dependency_injector.wiring import Provide, inject
-
+from dotenv import load_dotenv
 
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 
@@ -28,6 +28,28 @@ doivent pas changer et cela ne doit pas impacter le flux de travail.
 """
 
 
+# class Controller():
+#     def __init__(self):
+#         load_dotenv()
+#         private_token = os.getenv("GITLAB_PRIVATE_TOKEN")
+#         mapper = Mapper()
+#         db = Database()
+#         db._initialize_database()
+
+#         self.gitlab = GitlabAPIService("https://ci.linagora.com", private_token, mapper)
+#         self.repository = SQLAlchemyProjectRepository(db.session)
+
+#     def scan_projects(self):
+#         projects = self.gitlab.scan_projects()
+#         for project in projects:
+#             print(project)
+#             self.repository.create(project)
+
+#     def scan_project(self, project_id):
+#         project = self.gitlab.get_project_by_id(project_id)
+#         print(project)
+#         self.repository.create(project)
+
 class Command(ABC):
     @abstractmethod
     def execute():
@@ -35,18 +57,18 @@ class Command(ABC):
 
 
 class GetProjectsCommand(Command):
-    @inject
-    def __init__(
-        self,
-        gitlab_service: GitlabAPIService = Provide[Container.gitlab_service],
-        project_repository: SQLAlchemyProjectRepository = Provide[
-            Container.project_repository
-        ],
+    def __init__(self
     ) -> None:
-        self.gitlab_service = gitlab_service
-        self.project_repository = project_repository
+        load_dotenv()
+        self.private_token = os.getenv("GITLAB_PRIVATE_TOKEN")
+        self.mapper = Mapper()
+        self.db = Database()
+        self.db._initialize_database()
 
-    def execute(self, gitlab_service: GitlabAPIService):
-        projects = gitlab_service.scan_projects()
+        self.gitlab_service = GitlabAPIService("https://ci.linagora.com", self.private_token, self.mapper)
+        self.project_repository = SQLAlchemyProjectRepository(self.db.session)
+
+    def execute(self):
+        projects = self.gitlab_service.scan_projects()
         for project in projects:
             self.project_repository.create(project)

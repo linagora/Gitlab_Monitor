@@ -15,5 +15,5 @@ setup(
     author_email="mjara@linagora.com",
     packages=find_packages(include=["gitlab_monitor", "gitlab_monitor.*"]),
     python_requires=">=3.6",
-    setup_requires=['wheel'],
+    setup_requires=["wheel"],
 )

@@ -4,7 +4,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from controller import GetProjectsCommand
+from gitlab_monitor.controller.controller import GetProjectsCommand
 
 
 class CommandMapper:
@@ -20,3 +20,5 @@ class CommandMapper:
 
 
 CommandMapper.register("scan_projects", GetProjectsCommand)
+CommandMapper.register("scan_project", GetProjectsCommand)
+
