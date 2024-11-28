@@ -50,7 +50,6 @@ class SQLAlchemyProjectRepository(Repository):
                 )
                 self.session.add(project)
                 self.session.commit()
-                print(f"Project created in DB: {project.name}")
             else:
                 self.update(project_dto)
         except Exception as e:
@@ -70,8 +69,6 @@ class SQLAlchemyProjectRepository(Repository):
             project.visibility = project_dto.visibility
             project.updated_at = project_dto.updated_at
             self.session.commit()
-            print(f"Project updated in DB: {project.name}")
-
         else:
             raise Exception("Project not found")
 

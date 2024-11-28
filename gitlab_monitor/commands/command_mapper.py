@@ -5,6 +5,7 @@
 
 
 from gitlab_monitor.controller.controller import GetProjectsCommand
+from gitlab_monitor.controller.controller import GetProjectCommand
 
 
 class CommandMapper:
@@ -16,9 +17,9 @@ class CommandMapper:
 
     @classmethod
     def get_command(cls, command_name):
-        return cls._commands.get(command_name, "Commande non reconnue")
+        command_class = cls._commands.get(command_name, "Commande non reconnue")
+        return command_class
 
 
 CommandMapper.register("scan_projects", GetProjectsCommand)
-CommandMapper.register("scan_project", GetProjectsCommand)
-
+CommandMapper.register("scan_project", GetProjectCommand)

@@ -8,8 +8,11 @@
             "name": "Python Debugger: Current File with Arguments",
             "type": "debugpy",
             "request": "launch",
+            "program": "${workspaceFolder}/gitlab_monitor/__main__.py",
             "console": "integratedTerminal",
-            "module": "gitlab_monitor",            
+            "args": [
+                "scan_projects"
+            ],
         }
     ]
 }

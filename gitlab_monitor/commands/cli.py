@@ -6,24 +6,38 @@
 
 from gitlab_monitor import __app_name__
 from gitlab_monitor import __version__
-from gitlab_monitor.controller.controller import GetProjectsCommand
 from gitlab_monitor.commands.commands import CLICommand
+
+from typing import Optional
 
 import typer
 
-
 app = typer.Typer()
-# controller = Controller()
 
-@app.command()
+
+@app.command(name="scan-projects")
 def scan_projects():
     """Scan et récupère tous les projets du gitlab"""
-    #controller.scan_projects()
-    cli_command: CLICommand = CLICommand()
+    cli_command = CLICommand()
     command = cli_command.create_command("scan_projects")
     cli_command.handle_command(command)
 
-# @app.command(name="scan-project")
-# def scan_project(id: int):
-#     """Scan et récupère un projet du gitlab selon l'id"""
-#     controller.scan_project(id)
+@app.command(name="scan-project")
+def scan_projects(id: int):
+    """Scan et récupère un projet gitlab depuis son id"""
+    cli_command = CLICommand()
+    command = cli_command.create_command("scan_project")
+    cli_command.handle_command(command, id=id)
+
+
+@app.callback()
+def main(
+    version: Optional[bool] = typer.Option(
+        None,
+        "--version",
+        "-v",
+        help="Montre la  version de l'application et quitte le programme",
+        is_eager=True,
+    )
+) -> None:
+    return

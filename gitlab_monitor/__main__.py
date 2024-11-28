@@ -6,7 +6,11 @@
 # main.py
 
 from gitlab_monitor import __app_name__
-from gitlab_monitor.commands.cli import app
+from gitlab_monitor.commands import cli
+
+
+def main():
+    cli.app(prog_name=__app_name__)
 
 if __name__ == "__main__":
-    app()
+    main()

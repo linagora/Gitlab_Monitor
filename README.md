@@ -32,7 +32,7 @@ $ pip install Gitlab Monitor
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+python -m gitlab_monitor [COMMAND] --[OPTIONS] [ARGS]
 
 ## Contributing
 

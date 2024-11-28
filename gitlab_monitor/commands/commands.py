@@ -15,5 +15,9 @@ class CLICommand:
     def create_command(self, command: str):
         return CommandMapper.get_command(command)
 
-    def handle_command(self, command_class: Command):
-        command_class.execute()
+    def handle_command(self, command_class: Command, **kwargs):
+        command_instance = command_class()
+        if kwargs:
+            command_instance.execute(kwargs)
+        else:
+            command_instance.execute()
