@@ -46,7 +46,7 @@ build-dev-env:
 build-documentation:
   stage: build
   extends: .build_documentation
-  needs: [build-dev-env]
+  needs: [build-dev-env] # test
 
 build-prod-env:
   stage: build
