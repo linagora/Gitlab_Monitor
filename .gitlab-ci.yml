@@ -9,9 +9,10 @@ include:
  - local: '/gitlab-ci_templates/build-doc.yml'
  - local: '/gitlab-ci_templates/build-prod.yml'
  - local: '/gitlab-ci_templates/linter.yml'
+ - local: '/gitlab-ci_templates/packages.yml'
+ - local: '/gitlab-ci_templates/release.yml'
  - local: '/gitlab-ci_templates/security.yml'
  - local: '/gitlab-ci_templates/tests.yml'
-
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
@@ -32,6 +33,7 @@ stages:
   - package-build
   - publish
   - production
+  - release
 
 # ##################################################################
 # #                 BUILD STAGE: BUILD & TESTS                     #
@@ -105,13 +107,7 @@ slsa-1:
 
 build-package:
   stage: package-build
-  before_script:
-    - poetry --version
-  script:
-    - poetry build
-  artifacts:
-    paths:
-      - dist/*.whl
+  extends: .build-package
   needs: []
 
 # ##################################################################
@@ -120,21 +116,30 @@ build-package:
 
 publish-package:
   stage: publish
-  before_script:
-    - twine --version
-    - wheel version
-  script:
-    - rm -rf dist/* # good practice : au lieu de cette ligne changer le "dist/*" plus bas
-    - python3 ./scripts/setup_package.py sdist bdist_wheel
-    - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/* #dist/nom_du_fichier_version-concernée.whl
+  extends: .publish-package
   needs: [build-package]
   when: manual
 
 # ##################################################################
-# #                 PRODUCTION STAGE: DEPLOY                       #
+# #                 RELEASE STAGE (CHANGELOGS)                     #
 # ##################################################################
 
-# TODO: Ajouter des conditions ? (rules, environment, etc)
+prepare:
+  stage: release
+  extends: .prepare_job
+  needs: []
+
+release:
+  stage: release
+  extends: .release_job
+  needs:
+    - job: prepare
+      artifacts: true
+
+# ##################################################################
+# #                 PRODUCTION STAGE -> DEPLOY                     #
+# ##################################################################
+
 trigger_multiproject:
   stage: production
   trigger:
