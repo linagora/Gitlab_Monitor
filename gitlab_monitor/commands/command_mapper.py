@@ -21,6 +21,7 @@ class CommandMapper:
         command_class = cls._commands.get(command_name, "Commande non reconnue")
         return command_class
 
+
 # Enregistrement des commandes
 CommandMapper.register("scan_projects", GetProjectsCommand)
 CommandMapper.register("scan_project", GetProjectCommand)

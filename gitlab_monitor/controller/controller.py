@@ -35,7 +35,9 @@ class Command(ABC):
         load_dotenv()
         self.private_token = os.getenv("GITLAB_PRIVATE_TOKEN")
         if not self.private_token:
-            raise ValueError("GITLAB_PRIVATE_TOKEN is not set in the environment variables")
+            raise ValueError(
+                "GITLAB_PRIVATE_TOKEN is not set in the environment variables"
+            )
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
 
         self.mapper = Mapper()
