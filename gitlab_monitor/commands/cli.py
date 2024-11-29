@@ -4,13 +4,14 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+from typing import Optional
+
+import typer
+
 from gitlab_monitor import __app_name__
 from gitlab_monitor import __version__
 from gitlab_monitor.commands.commands import CLICommand
 
-from typing import Optional
-
-import typer
 
 app = typer.Typer()
 
@@ -21,6 +22,7 @@ def scan_projects():
     cli_command = CLICommand()
     command = cli_command.create_command("scan_projects")
     cli_command.handle_command(command)
+
 
 @app.command(name="scan-project")
 def scan_projects(id: int):

@@ -6,6 +6,7 @@
 
 from dataclasses import dataclass
 
+
 @dataclass
 class ProjectDTO:
     """C'est un data object transfert, il sert à stocker les information

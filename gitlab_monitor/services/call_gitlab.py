@@ -9,13 +9,20 @@ project et sensé être mon DTO
 """
 
 from typing import Optional
-from gitlab_monitor.services.mapper import Mapper
 
 import gitlab
 
+from gitlab_monitor.services.mapper import Mapper
+
 
 class GitlabAPIService:
-    def __init__(self, url: str, private_token: str, mapper: Mapper, ssl_cert_path: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        url: str,
+        private_token: str,
+        mapper: Mapper,
+        ssl_cert_path: Optional[str] = None,
+    ) -> None:
         self.gitlab_instance = gitlab.Gitlab(
             url=url,
             private_token=private_token,

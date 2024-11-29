@@ -1,10 +1,11 @@
 from typing import Optional
 
+from sqlalchemy.orm import Session
+
+from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import ProjectDTO
-from gitlab_monitor.services.bdd.models import Project
 
-from sqlalchemy.orm import Session
 
 class SQLAlchemyProjectRepository(Repository):
     def __init__(self, session: Session):

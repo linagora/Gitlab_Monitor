@@ -4,8 +4,8 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from gitlab_monitor.controller.controller import GetProjectsCommand
 from gitlab_monitor.controller.controller import GetProjectCommand
+from gitlab_monitor.controller.controller import GetProjectsCommand
 
 
 class CommandMapper:

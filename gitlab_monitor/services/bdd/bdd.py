@@ -5,11 +5,12 @@
 
 import os
 
-from gitlab_monitor.services.bdd.models import Base
-
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from dotenv import load_dotenv
+
+from gitlab_monitor.services.bdd.models import Base
+
 
 # Charger et récupérer les variables d'environnement
 load_dotenv()

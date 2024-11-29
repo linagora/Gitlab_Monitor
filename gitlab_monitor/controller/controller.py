@@ -4,15 +4,17 @@
 # # - Maïlys Jara mjara@linagora.com
 
 import os
-from abc import ABC, abstractmethod
-
-
-from gitlab_monitor.services.mapper import Mapper
-from gitlab_monitor.services.call_gitlab import GitlabAPIService
-from gitlab_monitor.services.bdd.project_repository import SQLAlchemyProjectRepository
-from gitlab_monitor.services.bdd.bdd import Database
+from abc import ABC
+from abc import abstractmethod
 
 from dotenv import load_dotenv
+
+from gitlab_monitor.services.bdd.bdd import Database
+from gitlab_monitor.services.bdd.project_repository import (
+    SQLAlchemyProjectRepository,
+)
+from gitlab_monitor.services.call_gitlab import GitlabAPIService
+from gitlab_monitor.services.mapper import Mapper
 
 
 """Module qui va contenir la logique d'execution des commandes, elle récupère les 
@@ -27,9 +29,9 @@ doivent pas changer et cela ne doit pas impacter le flux de travail.
 
 """
 
+
 class Command(ABC):
-    def __init__(self
-    ) -> None:
+    def __init__(self) -> None:
         load_dotenv()
         self.private_token = os.getenv("GITLAB_PRIVATE_TOKEN")
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
@@ -38,8 +40,11 @@ class Command(ABC):
         self.db = Database()
         self.db._initialize_database()
 
-        self.gitlab_service = GitlabAPIService("https://ci.linagora.com", self.private_token, self.mapper, ssl_cert_path)
+        self.gitlab_service = GitlabAPIService(
+            "https://ci.linagora.com", self.private_token, self.mapper, ssl_cert_path
+        )
         self.project_repository = SQLAlchemyProjectRepository(self.db.session)
+
     @abstractmethod
     def execute(self, **kwargs):
         pass
@@ -50,7 +55,10 @@ class GetProjectsCommand(Command):
         projects = self.gitlab_service.scan_projects()
         for project in projects:
             self.project_repository.create(project)
-        print(f"{len(projects)} projects has been retrieved and saved or updated in database.")
+        print(
+            f"{len(projects)} projects has been retrieved and saved or updated in database."
+        )
+
 
 class GetProjectCommand(Command):
     def execute(self, id):
@@ -58,4 +66,6 @@ class GetProjectCommand(Command):
         project = self.gitlab_service.get_project_by_id(project_id)
         if project:
             self.project_repository.create(project)
-            print(f"Project {project.name} has been retrieved and saved or updated in database.")
+            print(
+                f"Project {project.name} has been retrieved and saved or updated in database."
+            )
