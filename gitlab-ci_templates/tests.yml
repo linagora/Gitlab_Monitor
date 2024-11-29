@@ -6,7 +6,7 @@
 
 .py-pytest:
   script:
-    - poetry install
+    - poetry install --only-root
     - pytest tests/unit/* --cov=gitlab_monitor --cov-report=xml
   artifacts:
     reports:

@@ -25,7 +25,7 @@ def scan_projects():
 
 
 @app.command(name="scan-project")
-def scan_projects(id: int):
+def scan_project(id: int):
     """Scan et récupère un projet gitlab depuis son id"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
