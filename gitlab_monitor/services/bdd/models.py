@@ -7,6 +7,7 @@
 """Module qui va contenir les entités de la base 
 de donnée. (reprendre schéma bdd)
     """
+from typing import Type
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -40,7 +41,7 @@ Base = declarative_base()
 # )
 
 
-class Project(Base):
+class Project(Base): # type: ignore
     __tablename__ = "project"
 
     project_id = Column(Integer, primary_key=True)

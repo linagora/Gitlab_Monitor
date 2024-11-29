@@ -19,7 +19,7 @@ class ProjectDTO:
     path: str
     description: str
     release: str
-    visibility: int
+    visibility: str
     created_at: str
     updated_at: str
 

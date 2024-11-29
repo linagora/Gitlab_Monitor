@@ -18,7 +18,9 @@ class CommandMapper:
 
     @classmethod
     def get_command(cls, command_name: str) -> Type:
-        command_class = cls._commands.get(command_name, "Commande non reconnue")
+        command_class = cls._commands.get(command_name)
+        if not command_class:
+            raise ValueError(f"Command {command_name} not found.")
         return command_class
 
 

@@ -19,7 +19,7 @@
     description: release_notes.md
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_SHA'
-    # assets: # TODO: récuprérer les images sur harbor ET le code source sur nexus
+    # assets: # TODO: récuprérer les images sur harbor ET le code source sur nexus + lien vers le site du projet
     #   links:
     #     - name: 'Container Image $CI_COMMIT_TAG'
     #       url: "https://$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
