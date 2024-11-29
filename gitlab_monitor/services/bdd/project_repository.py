@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GNU GENERAL PUBLIC LICENSE
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from typing import Optional
 
 from sqlalchemy.orm import Session

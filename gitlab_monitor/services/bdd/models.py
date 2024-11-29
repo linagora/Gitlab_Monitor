@@ -1,5 +1,5 @@
 # # --- Copyright (c) 2024 Linagora
-# # licence       : Apache 2.0
+# # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
@@ -7,7 +7,6 @@
 """Module qui va contenir les entités de la base 
 de donnée. (reprendre schéma bdd)
     """
-from typing import Type
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -41,7 +40,7 @@ Base = declarative_base()
 # )
 
 
-class Project(Base): # type: ignore
+class Project(Base):  # type: ignore
     __tablename__ = "project"
 
     project_id = Column(Integer, primary_key=True)

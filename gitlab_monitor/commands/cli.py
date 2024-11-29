@@ -1,5 +1,5 @@
 # # --- Copyright (c) 2024 Linagora
-# # licence       : Apache 2.0
+# # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
@@ -8,8 +8,6 @@ from typing import Optional
 
 import typer
 
-from gitlab_monitor import __app_name__
-from gitlab_monitor import __version__
 from gitlab_monitor.commands.commands import CLICommand
 
 
