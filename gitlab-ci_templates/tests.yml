@@ -4,15 +4,10 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
-
 py-pytest:
-  image: $IMAGE
-  stage: test
   script:
-    - poetry install --only-root
-    - pytest --junitxml=pytest_results.xml --cov=. --cov-report xml
+    - poetry install
+    - pytest test/unit --cov=gitlab_monitor --cov-report=xml
   artifacts:
     reports:
       junit: pytest_results.xml

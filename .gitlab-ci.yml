@@ -49,9 +49,9 @@ build-prod-env:
   extends: .build_prod_env
   needs: []
 
-# unit_tests:
-#   stage: build
-#   extends: .tests # TODO: a implémenter avant chaque feature
+unit_tests:
+  stage: build
+  extends: .tests
 
 # ##################################################################
 # #            TEST STAGE: CODE QUALITY & SECURITY                 #

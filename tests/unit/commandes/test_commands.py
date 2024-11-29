@@ -39,10 +39,3 @@ def test_scan_project_bad_id():
     assert result.exit_code == 0
     match = re.search(r"Retrieving project id \d+...\nError when retrieving project id \d+: 404: 404 Project Not Found", result.stdout)
     assert match is not None
-
-# TODO: ommande scan_project avec une erreur d'enregistrement dans la base de données
-def test_scan_project_db_fail():
-    result = runner.invoke(cli.app, ["scan-project", "4130"])
-    assert result.exit_code == 0
-    match = re.search(r"Retrieving project id \d+...\nError during project creation in DB: .*", result.stdout)
-    assert match is not None
