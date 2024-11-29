@@ -4,7 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-py-pytest:
+.py-pytest:
   script:
     - poetry install
     - pytest test/unit --cov=gitlab_monitor --cov-report=xml

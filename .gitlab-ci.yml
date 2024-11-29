@@ -10,6 +10,8 @@ include:
  - local: '/gitlab-ci_templates/build-prod.yml'
  - local: '/gitlab-ci_templates/linter.yml'
  - local: '/gitlab-ci_templates/security.yml'
+- local: '/gitlab-ci_templates/tests.yml'
+
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
@@ -51,7 +53,7 @@ build-prod-env:
 
 unit_tests:
   stage: build
-  extends: .tests
+  extends: .py-pytest
 
 # ##################################################################
 # #            TEST STAGE: CODE QUALITY & SECURITY                 #
