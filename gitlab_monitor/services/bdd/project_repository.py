@@ -18,7 +18,7 @@ class SQLAlchemyProjectRepository(Repository):
         )
         if project:
             return ProjectDTO(
-                project_id=project.project_id,
+                project_id=int(project.project_id),
                 name=project.name,
                 path=project.path,
                 description=project.description,
