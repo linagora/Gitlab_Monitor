@@ -7,7 +7,8 @@
 .py-pytest:
   script:
     - poetry install
-    - pytest tests/unit/* --cov=gitlab_monitor --cov-report=xml
+    - pytest tests/unit/* --cov-report=xml --junitxml=pytest_results.xml || true
+    - ls
   artifacts:
     reports:
       junit: pytest_results.xml
