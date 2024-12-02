@@ -1,3 +1,4 @@
+
 # # --- Copyright (c) 2024 Linagora
 # # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
@@ -9,8 +10,7 @@ Module that contains the business logic for calling the GitLab API.
 Project is supposed to be my DTO.
 """
 
-from typing import Optional, List
-from unittest.mock import Mock
+from typing import Optional
 
 import gitlab
 
@@ -32,12 +32,9 @@ class GitlabAPIService:
         )
         self._mapper = mapper
 
-    def scan_projects(self, mock_projects: Optional[List[dict]] = None):
+    def scan_projects(self):
         print("Retrieving projects...")
-        if mock_projects is not None:
-            projects = [Mock(**project) for project in mock_projects]
-        else:
-            projects = self.gitlab_instance.projects.list(iterator=True)
+        projects = self.gitlab_instance.projects.list(iterator=True)
         projects_DTO = []
         for project in projects:
             project_DTO = self._mapper.from_gitlab_api(self._mapper, project)

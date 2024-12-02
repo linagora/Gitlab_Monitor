@@ -1,3 +1,4 @@
+
 # # --- Copyright (c) 2024 Linagora
 # # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com

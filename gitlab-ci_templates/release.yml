@@ -3,6 +3,7 @@
 # # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 # TODO: personaliser ces 2 jobs
 
 .prepare_job:
