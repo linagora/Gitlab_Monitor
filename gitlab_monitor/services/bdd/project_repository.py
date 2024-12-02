@@ -2,6 +2,7 @@
 # # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 from typing import Optional
 
 from sqlalchemy.orm import Session
@@ -16,7 +17,7 @@ class SQLAlchemyProjectRepository(Repository):
         self.session = session
 
     def get_by_id(self, project_id: int) -> Optional[ProjectDTO]:
-        # Implémentation pour récupérer un projet par son ID
+        # Implementation to retrieve a project by its ID
         project = (
             self.session.query(Project).filter(Project.project_id == project_id).first()
         )
@@ -35,7 +36,7 @@ class SQLAlchemyProjectRepository(Repository):
             return None
 
     def create(self, project_dto: ProjectDTO) -> None:
-        # Implémentation pour créer un nouveau projet
+        # Implementation to create a new project
         try:
             existing_project = (
                 self.session.query(Project)

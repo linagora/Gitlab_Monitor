@@ -10,7 +10,7 @@ from gitlab_monitor.commands.command_mapper import CommandMapper
 from gitlab_monitor.controller.controller import Command
 
 
-"""Module qui va récupérer les entrées utilisateurs puis les envoyer au module controller"""
+"""Module that retrieves user inputs and sends them to the controller"""
 
 
 class CLICommand:

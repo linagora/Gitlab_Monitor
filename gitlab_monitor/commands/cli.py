@@ -9,14 +9,18 @@ from typing import Optional
 import typer
 
 from gitlab_monitor.commands.commands import CLICommand
-
+from gitlab_monitor import __app_name__, __version__
 
 app = typer.Typer()
 
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(f"{__app_name__} v{__version__}")
+        raise typer.Exit()
 
 @app.command(name="scan-projects")
 def scan_projects():
-    """Scan et récupère tous les projets du gitlab"""
+    """Scan and retrieve all projects from GitLab"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_projects")
     cli_command.handle_command(command)
@@ -24,7 +28,7 @@ def scan_projects():
 
 @app.command(name="scan-project")
 def scan_project(id: int):
-    """Scan et récupère un projet gitlab depuis son id"""
+    """Scan and retrieve a GitLab project by its ID"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
     cli_command.handle_command(command, id=id)
@@ -36,7 +40,8 @@ def main(
         None,
         "--version",
         "-v",
-        help="Montre la  version de l'application et quitte le programme",
+        callback=_version_callback,
+        help="Show the application's version and exit.",
         is_eager=True,
     )
 ) -> None:

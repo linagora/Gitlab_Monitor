@@ -17,16 +17,15 @@ from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.mapper import Mapper
 
 
-"""Module qui va contenir la logique d'execution des commandes, elle récupère les 
-infos depuis le controller ou plutot le controller lui envoie les infos et 
-indique quelle commande executer
+"""
+Module that contains the logic for executing commands. It retrieves information
+from the controller or rather the controller sends it the information and
+indicates which command to execute.
 
-L'idée ici est d'utiliser un design pattern qui va ressembler au Command Pattern
-pour avoir une interface entre la ligne de commande et le controller, je ne souhaite
-pas que le controller puisse directement appelé les outils modèles dans le cas ou 
-la bdd devrait changer ou l'api devrait changer, les entrées utilisateurs ne
-doivent pas changer et cela ne doit pas impacter le flux de travail.
-
+The idea here is to use a design pattern similar to the Command Pattern
+to have an interface between the command line and the controller. I do not want
+the controller to directly call the model tools in case the database or API
+changes. User inputs should not change and this should not impact the workflow.
 """
 
 

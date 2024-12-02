@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from gitlab_monitor.services.bdd.models import Base
 
 
-# Charger et récupérer les variables d'environnement
+# Load and retrieve environment variables
 load_dotenv()
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
@@ -26,13 +26,13 @@ DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db
 class Database:
 
     def _initialize_database(self):
-        # Créer un moteur de base de données
+        # Create a database engine
         engine = create_engine(DB_URL)
 
         engine.connect()
         Base.metadata.create_all(bind=engine)
 
-        # Se connecte à la session de la base de donnée
+        # Connect to the database session
         Session = sessionmaker(bind=engine)
         self.session = Session()
 

@@ -10,7 +10,7 @@ from gitlab_monitor.services.dto import ProjectDTO
 class Mapper:
     @staticmethod
     def from_gitlab_api(self, project_data) -> ProjectDTO:
-        """Recupere les valeurs de l'api pour en faire un DTO"""
+        """Retrieve values from the API to create a DTO"""
         project_id = project_data.id
         name = project_data.name
         path = project_data.path_with_namespace

@@ -4,9 +4,9 @@
 # # - Maïlys Jara mjara@linagora.com
 
 """
-Module d'initialisation pour gitlab_monitor.
+Initialization module for gitlab_monitor.
 
-Ce module définit les constantes globales pour l'application.
+This module defines global constants for the application.
 """
 
 __app_name__ = "gitlab_monitor"

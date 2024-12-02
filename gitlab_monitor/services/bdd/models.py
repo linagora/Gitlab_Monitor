@@ -4,9 +4,9 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-"""Module qui va contenir les entités de la base 
-de donnée. (reprendre schéma bdd)
-    """
+"""
+Module that contains the database entities. (refer to the database schema)
+"""
 
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
@@ -16,7 +16,6 @@ from sqlalchemy import Table
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
-# from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
 
 
@@ -40,7 +39,7 @@ Base = declarative_base()
 # )
 
 
-class Project(Base):  # type: ignore
+class Project(Base):
     __tablename__ = "project"
 
     project_id = Column(Integer, primary_key=True)
