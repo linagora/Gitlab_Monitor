@@ -21,6 +21,7 @@
     - docker info
   script:
     - docker system prune -a --volumes
+    - echo 'y'
     - echo "Building the cache image"
     - docker build -t $IMAGE_NAME:$CACHE_TAG -f $DOCKERFILE .
     - echo "Login to Harbor registry"
