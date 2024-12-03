@@ -3,14 +3,24 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""This module can map data from the API to a DTO.
+"""
 
 from gitlab_monitor.services.dto import ProjectDTO
 
 
-class Mapper:
-    @staticmethod
-    def from_gitlab_api(self, project_data) -> ProjectDTO:
-        """Retrieve values from the API to create a DTO"""
+class Mapper:  # pylint: disable=too-few-public-methods
+    """Transform data from the API to a DTO."""
+
+    def project_from_gitlab_api(self, project_data) -> ProjectDTO:
+        """Transform the data of a gitlab project from the
+        gitlab API to a ProjectDTO.
+
+        :param project_data: project data from the gitlab API
+        :type project_data: json
+        :return: project in DTO format
+        :rtype: ProjectDTO
+        """
         project_id = project_data.id
         name = project_data.name
         path = project_data.path_with_namespace

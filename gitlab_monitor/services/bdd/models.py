@@ -8,8 +8,10 @@
 Module that contains the database entities. (refer to the database schema)
 """
 
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import declarative_base
+from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import String
+from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
@@ -32,7 +34,9 @@ Base = declarative_base()
 # )
 
 
-class Project(Base):
+class Project(Base):  # type: ignore # pylint: disable=too-few-public-methods
+    """Project model according to the database schema."""
+
     __tablename__ = "project"
 
     project_id = Column(Integer, primary_key=True)

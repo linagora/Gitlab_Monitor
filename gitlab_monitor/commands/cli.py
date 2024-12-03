@@ -3,6 +3,10 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""Module cli: Command Line Interface for the gitlab_monitor application.
+
+:raises typer.Exit: mean that nothing else needs to be executed after this.
+"""
 
 from typing import Optional
 
@@ -17,6 +21,12 @@ app = typer.Typer()
 
 
 def _version_callback(value: bool) -> None:
+    """Handle the version option.
+
+    :param value: True if the version option is set.
+    :type value: bool
+    :raises typer.Exit: mean that nothing else needs to be executed after this.
+    """
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
@@ -31,11 +41,11 @@ def scan_projects():
 
 
 @app.command(name="scan-project")
-def scan_project(id: int):
+def scan_project(project_id: int):
     """Scan and retrieve a GitLab project by its ID"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
-    cli_command.handle_command(command, id=id)
+    cli_command.handle_command(command, id=project_id)
 
 
 @app.callback()
@@ -49,4 +59,6 @@ def main(
         is_eager=True,
     )
 ) -> None:
-    return
+    """Main entry point for the CLI application."""
+    if version:
+        _version_callback(version)

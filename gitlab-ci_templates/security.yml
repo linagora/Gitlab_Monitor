@@ -8,6 +8,7 @@
 
 
 
+
 .py-bandit:
   before_script:
     - bandit --version

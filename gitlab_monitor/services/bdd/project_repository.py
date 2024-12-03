@@ -3,22 +3,48 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""Repository pattern for the project entity.
+
+Simple way to interact with the database for the project table.
+"""
 
 from typing import Optional
 
 from sqlalchemy.orm import Session
 
+from gitlab_monitor.logger.logger import logger
 from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import ProjectDTO
 
 
+# TODO: revoir les Exceptions levée pour les rendre plus précises
+# + mettre à jour les test unitaires.
+
+
 class SQLAlchemyProjectRepository(Repository):
+    """Repository pattern for the project entity.
+
+    :param Repository: interface implemented for the repository pattern.
+    :type Repository: class
+    """
+
     def __init__(self, session: Session):
+        """Constructor
+
+        :param session: database session.
+        :type session: Session
+        """
         self.session = session
 
     def get_by_id(self, project_id: int) -> Optional[ProjectDTO]:
-        # Implementation to retrieve a project by its ID
+        """Get a project by its ID.
+
+        :param project_id: projet ID.
+        :type project_id: int
+        :return: the project searched.
+        :rtype: Optional[ProjectDTO]
+        """
         project = (
             self.session.query(Project).filter(Project.project_id == project_id).first()
         )
@@ -33,11 +59,14 @@ class SQLAlchemyProjectRepository(Repository):
                 created_at=project.created_at,
                 updated_at=project.updated_at,
             )
-        else:
-            return None
+        return None
 
     def create(self, project_dto: ProjectDTO) -> None:
-        # Implementation to create a new project
+        """Create a project in the database.
+
+        :param project_dto: the project to create.
+        :type project_dto: ProjectDTO
+        """
         try:
             existing_project = (
                 self.session.query(Project)
@@ -59,10 +88,16 @@ class SQLAlchemyProjectRepository(Repository):
                 self.session.commit()
             else:
                 self.update(project_dto)
-        except Exception as e:
-            print(f"Error during project creation in DB: {e}")
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            logger.info("Error during project creation in DB: %s", e)
 
     def update(self, project_dto: ProjectDTO) -> None:
+        """Update a project in the database.
+
+        :param project_dto: the project to update.
+        :type project_dto: ProjectDTO
+        :raises Exception: Raised if the project is not found.
+        """
         project = (
             self.session.query(Project)
             .filter(Project.project_id == project_dto.project_id)
@@ -77,9 +112,17 @@ class SQLAlchemyProjectRepository(Repository):
             project.updated_at = project_dto.updated_at
             self.session.commit()
         else:
-            raise Exception("Project not found")
+            raise Exception(  # pylint: disable=broad-exception-raised
+                "Project not found"
+            )
 
     def delete(self, project_id: int) -> None:
+        """Delete a project in the database.
+
+        :param project_id: project ID.
+        :type project_id: int
+        :raises Exception: Raised if the project is not found.
+        """
         project = (
             self.session.query(Project).filter(Project.project_id == project_id).first()
         )
@@ -87,4 +130,6 @@ class SQLAlchemyProjectRepository(Repository):
             self.session.delete(project)
             self.session.commit()
         else:
-            raise Exception("Project not found")
+            raise Exception(  # pylint: disable=broad-exception-raised
+                "Project not found"
+            )

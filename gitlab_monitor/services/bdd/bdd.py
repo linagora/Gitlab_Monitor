@@ -3,6 +3,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""Database module to manage the database connection."""
 
 import os
 
@@ -24,9 +25,15 @@ db_name = os.getenv("DB_NAME")
 DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 
-class Database:
+class Database:  # pylint: disable=too-few-public-methods
+    """Initialize the database connection."""
+
+    def __init__(self):
+        """Constructor of the the database connection."""
+        self.session = None
 
     def _initialize_database(self):
+        """Initialize the database connection."""
         # Create a database engine
         engine = create_engine(DB_URL)
 
@@ -34,8 +41,13 @@ class Database:
         Base.metadata.create_all(bind=engine)
 
         # Connect to the database session
-        Session = sessionmaker(bind=engine)
-        self.session = Session()
+        session = sessionmaker(bind=engine)
+        self.session = session()
 
-    def get_session(self):
+    def get_session(self) -> sessionmaker:
+        """Getter for the database session.
+
+        :return: the database session.
+        :rtype: sessionmaker
+        """
         return self.session

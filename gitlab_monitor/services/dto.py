@@ -3,12 +3,14 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""Module that contains data object transfer logic for the project object from gitlab.
+"""
 
 from dataclasses import dataclass
 
 
 @dataclass
-class ProjectDTO:
+class ProjectDTO:  # pylint: disable=too-many-instance-attributes
     """This is a data transfer object, used to store information
     in memory to serialize data more easily.
     It adds an additional layer of abstraction to better

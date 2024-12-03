@@ -4,11 +4,12 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-from io import StringIO
 import sys
-from unittest.mock import MagicMock, patch
-from gitlab import exceptions as gitlab_exceptions
+from io import StringIO
+from unittest.mock import MagicMock
+from unittest.mock import patch
 
+from gitlab import exceptions as gitlab_exceptions
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.dto import ProjectDTO
@@ -45,7 +46,7 @@ def test_good_data_from_api_to_scan_projects():
         MockGitlab.return_value = mock_gitlab_instance
 
         mock_mapper = MagicMock()
-        mock_mapper.from_gitlab_api.side_effect = [
+        mock_mapper.project_from_gitlab_api.side_effect = [
             ProjectDTO(
                 project_id=project["id"],
                 name=project["name"],
@@ -73,7 +74,7 @@ def test_good_data_from_api_to_scan_projects():
         assert result[1].project_id == 2
         assert result[1].name == "Project 2"
         mock_gitlab_instance.projects.list.assert_called_once_with(iterator=True)
-        mock_mapper.from_gitlab_api.assert_called()
+        mock_mapper.project_from_gitlab_api.assert_called()
 
 
 # def test_wrong_data_from_api_to_scan_projects():
@@ -97,7 +98,7 @@ def test_get_project_by_id():
         MockGitlab.return_value = mock_gitlab_instance
 
         mock_mapper = MagicMock()
-        mock_mapper.from_gitlab_api.return_value = ProjectDTO(
+        mock_mapper.project_from_gitlab_api.return_value = ProjectDTO(
             project_id=mock_project_data["id"],
             name=mock_project_data["name"],
             path=mock_project_data["path_with_namespace"],
@@ -119,7 +120,7 @@ def test_get_project_by_id():
         assert result.project_id == 1
         assert result.name == "Project 1"
         mock_gitlab_instance.projects.get.assert_called_once_with(1)
-        mock_mapper.from_gitlab_api.assert_called()
+        mock_mapper.project_from_gitlab_api.assert_called()
 
 
 def test_get_project_by_id_not_found():

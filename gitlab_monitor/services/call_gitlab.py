@@ -13,10 +13,14 @@ from typing import Optional
 
 import gitlab
 
+from gitlab_monitor.logger.logger import logger
+from gitlab_monitor.services.dto import ProjectDTO
 from gitlab_monitor.services.mapper import Mapper
 
 
 class GitlabAPIService:
+    """Service that calls the GitLab API."""
+
     def __init__(
         self,
         url: str,
@@ -24,6 +28,17 @@ class GitlabAPIService:
         mapper: Mapper,
         ssl_cert_path: Optional[str] = None,
     ) -> None:
+        """Constructor for the GitlabAPIService.
+
+        :param url: url of the GitLab instance
+        :type url: str
+        :param private_token: personal access token for the GitLab instance.
+        :type private_token: str
+        :param mapper: Mapper object to map the GitLab API response to the DTO.
+        :type mapper: Mapper
+        :param ssl_cert_path:  path to the certificate for the GitLab instance, defaults to None
+        :type ssl_cert_path: Optional[str], optional
+        """
         self._gitlab_instance = gitlab.Gitlab(
             url=url,
             private_token=private_token,
@@ -32,19 +47,32 @@ class GitlabAPIService:
         self._mapper = mapper
 
     # TODO: Gérer bad url, bad token
-    def scan_projects(self):
-        print("Retrieving projects...")
-        projects = self._gitlab_instance.projects.list(iterator=True)
-        projects_DTO = []
-        for project in projects:
-            project_DTO = self._mapper.from_gitlab_api(self._mapper, project)
-            projects_DTO.append(project_DTO)
-        return projects_DTO
+    def scan_projects(self) -> list:
+        """Retrieve all projects from the GitLab instance and convert them to DTOs.
 
-    def get_project_by_id(self, project_id):
-        print(f"Retrieving project id {project_id}...")
+        :return: _description_
+        :rtype: list of Project in DTO format
+        """
+        logger.info("Retrieving projects...")
+        projects = self._gitlab_instance.projects.list(iterator=True)
+        projects_dto = []
+        for project in projects:
+            project_dto = self._mapper.project_from_gitlab_api(project)
+            projects_dto.append(project_dto)
+        return projects_dto
+
+    def get_project_by_id(self, project_id) -> Optional[ProjectDTO]:
+        """Get a project from gitlab by its id.
+
+        :param project_id: project id
+        :type project_id: int from kwargs
+        :return: the project searched in DTO format
+        :rtype: ProjectDTO
+        """
+        logger.info("Retrieving project id %s...", project_id)
         try:
             project = self._gitlab_instance.projects.get(project_id)
-            return self._mapper.from_gitlab_api(self._mapper, project)
+            return self._mapper.project_from_gitlab_api(project)
         except gitlab.GitlabGetError as e:
-            print(f"Error when retrieving project id {project_id}: {e}")
+            logger.info("Error when retrieving project id %s: %s", project_id, e)
+            return None

@@ -11,8 +11,16 @@
             "program": "${workspaceFolder}/gitlab_monitor/__main__.py",
             "console": "integratedTerminal",
             "args": [
-                "scan_projects"
+                "scan-projects"
             ],
+        },
+        {
+            "name": "Python: Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tests/unit/services/test_call_gitlab.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
         }
     ]
 }

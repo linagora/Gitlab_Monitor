@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 repos:
   - repo: local
     hooks:

@@ -3,19 +3,18 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+"""Module that retrieves user inputs and sends them to the controller."""
 
 from typing import Type
 
 from gitlab_monitor.commands.command_mapper import CommandMapper
-from gitlab_monitor.controller.controller import Command
-
-
-"""Module that retrieves user inputs and sends them to the controller"""
 
 
 class CLICommand:
+    """Manage the commands from the command line interface."""
+
     def create_command(self, command: str) -> Type:
-        """Create command in ?
+        """Retrieve the command class from the command mapper.
 
         :param command: the name of the command
         :type command: str
@@ -25,6 +24,11 @@ class CLICommand:
         return CommandMapper.get_command(command)
 
     def handle_command(self, command_class: Type, **kwargs):
+        """Declare the command and execute it from the controller.
+
+        :param command_class: Class of the command to execute
+        :type command_class: Type
+        """
         command_instance = command_class()
         if kwargs:
             command_instance.execute(kwargs)
