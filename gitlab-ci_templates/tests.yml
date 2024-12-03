@@ -18,3 +18,4 @@
       junit: pytest_results.xml
     paths:
       - coverage.xml
+      - pytest_results.xml
