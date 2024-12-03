@@ -4,12 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
-
-
-
-
 .build_dev_env:
   image: docker:24.0.5
   services:
@@ -21,8 +15,6 @@
   before_script:
     - docker info
   script:
-    - docker system prune -a --volumes
-    - echo 'y'
     - echo "Building the cache image"
     - docker build -t $IMAGE_NAME:$CACHE_TAG -f $DOCKERFILE .
     - echo "Login to Harbor registry"
@@ -31,7 +23,7 @@
     - docker tag $IMAGE_NAME:$CACHE_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
     - echo "Pushing the cache image"
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
-  # rules:
-  #   - changes:
-  #       - Dockerfile.dev
-  #       - pyproject.toml
+  rules:
+    - changes:
+        - Dockerfile.dev
+        - pyproject.toml
