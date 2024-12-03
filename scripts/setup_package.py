@@ -1,8 +1,9 @@
 
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 # setup_package.py
 from setuptools import find_packages
 from setuptools import setup

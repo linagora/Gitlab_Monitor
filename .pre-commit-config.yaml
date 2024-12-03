@@ -1,20 +1,8 @@
 
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
-
-
-
-
-
-
-
-
-
-
-
-
 
 repos:
   - repo: local
@@ -41,10 +29,10 @@ repos:
         types: [python]
         args:
           - --config=pyproject.toml
-          - .
       - id: pylint
         name: pylint
         entry: pylint
         language: python
+        language_version: python3
         types: [python]
-        args: ["src/gitlab_monitor"]
+        args: ["--output-format=colorized"]

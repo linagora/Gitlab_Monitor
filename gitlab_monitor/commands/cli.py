@@ -1,6 +1,5 @@
-
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
@@ -9,15 +8,19 @@ from typing import Optional
 
 import typer
 
+from gitlab_monitor import __app_name__
+from gitlab_monitor import __version__
 from gitlab_monitor.commands.commands import CLICommand
-from gitlab_monitor import __app_name__, __version__
+
 
 app = typer.Typer()
+
 
 def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
+
 
 @app.command(name="scan-projects")
 def scan_projects():

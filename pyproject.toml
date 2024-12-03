@@ -1,11 +1,8 @@
 
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
-
-
-
 
 
 [tool.poetry]
@@ -48,7 +45,7 @@ sqlalchemy-stubs = "^0.4"
 
 [tool.mypy]
 ignore_missing_imports = true
-exclude = ['tests/', 'doc/*.*']
+exclude = ['tests/', 'doc/*.*', 'gitlab_monitor/__pycache__/*.*']
 
 [tool.isort]
 profile = "black"

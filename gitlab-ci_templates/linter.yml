@@ -1,8 +1,9 @@
 
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 
 
 
@@ -11,25 +12,25 @@
   before_script:
     - pylint --version
   script:
-    - pylint --output-format=colorized $CODE_SOURCE
+    - pylint --output-format=colorized $CODE_SOURCE/*
 
 .py-black:
   before_script:
     - black --version
   script:
-    - black $CODE_SOURCE --check --diff
+    - black $CODE_SOURCE/* --check --diff
 
 .py-isort:
   before_script:
     - isort --version
   script:
-    - isort $CODE_SOURCE --check-only
+    - isort $CODE_SOURCE/* --check-only
 
 .pycln:
   before_script:
     - pycln --version
   script:
-    - pycln --check $CODE_SOURCE
+    - pycln --check $CODE_SOURCE/*
 
 .mypy:
   before_script:

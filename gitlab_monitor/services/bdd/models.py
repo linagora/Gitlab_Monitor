@@ -1,6 +1,5 @@
-
 # # --- Copyright (c) 2024 Linagora
-# # licence       : GNU GENERAL PUBLIC LICENSE
+# # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
@@ -9,15 +8,8 @@
 Module that contains the database entities. (refer to the database schema)
 """
 
-from sqlalchemy import Column
-from sqlalchemy import ForeignKey
-from sqlalchemy import Integer
-from sqlalchemy import String
-from sqlalchemy import Table
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import declarative_base
 
 
 Base = declarative_base()
