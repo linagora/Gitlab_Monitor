@@ -10,6 +10,7 @@
 
 .py-pytest:
   script:
+    - poetry cache clear --all pypi
     - poetry lock --no-update
     - poetry install
     - pytest tests/unit/* --cov-report=xml --junitxml=pytest_results.xml || true
