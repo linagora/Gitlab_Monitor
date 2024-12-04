@@ -6,12 +6,14 @@
 
 """
 Module that contains the database entities. (refer to the database schema)
+
+Mypy type ignore due to the fact that the sqlalchemy module is not typed (error: Module "sqlalchemy.orm" has no attribute "declarative_base [attr-defined]).
 """
 
 from sqlalchemy import Column
 from sqlalchemy import Integer
 from sqlalchemy import String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base #type: ignore
 
 
 Base = declarative_base()

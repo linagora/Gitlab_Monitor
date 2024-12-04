@@ -54,7 +54,7 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
         self.db._initialize_database()
 
         self.gitlab_service = GitlabAPIService(
-            "https://ci.linagora.com", self.private_token, self.mapper, ssl_cert_path
+            "https://ci.linagora.comi", self.private_token, self.mapper, ssl_cert_path
         )
         self.project_repository = SQLAlchemyProjectRepository(self.db.session)
 

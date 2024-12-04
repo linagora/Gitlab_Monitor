@@ -14,13 +14,5 @@
                 "scan-projects"
             ],
         },
-        {
-            "name": "Python: Tests",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/tests/unit/services/test_call_gitlab.py",
-            "console": "integratedTerminal",
-            "justMyCode": false,
-        }
     ]
 }

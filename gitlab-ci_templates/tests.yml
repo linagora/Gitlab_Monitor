@@ -4,10 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
-
-
 .py-pytest:
   script:
     - poetry cache clear --all pypi

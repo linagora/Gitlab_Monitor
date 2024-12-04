@@ -9,6 +9,8 @@ Module that contains the business logic for calling the GitLab API.
 Project is supposed to be my DTO.
 """
 
+import sys
+from requests.exceptions import ConnectionError
 from typing import Optional
 
 import gitlab
@@ -42,11 +44,11 @@ class GitlabAPIService:
         self._gitlab_instance = gitlab.Gitlab(
             url=url,
             private_token=private_token,
-            ssl_verify=ssl_cert_path if ssl_cert_path else True,
+            ssl_verify=ssl_cert_path if ssl_cert_path else False,
         )
         self._mapper = mapper
 
-    # TODO: Gérer bad url, bad token
+    # TODO: Handle wrong data ? (no id or name)
     def scan_projects(self) -> list:
         """Retrieve all projects from the GitLab instance and convert them to DTOs.
 
@@ -54,7 +56,24 @@ class GitlabAPIService:
         :rtype: list of Project in DTO format
         """
         logger.info("Retrieving projects...")
-        projects = self._gitlab_instance.projects.list(iterator=True)
+        try:
+            if self._gitlab_instance.ssl_verify is False:
+                logger.warning("SSL verification is not enabled. Connecting to Gitlab instance without certificate.")
+            projects = self._gitlab_instance.projects.list(iterator=True)
+        except ConnectionError as e:
+            logger.error("Error when retrieving projects due to bad url: %s", self._gitlab_instance.url)
+            logger.debug(e)
+            # sys.exit(1)
+            raise
+        except gitlab.exceptions.GitlabAuthenticationError as e:
+            logger.error("Authentication error due to bad token: %s", self._gitlab_instance.private_token)
+            logger.debug(e)
+            raise
+        except OSError as e:
+            logger.error("Wrong path to gitlab authentifcation certificate: %s", self._gitlab_instance.ssl_verify)
+            logger.debug(e)
+            raise
+
         projects_dto = []
         for project in projects:
             project_dto = self._mapper.project_from_gitlab_api(project)
@@ -71,8 +90,23 @@ class GitlabAPIService:
         """
         logger.info("Retrieving project id %s...", project_id)
         try:
+            if self._gitlab_instance.ssl_verify is True:
+                logger.warning("SSL verification is not enabled. Connecting to Gitlab instance without certificate.")            
             project = self._gitlab_instance.projects.get(project_id)
             return self._mapper.project_from_gitlab_api(project)
+        except ConnectionError as e:
+            logger.error("Error when retrieving projects due to bad url: %s", self._gitlab_instance.url)
+            logger.debug(e)
+            raise
+        except gitlab.exceptions.GitlabAuthenticationError as e:
+            logger.error("Authentication error due to bad token: %s", self._gitlab_instance.private_token)
+            logger.debug(e)
+            raise
+        except OSError as e:
+            logger.error("Wrong path to gitlab authentifcation certificate: %s", self._gitlab_instance.ssl_verify)
+            logger.debug(e)
+            raise
         except gitlab.GitlabGetError as e:
-            logger.info("Error when retrieving project id %s: %s", project_id, e)
-            return None
+            logger.error("Error when retrieving project id %s", project_id)
+            logger.debug(e)
+            raise

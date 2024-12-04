@@ -12,6 +12,7 @@ from gitlab_monitor.services.dto import ProjectDTO
 class Mapper:  # pylint: disable=too-few-public-methods
     """Transform data from the API to a DTO."""
 
+# TODO: typer project data (json)
     def project_from_gitlab_api(self, project_data) -> ProjectDTO:
         """Transform the data of a gitlab project from the
         gitlab API to a ProjectDTO.
