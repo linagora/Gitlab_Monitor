@@ -63,16 +63,15 @@ class GitlabAPIService:
         except ConnectionError as e:
             logger.error("Error when retrieving projects due to bad url: %s", self._gitlab_instance.url)
             logger.debug(e)
-            # sys.exit(1)
-            raise
+            sys.exit(1)
         except gitlab.exceptions.GitlabAuthenticationError as e:
             logger.error("Authentication error due to bad token: %s", self._gitlab_instance.private_token)
             logger.debug(e)
-            raise
+            sys.exit(1)
         except OSError as e:
             logger.error("Wrong path to gitlab authentifcation certificate: %s", self._gitlab_instance.ssl_verify)
             logger.debug(e)
-            raise
+            sys.exit(1)
 
         projects_dto = []
         for project in projects:
@@ -97,16 +96,16 @@ class GitlabAPIService:
         except ConnectionError as e:
             logger.error("Error when retrieving projects due to bad url: %s", self._gitlab_instance.url)
             logger.debug(e)
-            raise
+            sys.exit(1)
         except gitlab.exceptions.GitlabAuthenticationError as e:
             logger.error("Authentication error due to bad token: %s", self._gitlab_instance.private_token)
             logger.debug(e)
-            raise
+            sys.exit(1)
         except OSError as e:
             logger.error("Wrong path to gitlab authentifcation certificate: %s", self._gitlab_instance.ssl_verify)
             logger.debug(e)
-            raise
+            sys.exit(1)
         except gitlab.GitlabGetError as e:
             logger.error("Error when retrieving project id %s", project_id)
             logger.debug(e)
-            raise
+            sys.exit(1)

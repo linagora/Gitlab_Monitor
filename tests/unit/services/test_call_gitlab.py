@@ -93,8 +93,9 @@ def test_scan_projects_with_invalid_url(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = ConnectionError("Unable to connect to GitLab")
 
     # TODO: accorder au sys.exit(1) dans le code & exception est attrapée pas levée.
-    with pytest.raises(ConnectionError, match="Unable to connect to GitLab"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.scan_projects()
+    assert e.value.code == 1
 
     mock_gitlab.projects.list.assert_called_once_with(iterator=True)
     for record in caplog.records:
@@ -105,8 +106,9 @@ def test_scan_projects_with_invalid_url(mock_gitlab, gitlab_service, caplog):
 def test_scan_projects_with_invalid_token(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = gitlab.exceptions.GitlabAuthenticationError("Token authentification failed")
 
-    with pytest.raises(gitlab.exceptions.GitlabAuthenticationError, match="Token authentification failed"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.scan_projects()
+    assert e.value.code == 1
 
     mock_gitlab.projects.list.assert_called_once_with(iterator=True)
     for record in caplog.records:
@@ -116,8 +118,9 @@ def test_scan_projects_with_invalid_token(mock_gitlab, gitlab_service, caplog):
 def test_scan_projects_with_invalid_certificate(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = OSError("Could not find a suitable TLS CA certificate bundle, invalid path:")
 
-    with pytest.raises(OSError, match="Could not find a suitable TLS CA certificate bundle, invalid path:"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.scan_projects()
+    assert e.value.code == 1
 
     mock_gitlab.projects.list.assert_called_once_with(iterator=True)
     for record in caplog.records:
@@ -220,8 +223,9 @@ def test_get_project_by_id_not_found(mock_logger, mock_gitlab, gitlab_service, c
         response_code=404, error_message="404 Project Not Found"
     )
 
-    with pytest.raises(gitlab_exceptions.GitlabGetError, match="404 Project Not Found"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.get_project_by_id(9999)
+    assert e.value.code == 1
 
     mock_gitlab.projects.get.assert_called_once_with(9999)
     for record in caplog.records:
@@ -232,8 +236,9 @@ def test_get_project_by_id_not_found(mock_logger, mock_gitlab, gitlab_service, c
 def test_get_project_by_id_bad_gitlab_url(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = ConnectionError("Unable to connect to GitLab")
 
-    with pytest.raises(ConnectionError, match="Unable to connect to GitLab"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.get_project_by_id(4130)
+    assert e.value.code == 1
 
     mock_gitlab.projects.get.assert_called_once_with(4130)
     for record in caplog.records:
@@ -244,8 +249,9 @@ def test_get_project_by_id_bad_gitlab_url(mock_gitlab, gitlab_service, caplog):
 def test_get_project_by_id_with_invalid_token(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = gitlab.exceptions.GitlabAuthenticationError("Token authentification failed")
 
-    with pytest.raises(gitlab.exceptions.GitlabAuthenticationError, match="Token authentification failed"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.get_project_by_id(4130)
+    assert e.value.code == 1
 
     mock_gitlab.projects.get.assert_called_once_with(4130)
     for record in caplog.records:
@@ -255,8 +261,9 @@ def test_get_project_by_id_with_invalid_token(mock_gitlab, gitlab_service, caplo
 def test_get_project_by_id_with_invalid_certificate(mock_gitlab, gitlab_service, caplog):
     mock_gitlab.projects.list.side_effect = OSError("Could not find a suitable TLS CA certificate bundle, invalid path:")
 
-    with pytest.raises(OSError, match="Could not find a suitable TLS CA certificate bundle, invalid path:"):
+    with pytest.raises(SystemExit) as e:
         gitlab_service.get_project_by_id(4130)
+    assert e.value.code == 1
 
     mock_gitlab.projects.get.assert_called_once_with(4130)
     for record in caplog.records:
