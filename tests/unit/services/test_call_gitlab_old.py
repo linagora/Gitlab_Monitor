@@ -7,8 +7,8 @@
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
-from gitlab import exceptions as gitlab_exceptions
 import pytest
+from gitlab import exceptions as gitlab_exceptions
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.dto import ProjectDTO
@@ -17,24 +17,24 @@ from gitlab_monitor.services.dto import ProjectDTO
 def test_good_data_from_api_to_scan_projects():
     mock_project_data = [
         {
-            'id': 1,
-            'name': 'Project 1',
-            'path_with_namespace': 'namespace/project1',
-            'description': 'Description 1',
-            'releases_access_level': 'enabled',
-            'visibility': 'public',
-            'created_at': '2024-01-01T00:00:00Z',
-            'updated_at': '2024-01-02T00:00:00Z',
+            "id": 1,
+            "name": "Project 1",
+            "path_with_namespace": "namespace/project1",
+            "description": "Description 1",
+            "releases_access_level": "enabled",
+            "visibility": "public",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-02T00:00:00Z",
         },
         {
-            'id': 2,
-            'name': 'Project 2',
-            'path_with_namespace': 'namespace/project2',
-            'description': 'Description 2',
-            'releases_access_level': 'enabled',
-            'visibility': 'internal',
-            'created_at': '2024-02-01T00:00:00Z',
-            'updated_at': '2024-03-02T00:00:00Z',
+            "id": 2,
+            "name": "Project 2",
+            "path_with_namespace": "namespace/project2",
+            "description": "Description 2",
+            "releases_access_level": "enabled",
+            "visibility": "internal",
+            "created_at": "2024-02-01T00:00:00Z",
+            "updated_at": "2024-03-02T00:00:00Z",
         },
     ]
 
@@ -77,16 +77,18 @@ def test_good_data_from_api_to_scan_projects():
 
 
 def test_wrong_data_from_api_to_scan_projects():
-    mock_project_data = [{
-        'id': None,
-        'name': None,
-        'path_with_namespace': 'namespace/project1',
-        'description': 'Description 1',
-        'releases_access_level': 'enabled',
-        'visibility': 'public',
-        'created_at': '2024-01-01T00:00:00Z',
-        'updated_at': '2024-01-02T00:00:00Z'
-    }]
+    mock_project_data = [
+        {
+            "id": None,
+            "name": None,
+            "path_with_namespace": "namespace/project1",
+            "description": "Description 1",
+            "releases_access_level": "enabled",
+            "visibility": "public",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-02T00:00:00Z",
+        }
+    ]
 
     with patch("gitlab.Gitlab") as MockGitlab:
         # Configure the mock instance of GitLab

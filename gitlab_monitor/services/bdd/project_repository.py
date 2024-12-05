@@ -7,19 +7,17 @@
 
 Simple way to interact with the database for the project table.
 """
-
+import sys
 from typing import Optional
 
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from gitlab_monitor.exc import ProjectNotFoundError
 from gitlab_monitor.logger.logger import logger
 from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import ProjectDTO
-
-
-# TODO: revoir les Exceptions levée pour les rendre plus précises
-# + mettre à jour les test unitaires.
 
 
 class SQLAlchemyProjectRepository(Repository):
@@ -88,8 +86,12 @@ class SQLAlchemyProjectRepository(Repository):
                 self.session.commit()
             else:
                 self.update(project_dto)
-        except Exception as e:  # pylint: disable=broad-exception-caught
-            logger.info("Error during project creation in DB: %s", e)
+        except SQLAlchemyError as e:
+            logger.error(
+                "Error while creating project id : %s in BD.", project_dto.project_id
+            )
+            logger.debug(e)
+            sys.exit(1)
 
     def update(self, project_dto: ProjectDTO) -> None:
         """Update a project in the database.
@@ -98,23 +100,30 @@ class SQLAlchemyProjectRepository(Repository):
         :type project_dto: ProjectDTO
         :raises Exception: Raised if the project is not found.
         """
-        project = (
-            self.session.query(Project)
-            .filter(Project.project_id == project_dto.project_id)
-            .first()
-        )
-        if project:
-            project.name = project_dto.name
-            project.path = project_dto.path
-            project.description = project_dto.description
-            project.release = project_dto.release
-            project.visibility = project_dto.visibility
-            project.updated_at = project_dto.updated_at
-            self.session.commit()
-        else:
-            raise Exception(  # pylint: disable=broad-exception-raised
-                "Project not found"
+        try:
+            project = (
+                self.session.query(Project)
+                .filter(Project.project_id == project_dto.project_id)
+                .first()
             )
+            if project:
+                project.name = project_dto.name
+                project.path = project_dto.path
+                project.description = project_dto.description
+                project.release = project_dto.release
+                project.visibility = project_dto.visibility
+                project.updated_at = project_dto.updated_at
+                self.session.commit()
+            else:
+                raise ProjectNotFoundError(
+                    f"Project with ID {project_dto.project_id} not found"
+                )
+        except SQLAlchemyError as e:
+            logger.error(
+                "Error while updating project id : %s in BD.", project_dto.project_id
+            )
+            logger.debug(e)
+            sys.exit(1)
 
     def delete(self, project_id: int) -> None:
         """Delete a project in the database.
@@ -123,13 +132,18 @@ class SQLAlchemyProjectRepository(Repository):
         :type project_id: int
         :raises Exception: Raised if the project is not found.
         """
-        project = (
-            self.session.query(Project).filter(Project.project_id == project_id).first()
-        )
-        if project:
-            self.session.delete(project)
-            self.session.commit()
-        else:
-            raise Exception(  # pylint: disable=broad-exception-raised
-                "Project not found"
+        try:
+            project = (
+                self.session.query(Project)
+                .filter(Project.project_id == project_id)
+                .first()
             )
+            if project:
+                self.session.delete(project)
+                self.session.commit()
+            else:
+                raise ProjectNotFoundError(f"Commit with ID {project_id} not found")
+        except SQLAlchemyError as e:
+            logger.error("Error while deleting project id : %s in BD.", project_id)
+            logger.debug(e)
+            sys.exit(1)

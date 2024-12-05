@@ -8,6 +8,7 @@
 :raises typer.Exit: mean that nothing else needs to be executed after this.
 """
 
+from typing import Annotated
 from typing import Optional
 
 import typer
@@ -33,19 +34,35 @@ def _version_callback(value: bool) -> None:
 
 
 @app.command(name="scan-projects")
-def scan_projects():
+def scan_projects(
+    no_db: bool = typer.Option(
+        False,
+        "--no-database",
+        help="Retrieve project without saving or updating it in the database",
+    ),
+):
     """Scan and retrieve all projects from GitLab"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_projects")
-    cli_command.handle_command(command)
+    cli_command.handle_command(command, no_db=no_db)
 
 
 @app.command(name="scan-project")
-def scan_project(project_id: int):
+def scan_project(
+    project_id: int = typer.Argument(..., help="The ID of the project to scan"),
+    commit: bool = typer.Option(
+        False, "-c", "--commit", help="Include commit in the scan"
+    ),
+    no_db: bool = typer.Option(
+        False,
+        "--no-database",
+        help="Retrieve project without saving or updating it in the database",
+    ),
+):
     """Scan and retrieve a GitLab project by its ID"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
-    cli_command.handle_command(command, id=project_id)
+    cli_command.handle_command(command, id=project_id, get_commits=commit, no_db=no_db)
 
 
 @app.callback()

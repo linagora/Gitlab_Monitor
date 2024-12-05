@@ -6,14 +6,16 @@
 """This module can map data from the API to a DTO.
 """
 
+from gitlab.base import RESTObject
+
+from gitlab_monitor.services.dto import CommitDTO
 from gitlab_monitor.services.dto import ProjectDTO
 
 
-class Mapper:  # pylint: disable=too-few-public-methods
+class Mapper:
     """Transform data from the API to a DTO."""
 
-# TODO: typer project data (json)
-    def project_from_gitlab_api(self, project_data) -> ProjectDTO:
+    def project_from_gitlab_api(self, project_data: RESTObject) -> ProjectDTO:
         """Transform the data of a gitlab project from the
         gitlab API to a ProjectDTO.
 
@@ -40,4 +42,24 @@ class Mapper:  # pylint: disable=too-few-public-methods
             visibility=visibility,
             created_at=created_at,
             updated_at=updated_at,
+        )
+
+    def commit_from_gitlab_api(
+        self, commit_data: RESTObject, project_id: int
+    ) -> CommitDTO:
+        """Transform the data of a gitlab commit from the
+        gitlab API to a CommitDTO.
+
+        :param project_data: project data from the gitlab API
+        :type project_data: json
+        :return: project in DTO format
+        :rtype: ProjectDTO
+        """
+        commit_id = commit_data.id
+        message = commit_data.title
+
+        return CommitDTO(
+            commit_id=commit_id,
+            message=message,
+            project_id=project_id,
         )
