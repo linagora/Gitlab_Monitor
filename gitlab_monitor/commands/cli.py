@@ -8,7 +8,6 @@
 :raises typer.Exit: mean that nothing else needs to be executed after this.
 """
 
-from typing import Annotated
 from typing import Optional
 
 import typer

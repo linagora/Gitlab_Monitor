@@ -37,7 +37,7 @@ from gitlab_monitor.services.pretty_print import PrintCommitDTO
 from gitlab_monitor.services.pretty_print import PrintProjectDTO
 
 
-class Command(ABC):  # pylint: disable=too-few-public-methods
+class Command(ABC):
     """Interface for the commands.
 
     :param ABC: Abstract Base Classes
@@ -72,18 +72,23 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
         """Define the method execute that will be implemented in the child classes."""
         raise NotImplementedError("Subclasses must implement this method")
 
+    def golab_options(self, kwargs):
+        """Method used to reteieve global options (options that can be used with all
+        commands) from the command line."""
+        self._no_db = kwargs.get("no_db")
 
-class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
+
+class GetProjectsCommand(Command):
     """Class of the command scan-projects.
 
     :param Command: Interface for the commands.
     :type Command: class
     """
 
-    def execute(self, kwargs):  # pylint: disable=arguments-differ
+    def execute(self, kwargs):
         """Execute the command scan-projects."""
 
-        self._no_db = kwargs.get("no_db")
+        self.golab_options(kwargs)
 
         projects = self.gitlab_service.scan_projects()
         projects_dto = []
@@ -94,9 +99,9 @@ class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
         if self._no_db:
             PrintProjectDTO().print_dto_list(projects_dto, "Projects")
         else:
-            self.__save_projects(projects_dto)
+            self._save_projects(projects_dto)
 
-    def __save_projects(self, projects_dto: list[ProjectDTO]) -> None:
+    def _save_projects(self, projects_dto: list[ProjectDTO]) -> None:
         """Save projects in DB.
 
         :param projects_dto: list of projects to save
@@ -110,7 +115,7 @@ class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
         )
 
 
-class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
+class GetProjectCommand(Command):
     """Class of the command scan-project.
 
     :param Command: Interface for the commands.
@@ -128,7 +133,7 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
 
         # Retrieve options from the command line
         get_commits = kwargs.get("get_commits")
-        self._no_db = kwargs.get("no_db")
+        self.golab_options(kwargs)
 
         # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
@@ -137,13 +142,13 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
         if self._no_db:
             PrintProjectDTO().print_dto(dto_project)
         else:
-            self.__save_project(dto_project)
+            self._save_project(dto_project)
 
         # Handle options: call the according method for each
         if get_commits:
-            self.__get_commits(project_id, project)
+            self._get_commits(project_id, project)
 
-    def __save_project(self, dto_project: ProjectDTO) -> None:
+    def _save_project(self, dto_project: ProjectDTO) -> None:
         """Save projects in DB.
 
         :param dto_project: proiect to save
@@ -155,7 +160,7 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
             dto_project.name,
         )
 
-    def __get_commits(
+    def _get_commits(
         self, project_id: int, project_restobject_data: RESTObject
     ) -> None:
         """Retrieve commits from a project and transform them into DTOs.
@@ -165,7 +170,7 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
         :param project_restobject_data: project from which we retrieve the commits.
         :type project_restobject_data: RESTObject
         """
-        project_commits = self.gitlab_service.get_project_commit(
+        project_commits: list[RESTObject] = self.gitlab_service.get_project_commit(
             project_restobject_data
         )
 
@@ -178,9 +183,9 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
             if self._no_db:
                 PrintCommitDTO().print_dto_list(dto_commits_list, "Commits")
             else:
-                self.__save_commits(dto_commits_list, project_restobject_data)
+                self._save_commits(dto_commits_list, project_restobject_data)
 
-    def __save_commits(
+    def _save_commits(
         self, dto_commits_list: list[CommitDTO], project_restobject_data: RESTObject
     ) -> None:
         """Save commits in DB.
@@ -193,7 +198,8 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
         for dto_commit in dto_commits_list:
             self.commit_repository.create(dto_commit)
         logger.info(
-            '%d commits from project "%s" have been retrieved and saved or updated in the database.',
+            '%d commits from project "%s" have been retrieved and saved or updated \
+                in the database.',
             len(dto_commits_list),
             project_restobject_data.name,
         )

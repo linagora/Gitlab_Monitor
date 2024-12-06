@@ -7,12 +7,18 @@
 
 from abc import ABC
 from abc import abstractmethod
+from typing import Generic
 from typing import Optional
+from typing import TypeVar
 
+from gitlab_monitor.services.dto import CommitDTO
 from gitlab_monitor.services.dto import ProjectDTO
 
 
-class Repository(ABC):
+T = TypeVar("T", CommitDTO, ProjectDTO)
+
+
+class Repository(ABC, Generic[T]):
     """Interface for the repository pattern.
 
     :param ABC: Abstract basic class to define an interface.
@@ -20,39 +26,43 @@ class Repository(ABC):
     """
 
     @abstractmethod
-    def get_by_id(self, project_id: int) -> Optional[ProjectDTO]:
-        """Get a project by its ID.
+    def get_by_id(self, object_id: int) -> Optional[T]:
+        """Get an object by its ID.
 
-        :param project_id: project ID.
-        :type project_id: int
-        :return: project searched.
-        :rtype: Optional[ProjectDTO]
+        :param objects_id: objects ID.
+        :type objects_id: int
+        :return: objects searched.
+        :rtype: Optional[Type]
         """
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def create(self, project_dto: ProjectDTO) -> None:
-        """create a project in database.
+    def create(self, object_dto: T) -> None:
+        """create an objects in database.
 
-        :param project_dto: project to create.
-        :type project_dto: ProjectDTO
+                :param object_dto
+        : objects to create.
+                :type object_dto
+        : Type
         """
         raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
-    def update(self, project_dto: ProjectDTO) -> None:
-        """update a project in database.
+    def update(self, object_dto: T) -> None:
+        """update an objects in database.
 
-        :param project_dto: project with the updated data.
-        :type project_dto: ProjectDTO
+                :param object_dto
+        : objects with the updated data.
+                :type object_dto
+        : Type
         """
         raise NotImplementedError("Subclasses must implement this method")
 
-    @abstractmethod
-    def delete(self, project_id: int) -> None:
-        """delete a project in database.
+    # @abstractmethod
+    # def delete(self, object_id: int) -> None:
+    #     """delete an objects in database.
 
-        :param project_id: id of the project to delete.
-        :type project_id: int
-        """
-        raise NotImplementedError("Subclasses must implement this method")
+    #     :param objects_id: id of the objects to delete.
+    #     :type objects_id: int
+    #     """
+    #     raise NotImplementedError("Subclasses must implement this method")

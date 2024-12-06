@@ -1,13 +1,11 @@
+"""Module for pretty printing the data retrieved from the GitLab API, when we use
+the --no-database option."""
+
 from abc import ABC
 from abc import abstractmethod
-from typing import Any
-from typing import List
 
 from gitlab_monitor.services.dto import CommitDTO
 from gitlab_monitor.services.dto import ProjectDTO
-
-
-"""Module for pretty printing the data retrieved from the GitLab API, when we use the --no-database option."""
 
 
 class MyPrettyPrint(ABC):
@@ -22,23 +20,21 @@ class MyPrettyPrint(ABC):
         """
         raise NotImplementedError("Subclasses must implement the pretty_print method")
 
-    def print_dto_list(self, dto_list, type) -> None:
+    def print_dto_list(self, dto_list, dto_type) -> None:
         """Prints the list of DTOs in a pretty format.
 
         :param dto_list: The list of data transfer objects to pretty print.
         :type dto_list: list
         """
-        print("\n------------------")
-        print(f" List of {type}:")
-        print("------------------")
+        print("\n--------------------")
+        print(f"  List of {dto_type}: ")
+        print("--------------------")
 
         index = 0
         for dto in dto_list:
             print(f"index={index}")
             self.print_dto(dto)
-            print(
-                "------------------------------------------------------------------------"
-            )
+            print("-" * 75)
             index += 1
 
 

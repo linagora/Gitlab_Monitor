@@ -8,7 +8,8 @@
 Module that contains the database entities. (refer to the database schema)
 
 Mypy type ignore due to the fact that the sqlalchemy module is not typed
-(error: Module "sqlalchemy.orm" has no attribute "declarative_base [attr-defined]).
+(error: Module "sqlalchemy.orm" has no attribute "declarative_base [attr-defined] and
+error: Module "sqlalchemy.orm" has no attribute "Mapped"; maybe "Mapper"?  [attr-defined]).
 """
 
 from sqlalchemy import Column
@@ -16,6 +17,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Text
+from sqlalchemy.orm import Mapped  # type: ignore
 from sqlalchemy.orm import declarative_base  # type: ignore
 from sqlalchemy.orm import relationship
 
@@ -40,7 +42,7 @@ class Project(Base):  # type: ignore # pylint: disable=too-few-public-methods
 
     #     group = relationship('Group', back_populates='projects')
     #     project_users = relationship('ProjectUser', back_populates='project')
-    commits = relationship("Commit", back_populates="project")
+    commits: Mapped[list["Commit"]] = relationship("Commit", back_populates="project")
 
 
 #     merge_requests = relationship('MergeRequest', back_populates='project')
@@ -91,7 +93,9 @@ class Project(Base):  # type: ignore # pylint: disable=too-few-public-methods
 
 
 # Table de faits : Commit
-class Commit(Base):
+class Commit(Base):  # type: ignore # pylint: disable=too-few-public-methods
+    """Fact table Commit."""
+
     __tablename__ = "commit"
 
     commit_id = Column(String, primary_key=True)
@@ -102,7 +106,7 @@ class Commit(Base):
     # merge_request_id = Column(Integer, ForeignKey('merge_request.merge_request_id'))
     # user_id = Column(Integer, ForeignKey('user.user_id'))
 
-    project = relationship("Project", back_populates="commits")
+    project: Mapped["Project"] = relationship("Project", back_populates="commits")
     # datetime = relationship('Datetime', back_populates='commits')
     # group = relationship('Group', back_populates='commits')
     # user = relationship('User', back_populates='commits')

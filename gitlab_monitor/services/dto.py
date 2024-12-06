@@ -8,8 +8,6 @@
 
 from dataclasses import dataclass
 
-from sqlalchemy import Text
-
 
 @dataclass
 class ProjectDTO:  # pylint: disable=too-many-instance-attributes
@@ -37,4 +35,4 @@ class CommitDTO:
 
     commit_id: str
     project_id: int
-    message: Text
+    message: str

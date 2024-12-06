@@ -18,6 +18,7 @@ from typing import Optional
 
 import gitlab
 from gitlab.base import RESTObject
+from gitlab.base import RESTObjectList
 from requests.exceptions import (
     ConnectionError,  # pylint: disable=redefined-builtin
 )
@@ -52,7 +53,7 @@ class GitlabAPIService:
         )
 
     # TODO: Handle wrong data ? (no id or name)
-    def scan_projects(self) -> RESTObject:
+    def scan_projects(self) -> RESTObjectList | list[RESTObject]:
         """Retrieve all projects from the GitLab instance and convert them to DTOs.
 
         :return: _description_
@@ -88,7 +89,7 @@ class GitlabAPIService:
             logger.debug(e)
             sys.exit(1)
 
-    def get_project_by_id(self, project_id: int) -> Optional[RESTObject]:
+    def get_project_by_id(self, project_id: int) -> RESTObject:
         """Get a project from gitlab by its id.
 
         :param project_id: project id
@@ -130,7 +131,7 @@ class GitlabAPIService:
             logger.debug(e)
             sys.exit(1)
 
-    def get_project_commit(self, project: RESTObject) -> Optional[RESTObject]:
+    def get_project_commit(self, project: RESTObject) -> list[RESTObject]:
         """Get all the commits of a project.
 
         :param project: project to get the commits from
