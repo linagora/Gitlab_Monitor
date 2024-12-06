@@ -5,9 +5,41 @@ import gitlab
 import pytest
 from gitlab import exceptions as gitlab_exceptions
 from requests.exceptions import ConnectionError
+from gitlab.base import RESTObjectList
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.dto import ProjectDTO
+
+# === Mock des types de retours des méthodes gitlab ===
+
+
+class MockRESTObject:
+    """Mock d'un RESTObject pour les tests."""
+
+    def __init__(self, data):
+        self._data = data
+
+    def __getattr__(self, item):
+        return self._data.get(item, None)
+
+    def __repr__(self):
+        return f"<MockRESTObject {self._data}>"
+
+
+class MockRESTObjectList:
+    """Mock d'un RESTObjectList pour les tests."""
+
+    def __init__(self, data_list):
+        self._data_list = [MockRESTObject(data) for data in data_list]
+
+    def __iter__(self):
+        return iter(self._data_list)
+
+    def __len__(self):
+        return len(self._data_list)
+
+    def __repr__(self):
+        return f"<MockRESTObjectList {self._data_list}>"
 
 
 # === Fixtures ===
@@ -23,25 +55,18 @@ def mock_gitlab():
 
 
 @pytest.fixture
-def mock_mapper():
-    """Fixture pour mocker le mapper."""
-    return MagicMock()
-
-
-@pytest.fixture
-def gitlab_service(mock_gitlab, mock_mapper):
+def gitlab_service(mock_gitlab):
     """Fixture pour initialiser le service GitLab."""
     return GitlabAPIService(
         url="https://gitlab.example.com",
         private_token="fake-token",
-        mapper=mock_mapper,
     )
 
 
 # === Tests  scan_projects ===
 
 
-def test_good_data_from_api_to_scan_projects(mock_gitlab, mock_mapper, gitlab_service):
+def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
     mock_project_data = [
         {
             "id": 1,
@@ -65,31 +90,13 @@ def test_good_data_from_api_to_scan_projects(mock_gitlab, mock_mapper, gitlab_se
         },
     ]
 
-    mock_gitlab.projects.list.return_value = iter(mock_project_data)
-
-    mock_mapper.project_from_gitlab_api.side_effect = [
-        ProjectDTO(
-            project_id=project["id"],
-            name=project["name"],
-            path=project["path_with_namespace"],
-            description=project["description"],
-            release=project["releases_access_level"],
-            visibility=project["visibility"],
-            created_at=project["created_at"],
-            updated_at=project["updated_at"],
-        )
-        for project in mock_project_data
-    ]
+    mock_gitlab.projects.list.return_value = MockRESTObjectList(mock_project_data)
 
     result = gitlab_service.scan_projects()
 
     assert len(result) == 2
-    assert result[0].project_id == 1
-    assert result[0].name == "Project 1"
-    assert result[1].project_id == 2
-    assert result[1].name == "Project 2"
+
     mock_gitlab.projects.list.assert_called_once_with(iterator=True)
-    mock_mapper.project_from_gitlab_api.assert_called()
 
 
 def test_scan_projects_with_invalid_url(mock_gitlab, gitlab_service, caplog):
@@ -138,9 +145,7 @@ def test_scan_projects_with_invalid_certificate(mock_gitlab, gitlab_service, cap
         assert "Wrong path to gitlab authentifcation certificate:" in record.message
 
 
-def test_scan_projects_with_without_certificat(
-    mock_gitlab, gitlab_service, caplog, mock_mapper
-):
+def test_scan_projects_with_without_certificat(mock_gitlab, gitlab_service, caplog):
     mock_project_data = [
         {
             "id": 1,
@@ -164,31 +169,13 @@ def test_scan_projects_with_without_certificat(
         },
     ]
 
-    mock_gitlab.projects.list.return_value = iter(mock_project_data)
-
-    mock_mapper.project_from_gitlab_api.side_effect = [
-        ProjectDTO(
-            project_id=project["id"],
-            name=project["name"],
-            path=project["path_with_namespace"],
-            description=project["description"],
-            release=project["releases_access_level"],
-            visibility=project["visibility"],
-            created_at=project["created_at"],
-            updated_at=project["updated_at"],
-        )
-        for project in mock_project_data
-    ]
+    mock_gitlab.projects.list.return_value = MockRESTObjectList(mock_project_data)
 
     result = gitlab_service.scan_projects()
 
     assert len(result) == 2
-    assert result[0].project_id == 1
-    assert result[0].name == "Project 1"
-    assert result[1].project_id == 2
-    assert result[1].name == "Project 2"
+
     mock_gitlab.projects.list.assert_called_once_with(iterator=True)
-    mock_mapper.project_from_gitlab_api.assert_called()
 
     for record in caplog.records:
         assert record.levelname == "WARNING"
@@ -201,7 +188,7 @@ def test_scan_projects_with_without_certificat(
 # === Tests  get_project_by_id ===
 
 
-def test_get_project_by_id_everything_is_good(mock_gitlab, mock_mapper, gitlab_service):
+def test_get_project_by_id_everything_is_good(mock_gitlab, gitlab_service):
     mock_project_data = {
         "id": 1,
         "name": "Project 1",
@@ -213,25 +200,14 @@ def test_get_project_by_id_everything_is_good(mock_gitlab, mock_mapper, gitlab_s
         "updated_at": "2024-01-02T00:00:00Z",
     }
 
-    mock_gitlab.projects.get.return_value = mock_project_data
-
-    mock_mapper.project_from_gitlab_api.return_value = ProjectDTO(
-        project_id=mock_project_data["id"],
-        name=mock_project_data["name"],
-        path=mock_project_data["path_with_namespace"],
-        description=mock_project_data["description"],
-        release=mock_project_data["releases_access_level"],
-        visibility=mock_project_data["visibility"],
-        created_at=mock_project_data["created_at"],
-        updated_at=mock_project_data["updated_at"],
-    )
+    mock_gitlab.projects.get.return_value = MockRESTObject(mock_project_data)
 
     result = gitlab_service.get_project_by_id(1)
 
-    assert result.project_id == 1
+    assert result.id == 1
     assert result.name == "Project 1"
+
     mock_gitlab.projects.get.assert_called_once_with(1)
-    mock_mapper.project_from_gitlab_api.assert_called()
 
 
 @patch("gitlab_monitor.services.call_gitlab.logger")
@@ -251,7 +227,7 @@ def test_get_project_by_id_not_found(mock_logger, mock_gitlab, gitlab_service, c
 
 
 def test_get_project_by_id_bad_gitlab_url(mock_gitlab, gitlab_service, caplog):
-    mock_gitlab.projects.list.side_effect = ConnectionError(
+    mock_gitlab.projects.get.side_effect = ConnectionError(
         "Unable to connect to GitLab"
     )
 
@@ -266,7 +242,7 @@ def test_get_project_by_id_bad_gitlab_url(mock_gitlab, gitlab_service, caplog):
 
 
 def test_get_project_by_id_with_invalid_token(mock_gitlab, gitlab_service, caplog):
-    mock_gitlab.projects.list.side_effect = gitlab.exceptions.GitlabAuthenticationError(
+    mock_gitlab.projects.get.side_effect = gitlab.exceptions.GitlabAuthenticationError(
         "Token authentification failed"
     )
 
@@ -283,7 +259,7 @@ def test_get_project_by_id_with_invalid_token(mock_gitlab, gitlab_service, caplo
 def test_get_project_by_id_with_invalid_certificate(
     mock_gitlab, gitlab_service, caplog
 ):
-    mock_gitlab.projects.list.side_effect = OSError(
+    mock_gitlab.projects.get.side_effect = OSError(
         "Could not find a suitable TLS CA certificate bundle, invalid path:"
     )
 
@@ -297,9 +273,7 @@ def test_get_project_by_id_with_invalid_certificate(
         assert "Wrong path to gitlab authentifcation certificate:" in record.message
 
 
-def test_get_project_by_id_without_certificate(
-    mock_gitlab, mock_mapper, gitlab_service, caplog
-):
+def test_get_project_by_id_without_certificate(mock_gitlab, gitlab_service, caplog):
     mock_project_data = {
         "id": 1,
         "name": "Project 1",
@@ -311,25 +285,14 @@ def test_get_project_by_id_without_certificate(
         "updated_at": "2024-01-02T00:00:00Z",
     }
 
-    mock_gitlab.projects.get.return_value = mock_project_data
-
-    mock_mapper.project_from_gitlab_api.return_value = ProjectDTO(
-        project_id=mock_project_data["id"],
-        name=mock_project_data["name"],
-        path=mock_project_data["path_with_namespace"],
-        description=mock_project_data["description"],
-        release=mock_project_data["releases_access_level"],
-        visibility=mock_project_data["visibility"],
-        created_at=mock_project_data["created_at"],
-        updated_at=mock_project_data["updated_at"],
-    )
+    mock_gitlab.projects.get.return_value = MockRESTObject(mock_project_data)
 
     result = gitlab_service.get_project_by_id(1)
 
-    assert result.project_id == 1
+    assert result.id == 1
     assert result.name == "Project 1"
+
     mock_gitlab.projects.get.assert_called_once_with(1)
-    mock_mapper.project_from_gitlab_api.assert_called()
 
     for record in caplog.records:
         assert record.levelname == "WARNING"
@@ -337,3 +300,45 @@ def test_get_project_by_id_without_certificate(
             "SSL verification is not enabled. Connecting to Gitlab instance without certificate."
             in record.message
         )
+
+
+# === Tests  get_project_commit ===
+
+
+def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
+    commits_list = [
+        {
+            "id": 1,
+            "title": "Commit 1",
+        },
+        {
+            "id": 2,
+            "name": "Commit 2",
+        },
+        {
+            "id": 3,
+            "name": "Commit 3",
+        },
+    ]
+    mock_project_data = {
+        "id": 1,
+        "name": "Project 1",
+        "path_with_namespace": "namespace/project1",
+        "description": "Description 1",
+        "releases_access_level": "enabled",
+        "visibility": "public",
+        "created_at": "2024-01-01T00:00:00Z",
+        "updated_at": "2024-01-02T00:00:00Z",
+    }
+
+
+    mock_project = MockRESTObject(mock_project_data)
+    mock_commits = MagicMock()
+    mock_commits.list.return_value = MockRESTObjectList(commits_list)
+    mock_project.commits = mock_commits
+
+    result = gitlab_service.get_project_commit(mock_project)
+
+    assert len(result) == 3
+
+    mock_commits.list.assert_called_once_with(iterator=True)

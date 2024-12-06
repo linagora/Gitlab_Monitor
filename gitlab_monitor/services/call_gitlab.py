@@ -19,8 +19,8 @@ from typing import Optional
 import gitlab
 from gitlab.base import RESTObject
 from gitlab.base import RESTObjectList
-from requests.exceptions import (
-    ConnectionError,  # pylint: disable=redefined-builtin
+from requests.exceptions import ( # pylint: disable=redefined-builtin
+    ConnectionError,
 )
 
 from gitlab_monitor.logger.logger import logger
@@ -52,7 +52,6 @@ class GitlabAPIService:
             ssl_verify=ssl_cert_path if ssl_cert_path else False,
         )
 
-    # TODO: Handle wrong data ? (no id or name)
     def scan_projects(self) -> RESTObjectList | list[RESTObject]:
         """Retrieve all projects from the GitLab instance and convert them to DTOs.
 
