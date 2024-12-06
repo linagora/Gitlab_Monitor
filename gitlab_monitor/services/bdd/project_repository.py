@@ -13,7 +13,6 @@ import sys
 from typing import Optional
 
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
 from gitlab_monitor.exc import ProjectNotFoundError
 from gitlab_monitor.logger.logger import logger
@@ -28,14 +27,6 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
     :param Repository: interface implemented for the repository pattern.
     :type Repository: class
     """
-
-    def __init__(self, session: Session):
-        """Constructor
-
-        :param session: database session.
-        :type session: Session
-        """
-        self.session = session
 
     def get_by_id(self, object_id: int) -> Optional[ProjectDTO]:
         """Get a project by its ID.
@@ -61,39 +52,30 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
             )
         return None
 
-    def create(self, object_dto: ProjectDTO) -> None:  # pylint: disable=duplicate-code
+    def check_in_db(self, object_dto: ProjectDTO) -> None | Project:
         """Create a project in the database.
 
         :param project_dto: the project to create.
         :type project_dto: ProjectDTO
         """
-        try:
-            existing_project = (
-                self.session.query(Project)
-                .filter(Project.project_id == object_dto.project_id)
-                .first()
+        existing_project = (
+            self.session.query(Project)
+            .filter(Project.project_id == object_dto.project_id)
+            .first()
+        )
+        if not existing_project:
+            project = Project(
+                project_id=object_dto.project_id,
+                name=object_dto.name,
+                path=object_dto.path,
+                description=object_dto.description,
+                release=object_dto.release,
+                visibility=object_dto.visibility,
+                created_at=object_dto.created_at,
+                updated_at=object_dto.updated_at,
             )
-            if not existing_project:
-                project = Project(
-                    project_id=object_dto.project_id,
-                    name=object_dto.name,
-                    path=object_dto.path,
-                    description=object_dto.description,
-                    release=object_dto.release,
-                    visibility=object_dto.visibility,
-                    created_at=object_dto.created_at,
-                    updated_at=object_dto.updated_at,
-                )
-                self.session.add(project)
-                self.session.commit()
-            else:
-                self.update(object_dto)
-        except SQLAlchemyError as e:
-            logger.error(
-                "Error while creating project id : %s in BD.", object_dto.project_id
-            )
-            logger.debug(e)
-            sys.exit(1)
+            return project
+        return None
 
     def update(self, object_dto: ProjectDTO) -> None:  # pylint: disable=duplicate-code
         """Update a project in the database.

@@ -1,8 +1,3 @@
-# # --- Copyright (c) 2024 Linagora
-# # licence       : GPL v3
-# # - Flavien Perez fperez@linagora.com
-# # - Maïlys Jara mjara@linagora.com
-
 from unittest.mock import MagicMock
 from unittest.mock import Mock
 
@@ -57,6 +52,43 @@ def test_create_project_update(project_repository, project):
 
 
 def test_create_project_fail(project_repository):
-    project_repository.create("i'm not a project")
+    with pytest.raises(AttributeError):
+        project_repository.create("i'm not a project")
     project_repository.session.add.assert_not_called()
     project_repository.session.commit.assert_not_called()
+
+
+def test_get_by_id(project_repository, project):
+    project_repository.session.query().filter().first.return_value = project
+    result = project_repository.get_by_id(project.project_id)
+    assert result == project
+    project_repository.session.query().filter().first.assert_called_once()
+
+
+def test_update_project(project_repository, project):
+    project_repository.session.query().filter().first.return_value = project
+    updated_project = ProjectDTO(
+        project_id=8888,
+        name="UPDATED TEST",
+        path="updated/path",
+        description="Updated Description",
+        release="disabled",
+        visibility="public",
+        created_at="2024-01-01T00:00:00Z",
+        updated_at="2024-01-02T00:00:00Z",
+    )
+    project_repository.update(updated_project)
+    project_repository.session.commit.assert_called_once()
+    assert project.name == "UPDATED TEST"
+    assert project.path == "updated/path"
+    assert project.description == "Updated Description"
+    assert project.release == "disabled"
+    assert project.visibility == "public"
+    assert project.updated_at == "2024-01-02T00:00:00Z"
+
+
+# def test_delete_project(project_repository, project):
+#     project_repository.session.query().filter().first.return_value = project
+#     project_repository.delete(project.project_id)
+#     project_repository.session.delete.assert_called_once_with(project)
+#     project_repository.session.commit.assert_called_once()

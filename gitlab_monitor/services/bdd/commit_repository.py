@@ -14,7 +14,6 @@ import sys
 from typing import Optional
 
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
 from gitlab_monitor.exc import CommitNotFoundError
 from gitlab_monitor.logger.logger import logger
@@ -29,14 +28,6 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
     :param Repository: interface implemented for the repository pattern.
     :type Repository: class
     """
-
-    def __init__(self, session: Session):
-        """Constructor
-
-        :param session: database session.
-        :type session: Session
-        """
-        self.session = session
 
     def get_by_id(self, object_id: int) -> Optional[CommitDTO]:
         """Get a commit by its ID.
@@ -57,36 +48,27 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             )
         return None
 
-    def create(self, object_dto: CommitDTO) -> None:  # pylint: disable=duplicate-code
+    def check_in_db(self, object_dto: CommitDTO) -> None | Commit:
         """Create a commit in the database.
 
         :param commit_dto: the commit to create.
         :type commit_dto: CommitDTO
         """
-        try:
-            existing_commit = (
-                self.session.query(Commit)
-                .filter(Commit.commit_id == object_dto.commit_id)
-                .first()
+        existing_commit = (
+            self.session.query(Commit)
+            .filter(Commit.commit_id == object_dto.commit_id)
+            .first()
+        )
+        if not existing_commit:
+            commit = Commit(
+                commit_id=object_dto.commit_id,
+                project_id=object_dto.project_id,
+                message=object_dto.message,
             )
-            if not existing_commit:
-                commit = Commit(
-                    commit_id=object_dto.commit_id,
-                    project_id=object_dto.project_id,
-                    message=str(object_dto.message),
-                )
-                self.session.add(commit)
-                self.session.commit()
-            else:
-                self.update(object_dto)
-        except SQLAlchemyError as e:
-            logger.error(
-                "Error while creating commit id : %s in BD.", object_dto.commit_id
-            )
-            logger.debug(e)
-            sys.exit(1)
+            return commit
+        return None
 
-    def update(self, object_dto: CommitDTO) -> None:  # pylint: disable=duplicate-code
+    def update(self, object_dto: CommitDTO) -> None:
         """Update a commit in the database.
 
         :param commit_dto: the commit to update.

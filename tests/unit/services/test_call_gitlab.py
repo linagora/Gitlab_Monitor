@@ -4,11 +4,12 @@ from unittest.mock import patch
 import gitlab
 import pytest
 from gitlab import exceptions as gitlab_exceptions
-from requests.exceptions import ConnectionError
 from gitlab.base import RESTObjectList
+from requests.exceptions import ConnectionError
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.dto import ProjectDTO
+
 
 # === Mock des types de retours des méthodes gitlab ===
 
@@ -331,14 +332,13 @@ def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
         "updated_at": "2024-01-02T00:00:00Z",
     }
 
-
     mock_project = MockRESTObject(mock_project_data)
-    mock_commits = MagicMock()
-    mock_commits.list.return_value = MockRESTObjectList(commits_list)
-    mock_project.commits = mock_commits
 
-    result = gitlab_service.get_project_commit(mock_project)
+    with patch.object(mock_project, "commits") as mock_commits:
+        mock_commits.list.return_value = MockRESTObjectList(commits_list)
 
-    assert len(result) == 3
+        result = gitlab_service.get_project_commit(mock_project)
 
-    mock_commits.list.assert_called_once_with(iterator=True)
+        assert len(result) == 3
+
+        mock_commits.list.assert_called_once_with(get_all=True)

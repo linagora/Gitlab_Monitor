@@ -5,12 +5,18 @@
 
 """Interface for the repository design pattern implemented to easily interact with the database."""
 
+import sys
 from abc import ABC
 from abc import abstractmethod
 from typing import Generic
 from typing import Optional
 from typing import TypeVar
 
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
+
+from gitlab_monitor.logger.logger import logger
+from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.dto import CommitDTO
 from gitlab_monitor.services.dto import ProjectDTO
 
@@ -25,6 +31,14 @@ class Repository(ABC, Generic[T]):
     :type ABC: class
     """
 
+    def __init__(self, session: Session):
+        """Constructor
+
+        :param session: database session.
+        :type session: Session
+        """
+        self.session = session
+
     @abstractmethod
     def get_by_id(self, object_id: int) -> Optional[T]:
         """Get an object by its ID.
@@ -36,8 +50,28 @@ class Repository(ABC, Generic[T]):
         """
         raise NotImplementedError("Subclasses must implement this method")
 
-    @abstractmethod
     def create(self, object_dto: T) -> None:
+        """Create a project in the database.
+
+        :param project_dto: the project to create.
+        :type project_dto: ProjectDTO
+        """
+        try:
+            db_object = self.check_in_db(object_dto)
+            if db_object:
+                self.session.add(db_object)
+                self.session.commit()
+            else:
+                self.update(object_dto)
+        except SQLAlchemyError as e:
+            logger.error(
+                "Error while creating an object in BD. Use --verbose for more details."
+            )
+            logger.debug(e)
+            sys.exit(1)
+
+    @abstractmethod
+    def check_in_db(self, object_dto: T) -> None | Project:
         """create an objects in database.
 
                 :param object_dto
