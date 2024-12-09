@@ -305,7 +305,7 @@ def test_get_project_by_id_without_certificate(mock_gitlab, gitlab_service, capl
 # === Tests  get_project_commit ===
 
 
-def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
+def test_good_data_from_api_to_scan_projects(gitlab_service):
     commits_list = [
         {
             "id": 1,

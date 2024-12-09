@@ -65,8 +65,8 @@ class Command(ABC):
     def execute(self, kwargs):
         """Define the method execute that will be implemented in the child classes."""
 
-    def golab_options(self, kwargs):
-        """Method used to reteieve global options (options that can be used with all
+    def global_options(self, kwargs):
+        """Method used to retrieve global options (options that can be used with all
         commands) from the command line."""
         self._no_db = kwargs.get("no_db")
 
@@ -81,7 +81,7 @@ class GetProjectsCommand(Command):
     def execute(self, kwargs):
         """Execute the command scan-projects."""
 
-        self.golab_options(kwargs)
+        self.global_options(kwargs)
 
         projects = self.gitlab_service.scan_projects()
         projects_dto = []
@@ -126,7 +126,7 @@ class GetProjectCommand(Command):
 
         # Retrieve options from the command line
         get_commits = kwargs.get("get_commits")
-        self.golab_options(kwargs)
+        self.global_options(kwargs)
 
         # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
