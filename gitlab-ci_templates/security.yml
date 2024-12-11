@@ -28,6 +28,6 @@
 .slsa-1:
   script:
     - echo "commit SHA actuel est $CI_COMMIT_SHA, id du pipeline $CI_PIPELINE_ID"
-    - ./scripts/verify_provenances.sh
+    - ./scripts/check_source.sh
   needs:
     - build-prod-env
