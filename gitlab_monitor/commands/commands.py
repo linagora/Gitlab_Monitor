@@ -23,7 +23,7 @@ class CLICommand:
         """
         return CommandMapper.get_command(command)
 
-    def handle_command(self, command_class: Type, **kwargs):
+    def handle_command(self, command_class: Type, **kwargs) -> None:
         """Declare the command and execute it from the controller.
 
         :param command_class: Class of the command to execute

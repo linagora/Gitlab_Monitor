@@ -46,12 +46,14 @@ class Database:  # pylint: disable=too-few-public-methods
         self._session = session()
 
     @property
-    def _session(self) -> Session:
+    def session(self) -> Session:
         """Property getter for the database session.
 
         This ensures that the database session is initialized before returning it.
 
         :return: the database session.
-        :rtype: sessionmaker
+        :rtype: Session
         """
+        if self._session is None:
+            self._initialize_database()
         return self._session
