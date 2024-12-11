@@ -18,7 +18,6 @@ class MyPrettyPrint(ABC):
         :param dto: The data transfer object to pretty print.
         :type dto: object
         """
-        raise NotImplementedError("Subclasses must implement the pretty_print method")
 
     def print_dto_list(self, dto_list, dto_type) -> None:
         """Prints the list of DTOs in a pretty format.

@@ -8,7 +8,7 @@
 name = "gitlab_monitor"
 version = "1.0.0"
 description = "Application ayant pour but de monitorer gitlab"
-license = "GNU GENERAL PUBLIC LICENSE"
+license = "GNU GENERAL PUBLIC LICENSE v3"
 authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
 homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"

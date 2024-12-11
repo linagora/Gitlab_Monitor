@@ -9,6 +9,7 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 from sqlalchemy.orm import sessionmaker
 
 from gitlab_monitor.services.bdd.models import Base
@@ -30,7 +31,7 @@ class Database:  # pylint: disable=too-few-public-methods
 
     def __init__(self):
         """Constructor of the the database connection."""
-        self.session = None
+        self._session = None
 
     def _initialize_database(self):
         """Initialize the database connection."""
@@ -42,12 +43,15 @@ class Database:  # pylint: disable=too-few-public-methods
 
         # Connect to the database session
         session = sessionmaker(bind=engine)
-        self.session = session()
+        self._session = session()
 
-    def get_session(self) -> sessionmaker:
-        """Getter for the database session.
+    @property
+    def _session(self) -> Session:
+        """Property getter for the database session.
+
+        This ensures that the database session is initialized before returning it.
 
         :return: the database session.
         :rtype: sessionmaker
         """
-        return self.session
+        return self._session

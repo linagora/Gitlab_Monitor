@@ -4,14 +4,8 @@
 # # - Maïlys Jara mjara@linagora.com
 
 """
-Module that contains the logic for executing commands. It retrieves information
-from the controller or rather the controller sends it the information and
-indicates which command to execute.
-
-The idea here is to use a design pattern similar to the Command Pattern
-to have an interface between the command line and the controller. I do not want
-the controller to directly call the model tools in case the database or API
-changes. User inputs should not change and this should not impact the workflow.
+Module for executing commands and interfacing between the command line and the controller.
+Ensures user inputs remain consistent even if the database or API changes.
 """
 
 import os
@@ -63,14 +57,13 @@ class Command(ABC):
         self.gitlab_service = GitlabAPIService(
             "https://ci.linagora.com", self.private_token, ssl_cert_path
         )
-        self.project_repository = SQLAlchemyProjectRepository(self.db.session)
-        self.commit_repository = SQLAlchemyCommitRepository(self.db.session)
+        self.project_repository = SQLAlchemyProjectRepository(self.db._session)
+        self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
         self._no_db = False
 
     @abstractmethod
     def execute(self, kwargs):
         """Define the method execute that will be implemented in the child classes."""
-        raise NotImplementedError("Subclasses must implement this method")
 
     def golab_options(self, kwargs):
         """Method used to reteieve global options (options that can be used with all

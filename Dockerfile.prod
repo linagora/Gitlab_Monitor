@@ -1,4 +1,4 @@
-# Image qui build l'app/ le code source
+# Image that builds the app/source code
 
 FROM python:3.12-slim-bullseye
 
@@ -6,9 +6,9 @@ WORKDIR /app
 
 COPY . /app
 
-# Ajout d'un utilisateur non root
+# Add a non-root user
 RUN useradd -m myuser
 USER myuser
 
-# Démarre l'application
+# Start the application
 # CMD ["poetry", "run", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

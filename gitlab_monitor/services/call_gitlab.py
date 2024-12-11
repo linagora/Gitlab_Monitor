@@ -19,7 +19,9 @@ from typing import Optional
 import gitlab
 from gitlab.base import RESTObject
 from gitlab.base import RESTObjectList
-from requests.exceptions import ConnectionError  # pylint: disable=redefined-builtin
+from requests.exceptions import ( # pylint: disable=redefined-builtin
+    ConnectionError,
+)
 
 from gitlab_monitor.logger.logger import logger
 

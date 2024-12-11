@@ -4,18 +4,17 @@ from unittest.mock import patch
 import gitlab
 import pytest
 from gitlab import exceptions as gitlab_exceptions
-from gitlab.base import RESTObjectList
 from requests.exceptions import ConnectionError
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
 from gitlab_monitor.services.dto import ProjectDTO
 
 
-# === Mock des types de retours des méthodes gitlab ===
+# === Mock return types of gitlab methods ===
 
 
 class MockRESTObject:
-    """Mock d'un RESTObject pour les tests."""
+    """Mock of a RESTObject for testing."""
 
     def __init__(self, data):
         self._data = data
@@ -28,7 +27,7 @@ class MockRESTObject:
 
 
 class MockRESTObjectList:
-    """Mock d'un RESTObjectList pour les tests."""
+    """Mock of a RESTObjectList for testing."""
 
     def __init__(self, data_list):
         self._data_list = [MockRESTObject(data) for data in data_list]
@@ -48,7 +47,7 @@ class MockRESTObjectList:
 
 @pytest.fixture
 def mock_gitlab():
-    """Fixture pour mocker l'instance GitLab."""
+    """Fixture to mock the gitlab instance."""
     with patch("gitlab.Gitlab") as MockGitlab:
         mock_gitlab_instance = MagicMock()
         MockGitlab.return_value = mock_gitlab_instance
@@ -57,7 +56,7 @@ def mock_gitlab():
 
 @pytest.fixture
 def gitlab_service(mock_gitlab):
-    """Fixture pour initialiser le service GitLab."""
+    """Fixture to initialize the GitLab service."""
     return GitlabAPIService(
         url="https://gitlab.example.com",
         private_token="fake-token",
@@ -101,7 +100,7 @@ def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
 
 
 def test_scan_projects_with_invalid_url(mock_gitlab, gitlab_service, caplog):
-    """Test scan_projects avec une URL incorrecte provoquant une ConnectionError."""
+    """Test scan_projects with bad URL, encounter a ConnectionError."""
     mock_gitlab.projects.list.side_effect = ConnectionError(
         "Unable to connect to GitLab"
     )

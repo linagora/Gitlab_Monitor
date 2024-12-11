@@ -48,7 +48,6 @@ class Repository(ABC, Generic[T]):
         :return: objects searched.
         :rtype: Optional[Type]
         """
-        raise NotImplementedError("Subclasses must implement this method")
 
     def create(self, object_dto: T) -> None:
         """Create a project in the database.
@@ -71,7 +70,7 @@ class Repository(ABC, Generic[T]):
             sys.exit(1)
 
     @abstractmethod
-    def check_in_db(self, object_dto: T) -> None | Project:
+    def check_in_db(self, object_dto: T) -> Optional[Project]:
         """create an objects in database.
 
                 :param object_dto
@@ -79,7 +78,6 @@ class Repository(ABC, Generic[T]):
                 :type object_dto
         : Type
         """
-        raise NotImplementedError("Subclasses must implement this method")
 
     @abstractmethod
     def update(self, object_dto: T) -> None:
@@ -90,7 +88,6 @@ class Repository(ABC, Generic[T]):
                 :type object_dto
         : Type
         """
-        raise NotImplementedError("Subclasses must implement this method")
 
     # @abstractmethod
     # def delete(self, object_id: int) -> None:

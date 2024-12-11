@@ -48,7 +48,7 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             )
         return None
 
-    def check_in_db(self, object_dto: CommitDTO) -> None | Commit:
+    def check_in_db(self, object_dto: CommitDTO) -> Optional[Commit]:
         """Create a commit in the database.
 
         :param commit_dto: the commit to create.

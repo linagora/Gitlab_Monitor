@@ -3,7 +3,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-""" Module de configuration du logger. Pour le moment, celui-ci agit comme un print classique.
+""" Logger configuration module. For now, it acts like a classic print.
 """
 
 import logging
