@@ -17,6 +17,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from gitlab_monitor.exc import CommitNotFoundError
 from gitlab_monitor.logger.logger import logger
+from gitlab_monitor.services.bdd.mapper_from_db import MapperFromDB
+from gitlab_monitor.services.bdd.mapper_from_dto import MapperFromDTO
 from gitlab_monitor.services.bdd.models import Commit
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import CommitDTO
@@ -41,11 +43,7 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             self.session.query(Commit).filter(Commit.commit_id == object_id).first()
         )
         if commit:
-            return CommitDTO(
-                commit_id=str(commit.commit_id),
-                project_id=int(commit.project_id),
-                message=str(commit.message),
-            )
+            return MapperFromDB().commit_from_db(commit)
         return None
 
     def check_in_db(self, object_dto: CommitDTO) -> Optional[Commit]:
@@ -60,12 +58,7 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             .first()
         )
         if not existing_commit:
-            commit = Commit(
-                commit_id=object_dto.commit_id,
-                project_id=object_dto.project_id,
-                message=object_dto.message,
-            )
-            return commit
+            return MapperFromDTO().commit_from_dto(object_dto)
         return None
 
     def update(self, object_dto: CommitDTO) -> None:
@@ -82,8 +75,9 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
                 .first()
             )
             if commit:
-                commit.project_id = object_dto.project_id
-                commit.message = object_dto.message
+                for key, value in vars(object_dto).items():
+                    if hasattr(commit, key):
+                        setattr(commit, key, value)
                 self.session.commit()
             else:
                 raise CommitNotFoundError(

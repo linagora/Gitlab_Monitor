@@ -75,4 +75,7 @@ class PrintCommitDTO(MyPrettyPrint):
         print("\nCommitDTO:")
         print(f"  Commit ID  : {dto.commit_id}")
         print(f"  Project ID : {dto.project_id}")
-        print(f"  Message    : {dto.message}\n")
+        print(f"  Message    : {dto.message}")
+        print(f"  Date       : {dto.date}")
+        print(f"  Author     : {dto.author}\n")
+

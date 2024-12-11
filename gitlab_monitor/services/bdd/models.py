@@ -12,8 +12,10 @@ Mypy type ignore due to the fact that the sqlalchemy module is not typed
 error: Module "sqlalchemy.orm" has no attribute "Mapped"; maybe "Mapper"?  [attr-defined]).
 """
 
+from datetime import datetime
 from sqlalchemy import Column
 from sqlalchemy import ForeignKey
+from sqlalchemy import DateTime
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Text
@@ -37,13 +39,12 @@ class Project(Base):  # type: ignore # pylint: disable=too-few-public-methods
     description = Column(String)
     release = Column(String)
     visibility = Column(String)
-    created_at = Column(String)
-    updated_at = Column(String)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)
 
-    #     group = relationship('Group', back_populates='projects')
-    #     project_users = relationship('ProjectUser', back_populates='project')
+    # group = relationship('Group', back_populates='projects')
+    # project_users = relationship('ProjectUser', back_populates='project')
     commits: Mapped[list["Commit"]] = relationship("Commit", back_populates="project")
-
 
 #     merge_requests = relationship('MergeRequest', back_populates='project')
 
@@ -101,6 +102,8 @@ class Commit(Base):  # type: ignore # pylint: disable=too-few-public-methods
     commit_id = Column(String, primary_key=True)
     project_id = Column(Integer, ForeignKey("project.project_id"))
     message = Column(Text)
+    date = Column(DateTime)
+    author = Column(String)
     # date_id = Column(Integer, ForeignKey('datetime.date_id'))
     # group_id = Column(Integer, ForeignKey('group.group_id'))
     # merge_request_id = Column(Integer, ForeignKey('merge_request.merge_request_id'))

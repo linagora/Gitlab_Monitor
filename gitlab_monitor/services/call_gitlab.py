@@ -140,8 +140,18 @@ class GitlabAPIService:
         """
         logger.info("Retrieving commits from %s project...", project.name)
         try:
-            return project.commits.list(get_all=True)
+            return project.commits.list(get_all=True, all=True)
         except gitlab.GitlabGetError as e:
             logger.error("Error when retrieving commit from project %s", project.name)
+            logger.debug(e)
+            sys.exit(1)
+
+    def get_commit_details(self, project: RESTObject, commit_id: str) -> RESTObject:
+        """Get details of a commit by its id.
+        """
+        try:
+            return project.commits.get(commit_id)
+        except gitlab.GitlabGetError as e:
+            logger.error("Error when retrieving commit details from project %s", project.name)
             logger.debug(e)
             sys.exit(1)

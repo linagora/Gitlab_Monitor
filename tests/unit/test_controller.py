@@ -293,11 +293,15 @@ def test_get_commits(get_project_command):
             commit_id=1,
             message="Commit 1",
             project_id=project_id,
+            date="2021-01-01",
+            author="Test Author",
         ),
         CommitDTO(
             commit_id=2,
             message="Commit 2",
             project_id=project_id,
+            date="2021-01-01",
+            author="Test Author",
         ),
     ]
 
@@ -325,11 +329,15 @@ def test_get_commits_no_database(get_project_command):
             commit_id=1,
             message="Commit 1",
             project_id=project_id,
+            date="2021-01-01",
+            author="Test Author",
         ),
         CommitDTO(
             commit_id=2,
             message="Commit 2",
             project_id=project_id,
+            date="2021-01-01",
+            author="Test Author",
         ),
     ]
 
@@ -355,11 +363,15 @@ def test_save_commits(get_project_command, caplog):
             commit_id=1,
             message="Commit 1",
             project_id=1,
+            date="2021-01-01",
+            author="Test Author",
         ),
         CommitDTO(
             commit_id=2,
             message="Commit 2",
             project_id=1,
+            date="2021-01-01",
+            author="Test Author",
         ),
     ]
 

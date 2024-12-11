@@ -3,12 +3,14 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-"""Repository pattern for the project entity.
+"""
+Repository pattern for the project entity.
 
 Simple way to interact with the database for the project table.
 
 pylint: disable=duplicate-code ; can't ignore the duplicate-code error from pylint
 """
+
 import sys
 from typing import Optional
 
@@ -16,6 +18,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from gitlab_monitor.exc import ProjectNotFoundError
 from gitlab_monitor.logger.logger import logger
+from gitlab_monitor.services.bdd.mapper_from_db import MapperFromDB
+from gitlab_monitor.services.bdd.mapper_from_dto import MapperFromDTO
 from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import ProjectDTO
@@ -40,16 +44,7 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
             self.session.query(Project).filter(Project.project_id == object_id).first()
         )
         if project:
-            return ProjectDTO(
-                project_id=int(project.project_id),
-                name=project.name,
-                path=project.path,
-                description=project.description,
-                release=project.release,
-                visibility=project.visibility,
-                created_at=project.created_at,
-                updated_at=project.updated_at,
-            )
+            return MapperFromDB().project_from_db(project)
         return None
 
     def check_in_db(self, object_dto: ProjectDTO) -> None | Project:
@@ -64,17 +59,7 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
             .first()
         )
         if not existing_project:
-            project = Project(
-                project_id=object_dto.project_id,
-                name=object_dto.name,
-                path=object_dto.path,
-                description=object_dto.description,
-                release=object_dto.release,
-                visibility=object_dto.visibility,
-                created_at=object_dto.created_at,
-                updated_at=object_dto.updated_at,
-            )
-            return project
+            return MapperFromDTO().project_from_dto(object_dto)
         return None
 
     def update(self, object_dto: ProjectDTO) -> None:  # pylint: disable=duplicate-code
@@ -91,12 +76,9 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
                 .first()
             )
             if project:
-                project.name = object_dto.name
-                project.path = object_dto.path
-                project.description = object_dto.description
-                project.release = object_dto.release
-                project.visibility = object_dto.visibility
-                project.updated_at = object_dto.updated_at
+                for key, value in vars(object_dto).items():
+                    if hasattr(project, key):
+                        setattr(project, key, value)
                 self.session.commit()
             else:
                 raise ProjectNotFoundError(

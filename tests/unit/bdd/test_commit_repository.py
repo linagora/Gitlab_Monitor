@@ -30,6 +30,8 @@ def commit():
         commit_id="false0commit0id",
         project_id=8888,
         message="Test Commit",
+        date="2021-01-01",
+        author="Test Author",
     )
 
 # ----- Tests get_by_id -----
@@ -42,21 +44,21 @@ def test_get_by_id(commit_repository, commit):
 
 # ----- Tests create (method from base class repository, that call check_in_db method) -----
 
-def test_create_project(commit_repository, commit):
+def test_create_commit(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = None
     commit_repository.create(commit)
     commit_repository.session.add.assert_called_once()
     commit_repository.session.commit.assert_called_once()
 
 
-def test_create_project_update(commit_repository, commit):
+def test_create_commit_update(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = commit
     commit_repository.create(commit)
     commit_repository.session.add.assert_not_called()
     commit_repository.session.commit.assert_called_once()
 
 
-def test_create_project_fail(commit_repository):
+def test_create_commit_fail(commit_repository):
     with pytest.raises(AttributeError):
         commit_repository.create("i'm not a commit")
     commit_repository.session.add.assert_not_called()
@@ -64,18 +66,20 @@ def test_create_project_fail(commit_repository):
 
 # ----- Tests update -----
 
-def test_update_project(commit_repository, commit):
+def test_update_commit(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = commit
     updated_commit = CommitDTO(
         commit_id="false0commit0id",
         project_id=8888,
-        message="Test Commit",
+        message="Updated Test Commit",
+        date="2021-01-01",
+        author="Test Author",
     )
     commit_repository.update(updated_commit)
     commit_repository.session.commit.assert_called_once()
     assert commit.commit_id == "false0commit0id"
     assert commit.project_id == 8888
-    assert commit.message == "Test Commit"
+    assert commit.message == "Updated Test Commit"
 
 def test_update_commit_not_found(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = None
@@ -83,6 +87,8 @@ def test_update_commit_not_found(commit_repository, commit):
         commit_id="false0commit0id",
         project_id=8888,
         message="Test Commit",
+        date="2021-01-01",
+        author="Test Author",
     )
     with pytest.raises(CommitNotFoundError):
         commit_repository.update(updated_commit)
@@ -95,6 +101,8 @@ def test_update_commit_sqlalchemy_error(commit_repository, commit):
         commit_id="false0commit0id",
         project_id=8888,
         message="Test Commit",
+        date="2021-01-01",
+        author="Test Author",
     )
     
     with pytest.raises(SystemExit):

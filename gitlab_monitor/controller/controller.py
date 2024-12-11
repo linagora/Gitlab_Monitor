@@ -170,8 +170,11 @@ class GetProjectCommand(Command):
         if project_commits:
             dto_commits_list = []
             for commit in project_commits:
+                commit_details = self.gitlab_service.get_commit_details(
+                    project_restobject_data, commit.id
+                )
                 dto_commits_list.append(
-                    Mapper().commit_from_gitlab_api(commit, project_id)
+                    Mapper().commit_from_gitlab_api(commit, commit_details)
                 )
             if self._no_db:
                 PrintCommitDTO().print_dto_list(dto_commits_list, "Commits")
@@ -192,7 +195,7 @@ class GetProjectCommand(Command):
             self.commit_repository.create(dto_commit)
         logger.info(
             '%d commits from project "%s" have been retrieved and saved or updated \
-                in the database.',
+in the database.',
             len(dto_commits_list),
             project_restobject_data.name,
         )
