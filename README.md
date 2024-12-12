@@ -1,4 +1,6 @@
-# Gitlab Monitor
+# Gitlab Monitor Dev
+
+**Description**:  Application de monitor pour l'outil Gitlab.
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
@@ -30,7 +32,7 @@ $ pip install Gitlab Monitor
 
 ## Usage
 
-Please see the [Command-line Reference] for details.
+python -m gitlab_monitor [COMMAND] --[OPTIONS] [ARGS]
 
 ## Contributing
 

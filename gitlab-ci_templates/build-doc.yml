@@ -1,6 +1,10 @@
-sphinx_build:
-  image: $IMAGE
-  stage: build
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+.build_documentation:
   variables:
     SPHINX_SOURCE: "./doc"
     SPHINX_OUTPUT: "doc_build"

@@ -1,0 +1,32 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+.build_prod_env:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    IMAGE_NAME: "gitlab-monitor-prod"
+    DOCKERFILE: "Dockerfile.prod"
+    PROJECT_NAME: "gitlab-monitor"
+    APP_TAG: "1.0.0-dev"
+  before_script:
+    - docker info
+  script:
+    - echo "Authenticating to Harbor"
+    - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_REGISTRY
+    - echo "Building the application image"
+    - docker build -t $IMAGE_NAME:$APP_TAG -f $DOCKERFILE .
+    - echo "Tag the application image"
+    - docker tag $IMAGE_NAME:$APP_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
+    - echo "Pushing the application image"
+    - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
+    - echo "generate slsa 1 necessary files"
+    - ./scripts/generate_source.sh #possibilité d'ajouter une ligne "dependancies" dans le json (avec les dépendances utilisés dans le code - voir pip freeze)
+  artifacts:
+    paths:
+      - build/task-manager.tar
+      - build/provenance.json

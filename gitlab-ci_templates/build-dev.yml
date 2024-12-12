@@ -1,0 +1,29 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+.build_dev_env:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    IMAGE_NAME: "gitlab-monitor-dev"
+    DOCKERFILE: "Dockerfile.dev"
+    PROJECT_NAME: "gitlab-monitor"
+  before_script:
+    - docker info
+  script:
+    - echo "Building the cache image"
+    - docker build -t $IMAGE_NAME:$CACHE_TAG -f $DOCKERFILE .
+    - echo "Login to Harbor registry"
+    - docker login -u ${HARBOR_LOGIN} -p ${HARBOR_PSW} $HARBOR_REGISTRY
+    - echo "Tag the cache image"
+    - docker tag $IMAGE_NAME:$CACHE_TAG $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
+    - echo "Pushing the cache image"
+    - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$CACHE_TAG
+  rules:
+    - changes:
+        - Dockerfile.dev
+        - pyproject.toml

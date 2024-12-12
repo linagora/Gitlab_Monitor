@@ -1,8 +1,0 @@
-py-nexus:
-  stage: release
-  image: $IMAGE
-  script:
-    - path=$(ls dist/*.whl)
-    - filename=dist/$(basename $path)
-    - echo "$NEXUS_CA" > ./certificat/ca.crt
-    - twine upload -u $NEXUS_USER -p $NEXUS_PASSWORD --repository-url "https://${NEXUS_URL}/reposiroty/${NEXUS_REPO}" --cert ./certificat/ca.crt $filename

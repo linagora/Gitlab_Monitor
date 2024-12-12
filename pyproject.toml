@@ -1,24 +1,34 @@
-# licence : EUPL
-# - Flavien Perez
 
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 
 [tool.poetry]
-name = "Gitlab Monitor"
-version = "0.0.0"
+name = "gitlab_monitor"
+version = "1.0.0"
 description = "Application ayant pour but de monitorer gitlab"
-license = "EUPL"
-authors = ["Flavien Perez"]
+license = "GNU GENERAL PUBLIC LICENSE v3"
+authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
 homepage = "https://ci.linagora.com/linagora/devops/gitlab-monitor"
 classifiers = [ "Development Status :: 1 - Planning"]
+packages = [
+    { include = "gitlab_monitor" }
+]
 
 [tool.poetry.dependencies]
-python="3.11.4"
-
+python = "^3.11"
+dependency-injector = "^4.43.0"
+python-gitlab = "^3.6.0"
+numpy = "^2.1.3"
+psycopg2-binary = "^2.9.10"
+python-dotenv = "^1.0.1"
+pytest = "^8.3.3"
+sqlalchemy = "^2.0.36"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.6.2"
-flake8 = ">=7.0.0"
 black = ">=24.2.0"
 isort = ">=5.13.2"
 pycln = ">=2.4.0"
@@ -29,10 +39,11 @@ twine = ">=5.0.0"
 pytest = ">=8.0.2"
 sphinx = ">=7.2.6"
 pytest-cov = ">=4.1.0"
+sqlalchemy-stubs = "^0.4"
 
 [tool.mypy]
 ignore_missing_imports = true
-exclude = ['tests/', 'doc/*.*']
+exclude = ['tests/', 'doc/*.*', 'gitlab_monitor/__pycache__/*.*']
 
 [tool.isort]
 profile = "black"
@@ -50,5 +61,3 @@ exclude = ['*/tests/*']
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-

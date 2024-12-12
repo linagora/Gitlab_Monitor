@@ -1,40 +1,151 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+
+
+
+
 include:
- - local: '/templates/poetry_cache.yml'
+ - local: '/gitlab-ci_templates/build-dev.yml'
+ - local: '/gitlab-ci_templates/build-doc.yml'
+ - local: '/gitlab-ci_templates/build-prod.yml'
+ - local: '/gitlab-ci_templates/linter.yml'
+ - local: '/gitlab-ci_templates/packages.yml'
+ - local: '/gitlab-ci_templates/release.yml'
+ - local: '/gitlab-ci_templates/security.yml'
+ - local: '/gitlab-ci_templates/tests.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
-  IMAGE: $NEXUS_URL/gso-nexus.linagora.com/gitlab_monitor:0.0.0
+  HARBOR_REGISTRY: "docker-registry.linagora.com"
+  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
+  DOCKER_TLS_CERTDIR: "/certs"
+  CACHE_TAG: "1.0.0-dev"
+  CODE_SOURCE: "./gitlab_monitor/"
 
 default:
   tags:
-    - shared
+    - stage
+  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
   - build
-  - code_quality
   - test
+  - package-build
+  - publish
+  - production
   - release
 
-build-cache:
-  extends: .poetry_cache
+# ##################################################################
+# #                 BUILD STAGE: BUILD & TESTS                     #
+# ##################################################################
 
-build-package:
-  image: $IMAGE
+build-dev-env:
   stage: build
-  script:
-    - poetry build -f wheel
-  artifacts:
-    paths:
-      - dist/*.whl
+  extends: .build_dev_env
 
 build-documentation:
-  extends: .sphinx_doc
+  stage: build
+  extends: .build_documentation
+  needs: []
 
-linter_code_quality:
-  extends: .linter
+build-prod-env:
+  stage: build
+  extends: .build_prod_env
+  needs: []
 
 unit_tests:
-  extends: .tests
+  stage: build
+  extends: .py-pytest
 
-nexus_release:
-  extends: .nexus
+# ##################################################################
+# #            TEST STAGE: CODE QUALITY & SECURITY                 #
+# ##################################################################
+
+py-lint:
+  stage: test
+  extends: .py-lint
+  needs: []
+
+py-black:
+  stage: test
+  extends: .py-black
+  needs: []
+
+py-isort:
+  stage: test
+  extends: .py-isort
+  needs: []
+
+pycln:
+  stage: test
+  extends: .pycln
+  needs: []
+
+mypy:
+  stage: test
+  extends: .mypy
+  needs: []
+
+py-bandit:
+  stage: test
+  extends: .py-bandit
+  needs: []
+
+py-trivy:
+  stage: test
+  extends: .py-trivy
+  needs: []
+
+slsa-1:
+  stage: test
+  extends: .slsa-1
+  needs: [build-prod-env]
+
+# ##################################################################
+# #                    BUILD PACKAGES STAGE                        #
+# ##################################################################
+
+build-package:
+  stage: package-build
+  extends: .build-package
+  needs: []
+
+# ##################################################################
+# #                   PUBLISH PACKAGES STAGE                       #
+# ##################################################################
+
+publish-package:
+  stage: publish
+  extends: .publish-package
+  needs: [build-package]
+  when: manual
+
+# ##################################################################
+# #                 RELEASE STAGE (CHANGELOGS)                     #
+# ##################################################################
+
+prepare:
+  stage: release
+  extends: .prepare_job
+  needs: []
+
+release:
+  stage: release
+  extends: .release_job
+  needs:
+    - job: prepare
+      artifacts: true
+
+# ##################################################################
+# #                 PRODUCTION STAGE -> DEPLOY                     #
+# ##################################################################
+
+trigger_multiproject:
+  stage: production
+  trigger:
+    project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
+  needs: [build-prod-env]
