@@ -46,6 +46,9 @@ stages:
 
 cleanup:
   stage: cleanup
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
   script:
     - echo "Cleaning up Docker environment..."
     - docker system prune -af --volumes || true
