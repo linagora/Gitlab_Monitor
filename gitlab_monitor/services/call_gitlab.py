@@ -19,9 +19,7 @@ from typing import Optional
 import gitlab
 from gitlab.base import RESTObject
 from gitlab.base import RESTObjectList
-from requests.exceptions import (
-    ConnectionError,
-)
+from requests.exceptions import ConnectionError
 
 from gitlab_monitor.logger.logger import logger
 
