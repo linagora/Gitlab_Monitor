@@ -12,10 +12,9 @@ Mypy type ignore due to the fact that the sqlalchemy module is not typed
 error: Module "sqlalchemy.orm" has no attribute "Mapped"; maybe "Mapper"?  [attr-defined]).
 """
 
-from datetime import datetime
 from sqlalchemy import Column
-from sqlalchemy import ForeignKey
 from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy import Text
@@ -45,6 +44,7 @@ class Project(Base):  # type: ignore # pylint: disable=too-few-public-methods
     # group = relationship('Group', back_populates='projects')
     # project_users = relationship('ProjectUser', back_populates='project')
     commits: Mapped[list["Commit"]] = relationship("Commit", back_populates="project")
+
 
 #     merge_requests = relationship('MergeRequest', back_populates='project')
 

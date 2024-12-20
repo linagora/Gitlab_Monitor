@@ -78,4 +78,3 @@ class PrintCommitDTO(MyPrettyPrint):
         print(f"  Message    : {dto.message}")
         print(f"  Date       : {dto.date}")
         print(f"  Author     : {dto.author}\n")
-

@@ -4,12 +4,12 @@ from unittest.mock import Mock
 import pytest
 from sqlalchemy.exc import SQLAlchemyError
 
+from gitlab_monitor.exc import ProjectNotFoundError
 from gitlab_monitor.services.bdd.bdd import Database
 from gitlab_monitor.services.bdd.project_repository import (
     SQLAlchemyProjectRepository,
 )
 from gitlab_monitor.services.dto import ProjectDTO
-from gitlab_monitor.exc import ProjectNotFoundError
 
 
 @pytest.fixture
@@ -38,7 +38,9 @@ def project():
         updated_at="2024-01-01T00:00:00Z",
     )
 
+
 # ----- Tests get_by_id -----
+
 
 def test_get_by_id(project_repository, project):
     project_repository.session.query().filter().first.return_value = project
@@ -46,7 +48,9 @@ def test_get_by_id(project_repository, project):
     assert result == project
     project_repository.session.query().filter().first.assert_called_once()
 
+
 # ----- Tests create (method from base class repository, that call check_in_db method) -----
+
 
 def test_create_project(project_repository, project):
     project_repository.session.query().filter().first.return_value = None
@@ -68,7 +72,9 @@ def test_create_project_fail(project_repository):
     project_repository.session.add.assert_not_called()
     project_repository.session.commit.assert_not_called()
 
+
 # ----- Tests update -----
+
 
 def test_update_project(project_repository, project):
     project_repository.session.query().filter().first.return_value = project
@@ -91,6 +97,7 @@ def test_update_project(project_repository, project):
     assert project.visibility == "public"
     assert project.updated_at == "2024-01-02T00:00:00Z"
 
+
 def test_update_project_not_found(project_repository, project):
     project_repository.session.query().filter().first.return_value = None
     updated_project = ProjectDTO(
@@ -106,10 +113,11 @@ def test_update_project_not_found(project_repository, project):
     with pytest.raises(ProjectNotFoundError):
         project_repository.update(updated_project)
 
+
 def test_update_project_sqlalchemy_error(project_repository, project):
     project_repository.session.query().filter().first.return_value = project
     project_repository.session.commit.side_effect = SQLAlchemyError("Database error")
-    
+
     updated_project = ProjectDTO(
         project_id=8888,
         name="UPDATED TEST",
@@ -120,11 +128,12 @@ def test_update_project_sqlalchemy_error(project_repository, project):
         created_at="2024-01-01T00:00:00Z",
         updated_at="2024-01-02T00:00:00Z",
     )
-    
+
     with pytest.raises(SystemExit):
         project_repository.update(updated_project)
-    
+
     project_repository.session.commit.assert_called_once()
+
 
 # ----- Tests delete - Not implemented yet -----
 

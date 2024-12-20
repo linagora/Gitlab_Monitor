@@ -56,4 +56,5 @@ class Database:  # pylint: disable=too-few-public-methods
         """
         if self._session is None:
             self._initialize_database()
+        assert self._session is not None, "Database session could not be initialized."
         return self._session

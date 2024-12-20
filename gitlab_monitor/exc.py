@@ -1,5 +1,7 @@
 """Module used to create exception raised by the gitlab_monitor codebase.
 """
+
+
 class GitlabMonitorError(Exception):
     """Custom exception raised by the `gitlab_monitor` codebase."""
 
@@ -11,6 +13,7 @@ class GitlabMonitorError(Exception):
         """
         self.message = message
         super().__init__(self.message)
+
 
 class CommitNotFoundError(GitlabMonitorError):
     """Custom exception raised when a commit is not found in the database."""

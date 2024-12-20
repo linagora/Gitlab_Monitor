@@ -38,7 +38,7 @@ class Command(ABC):
     :type ABC: class
     """
 
-    def __init__(self) -> None:
+    def __init__(self, kwargs) -> None:
         """Constructor of the Command class.
 
         :raises ValueError: Handle error from the environment variables.
@@ -51,15 +51,18 @@ class Command(ABC):
             )
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
 
-        self.db = Database()
-        self.db._initialize_database()
+        # instanciate all fields that represente global options
+        self._no_db = False
+        self.global_options(kwargs)
 
         self.gitlab_service = GitlabAPIService(
             "https://ci.linagora.com", self.private_token, ssl_cert_path
         )
-        self.project_repository = SQLAlchemyProjectRepository(self.db._session)
-        self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
-        self._no_db = False
+        if not self._no_db:
+            self.db = Database()
+            self.db._initialize_database()
+            self.project_repository = SQLAlchemyProjectRepository(self.db._session)
+            self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
 
     @abstractmethod
     def execute(self, kwargs):
@@ -80,8 +83,6 @@ class GetProjectsCommand(Command):
 
     def execute(self, kwargs):
         """Execute the command scan-projects."""
-
-        self.global_options(kwargs)
 
         projects = self.gitlab_service.scan_projects()
         projects_dto = []
@@ -123,10 +124,7 @@ class GetProjectCommand(Command):
         """
         # Retrieve arguments from the command line
         project_id = kwargs.get("id")
-
-        # Retrieve options from the command line
         get_commits = kwargs.get("get_commits")
-        self.global_options(kwargs)
 
         # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
@@ -139,7 +137,7 @@ class GetProjectCommand(Command):
 
         # Handle options: call the according method for each
         if get_commits:
-            self._get_commits(project_id, project)
+            self._get_commits(project)
 
     def _save_project(self, dto_project: ProjectDTO) -> None:
         """Save projects in DB.
@@ -153,9 +151,7 @@ class GetProjectCommand(Command):
             dto_project.name,
         )
 
-    def _get_commits(
-        self, project_id: int, project_restobject_data: RESTObject
-    ) -> None:
+    def _get_commits(self, project_restobject_data: RESTObject) -> None:
         """Retrieve commits from a project and transform them into DTOs.
 
         :param project_id: id of the project from which we retrieve the commits.

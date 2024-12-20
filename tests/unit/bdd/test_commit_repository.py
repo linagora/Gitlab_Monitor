@@ -3,12 +3,12 @@ from unittest.mock import MagicMock
 import pytest
 from sqlalchemy.exc import SQLAlchemyError
 
+from gitlab_monitor.exc import CommitNotFoundError
 from gitlab_monitor.services.bdd.bdd import Database
 from gitlab_monitor.services.bdd.commit_repository import (
     SQLAlchemyCommitRepository,
 )
 from gitlab_monitor.services.dto import CommitDTO
-from gitlab_monitor.exc import CommitNotFoundError
 
 
 @pytest.fixture
@@ -34,7 +34,9 @@ def commit():
         author="Test Author",
     )
 
+
 # ----- Tests get_by_id -----
+
 
 def test_get_by_id(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = commit
@@ -42,7 +44,9 @@ def test_get_by_id(commit_repository, commit):
     assert result == commit
     commit_repository.session.query().filter().first.assert_called_once()
 
+
 # ----- Tests create (method from base class repository, that call check_in_db method) -----
+
 
 def test_create_commit(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = None
@@ -64,7 +68,9 @@ def test_create_commit_fail(commit_repository):
     commit_repository.session.add.assert_not_called()
     commit_repository.session.commit.assert_not_called()
 
+
 # ----- Tests update -----
+
 
 def test_update_commit(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = commit
@@ -81,6 +87,7 @@ def test_update_commit(commit_repository, commit):
     assert commit.project_id == 8888
     assert commit.message == "Updated Test Commit"
 
+
 def test_update_commit_not_found(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = None
     updated_commit = CommitDTO(
@@ -93,10 +100,11 @@ def test_update_commit_not_found(commit_repository, commit):
     with pytest.raises(CommitNotFoundError):
         commit_repository.update(updated_commit)
 
+
 def test_update_commit_sqlalchemy_error(commit_repository, commit):
     commit_repository.session.query().filter().first.return_value = commit
     commit_repository.session.commit.side_effect = SQLAlchemyError("Database error")
-    
+
     updated_commit = CommitDTO(
         commit_id="false0commit0id",
         project_id=8888,
@@ -104,8 +112,8 @@ def test_update_commit_sqlalchemy_error(commit_repository, commit):
         date="2021-01-01",
         author="Test Author",
     )
-    
+
     with pytest.raises(SystemExit):
         commit_repository.update(updated_commit)
-    
+
     commit_repository.session.commit.assert_called_once()

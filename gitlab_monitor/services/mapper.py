@@ -7,6 +7,7 @@
 """
 
 from datetime import datetime
+
 from gitlab.base import RESTObject
 
 from gitlab_monitor.services.dto import CommitDTO
