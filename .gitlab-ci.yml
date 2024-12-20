@@ -32,12 +32,24 @@ default:
   image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
+  - cleanup
   - build
   - test
   - package-build
   - publish
   - production
   - release
+
+# ##################################################################
+# #              BUILD CLEANUP: Clean pipeline env                 #
+# ##################################################################
+
+cleanup:
+  stage: cleanup
+  script:
+    - echo "Cleaning up Docker environment..."
+    - docker system prune -af --volumes || true
+    - df -h
 
 # ##################################################################
 # #                 BUILD STAGE: BUILD & TESTS                     #
