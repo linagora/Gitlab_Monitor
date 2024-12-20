@@ -49,6 +49,7 @@ cleanup:
   script:
     - echo "Cleaning up Docker environment..."
     - docker system prune -af --volumes || true
+    - docker builder prune -af || true
     - df -h
 
 # ##################################################################
