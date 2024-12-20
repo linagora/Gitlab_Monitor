@@ -7,7 +7,7 @@
 [tool.poetry]
 name = "gitlab_monitor"
 version = "1.0.0"
-description = "Application ayant pour but de monitorer gitlab"
+description = "Monitoring application for Gitlab"
 license = "GNU GENERAL PUBLIC LICENSE v3"
 authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
