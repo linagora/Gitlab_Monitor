@@ -51,6 +51,16 @@ cleanup:
     - docker:24.0.5-dind
   script:
     - echo "Cleaning up Docker environment..."
+    - docker container prune -f
+    - docker image prune -af
+    - docker volume prune -f
+    - docker network prune -f
+    - docker system prune -af --volumes
+    - sudo rm -rf /tmp/*
+    - sudo apt-get clean
+    - sudo apt-get autoremove --purge
+
+
     - docker system prune -af --volumes || true
     - docker builder prune -af || true
     - df -h

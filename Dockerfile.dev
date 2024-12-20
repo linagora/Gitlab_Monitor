@@ -7,7 +7,7 @@ ENV POETRY_HOME="/opt/poetry"
 ENV VIRTUAL_ENV="/opt/project"
 ENV PATH="$VIRTUAL_ENV/bin:$POETRY_HOME/bin:$PATH"
 
-LABEL licence="Apache 2.0"
+LABEL licence="GPL v3"
 LABEL description="Image servant de cache pour les dépendances du projet"
 LABEL equipe="Flavien Perez, Maïlys Jara"
 LABEL version="1.0.0"

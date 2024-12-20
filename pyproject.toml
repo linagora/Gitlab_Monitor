@@ -55,6 +55,9 @@ skip = [".gitignore", ".dockerignore", "doc/conf.py", ".venv/"]
 
 [tool.pylint.MASTER]
 ignore-paths = '^doc/.*$'
+disable = [
+    "redefined-builtin"
+]
 
 [tool.bandit]
 exclude = ['*/tests/*']
