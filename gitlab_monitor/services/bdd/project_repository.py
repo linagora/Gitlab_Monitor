@@ -76,9 +76,9 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
                 .first()
             )
             if project:
-                for key, value in vars(object_dto).items():
-                    if hasattr(project, key):
-                        setattr(project, key, value)
+                for field, data in vars(object_dto).items():
+                    if hasattr(project, field):
+                        setattr(project, field, data)
                 self.session.commit()
             else:
                 raise ProjectNotFoundError(

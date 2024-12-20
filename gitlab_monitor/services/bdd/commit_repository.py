@@ -75,9 +75,9 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
                 .first()
             )
             if commit:
-                for key, value in vars(object_dto).items():
-                    if hasattr(commit, key):
-                        setattr(commit, key, value)
+                for field, data in vars(object_dto).items():
+                    if hasattr(commit, field):
+                        setattr(commit, field, data)
                 self.session.commit()
             else:
                 raise CommitNotFoundError(

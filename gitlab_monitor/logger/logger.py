@@ -9,16 +9,16 @@
 import logging
 
 
-# # BASIC MODE
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format="%(message)s",
-# )
-
-# DEBUG MODE: à utiliser si avec un --verbose ?
+# BASIC MODE
 logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(levelname)s: %(message)s",
+    level=logging.INFO,
+    format="%(message)s",
 )
+
+# # DEBUG MODE: à utiliser si avec un --verbose ?
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     format="%(levelname)s: %(message)s",
+# )
 
 logger = logging.getLogger("simple_logger")
