@@ -32,7 +32,6 @@
 .mypy:
   before_script:
     - mypy --version
-    - poetry update types-requests
   script:
     - mypy $CODE_SOURCE --junit-xml report_mypy.xml
   artifacts:
