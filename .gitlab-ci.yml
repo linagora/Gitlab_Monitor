@@ -143,8 +143,8 @@ release:
 # ##################################################################
 
 trigger_multiproject:
-  stage: production
   image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
+  stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
   needs: [build-prod-env]
