@@ -27,6 +27,7 @@
     - docker push $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG
     - echo "generate slsa 1 necessary files"
     - ./scripts/generate_source.sh #possibilité d'ajouter une ligne "dependancies" dans le json (avec les dépendances utilisés dans le code - voir pip freeze)
+    - echo "$HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_NAME:$APP_TAG"
   artifacts:
     paths:
       - build/task-manager.tar
