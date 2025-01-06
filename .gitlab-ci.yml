@@ -26,7 +26,7 @@ variables:
 default:
   tags:
     - stage
-  # image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
+  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
   - build
@@ -143,7 +143,6 @@ release:
 # ##################################################################
 
 trigger_multiproject:
-  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
