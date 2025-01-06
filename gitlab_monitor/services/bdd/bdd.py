@@ -33,7 +33,7 @@ class Database:  # pylint: disable=too-few-public-methods
         """Constructor of the the database connection."""
         self._session = None
 
-    def _initialize_database(self):
+    def _initialize_database(self) -> Session:
         """Initialize the database connection."""
         # Create a database engine
         engine = create_engine(DB_URL)
@@ -43,7 +43,7 @@ class Database:  # pylint: disable=too-few-public-methods
 
         # Connect to the database session
         session = sessionmaker(bind=engine)
-        self._session = session()
+        return session()
 
     @property
     def session(self) -> Session:
@@ -55,6 +55,6 @@ class Database:  # pylint: disable=too-few-public-methods
         :rtype: Session
         """
         if self._session is None:
-            self._initialize_database()
-        assert self._session is not None, "Database session could not be initialized."
+            self._session = self._initialize_database()
+            return self._session
         return self._session
