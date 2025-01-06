@@ -146,5 +146,6 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
-    strategy: depend
+  variables:
+    CI_IMAGE: docker-registry.linagora.com/gitlab-monitor/gitlab-monitor/gitlab-monitor-dev:1.0.0-dev
   needs: [build-prod-env]
