@@ -146,4 +146,4 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
-  needs: [build-prod-env]
+  # needs: [build-prod-env]
