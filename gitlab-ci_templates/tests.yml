@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 .py-pytest:
   script:
     - pytest tests/unit/* --cov-report=xml --junitxml=pytest_results.xml || true

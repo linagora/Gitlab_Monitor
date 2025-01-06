@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -7,7 +11,6 @@ from gitlab import exceptions as gitlab_exceptions
 from requests.exceptions import ConnectionError
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
-from gitlab_monitor.services.dto import ProjectDTO
 
 
 # === Mock return types of gitlab methods ===

@@ -3,6 +3,7 @@
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 #!/bin/bash
 
 CODE_SOURCE="./gitlab_monitor"

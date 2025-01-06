@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -33,7 +37,7 @@ def commit_repository():
 
 @pytest.fixture
 def get_projects_command(gitlab_service, project_repository):
-    command = GetProjectsCommand(kwargs = {"no_db": False})
+    command = GetProjectsCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
@@ -42,7 +46,7 @@ def get_projects_command(gitlab_service, project_repository):
 
 @pytest.fixture
 def get_project_command(gitlab_service, project_repository):
-    command = GetProjectCommand(kwargs = {"no_db": False})
+    command = GetProjectCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
