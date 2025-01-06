@@ -33,10 +33,11 @@ repos:
         args:
           - --config=pyproject.toml
           - gitlab_monitor
-      # - id: pylint
-      #   name: pylint
-      #   entry: pylint
-      #   language: python
-      #   language_version: python3
-      #   types: [python]
-      #   args: ["--output-format=colorized", "gitlab_monitor/*"]
+      - id: pylint
+        name: pylint
+        entry: pylint
+        language: python
+        language_version: python3
+        types: [python]
+        args: ["--output-format=colorized", "gitlab_monitor/*"]
+        files: gitlab_monitor/
