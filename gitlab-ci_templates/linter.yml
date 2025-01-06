@@ -32,7 +32,7 @@
 .mypy:
   before_script:
     - mypy --version
-    - mypy --install-types
+    - mypy --install-types $CODE_SOURCE
   script:
     - mypy $CODE_SOURCE --junit-xml report_mypy.xml
   artifacts:
