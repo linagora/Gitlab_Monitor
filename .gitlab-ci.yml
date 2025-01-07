@@ -151,5 +151,5 @@ trigger_multiproject:
     strategy: depend
   needs: [build-prod-env]
   variables:
-    CACHE_VERSION: "1.0.0-dev"
-    IMAGE_CACHE_DEPLOY: "gitlab-monitor-deploy-cache"
+    CACHE_VERSION_2: "test.0.0-dev"
+    IMAGE_CACHE_DEPLOY_2: "gitlab-monitor-deploy-cache-test"
