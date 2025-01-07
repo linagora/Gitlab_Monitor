@@ -151,6 +151,3 @@ trigger_multiproject:
     branch: k8s-deploy
     strategy: depend
   needs: [build-prod-env]
-  variables:
-    CACHE_VERSION_2: "test.0.0-dev"
-    IMAGE_CACHE_DEPLOY_2: "gitlab-monitor-deploy-cache-test"

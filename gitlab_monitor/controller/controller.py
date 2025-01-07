@@ -6,6 +6,8 @@
 """
 Module for executing commands and interfacing between the command line and the controller.
 Ensures user inputs remain consistent even if the database or API changes.
+"# pylint: disable=too-few-public-methods" this is used to avoid the warning of having
+too few public methods raised by pylint.
 """
 
 import os
@@ -31,7 +33,7 @@ from gitlab_monitor.services.pretty_print import PrintCommitDTO
 from gitlab_monitor.services.pretty_print import PrintProjectDTO
 
 
-class Command(ABC):
+class Command(ABC):  # pylint: disable=too-few-public-methods
     """Interface for the commands.
 
     :param ABC: Abstract Base Classes
@@ -74,7 +76,7 @@ class Command(ABC):
         self._no_db = kwargs.get("no_db")
 
 
-class GetProjectsCommand(Command):
+class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
     """Class of the command scan-projects.
 
     :param Command: Interface for the commands.
@@ -109,7 +111,7 @@ class GetProjectsCommand(Command):
         )
 
 
-class GetProjectCommand(Command):
+class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
     """Class of the command scan-project.
 
     :param Command: Interface for the commands.
