@@ -48,7 +48,7 @@ def commit_repository():
 
 
 @pytest.fixture
-def get_projects_command(gitlab_service, project_repository):
+def get_projects_command(gitlab_service, project_repository, db):
     command = GetProjectsCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
@@ -58,7 +58,7 @@ def get_projects_command(gitlab_service, project_repository):
 
 
 @pytest.fixture
-def get_project_command(gitlab_service, project_repository):
+def get_project_command(gitlab_service, project_repository, db):
     command = GetProjectCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
