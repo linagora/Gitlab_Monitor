@@ -25,7 +25,6 @@ def mock_env_vars(monkeypatch):
     """Set required environment variables for tests."""
     monkeypatch.setenv("GITLAB_PRIVATE_TOKEN", "mocked_token")
     monkeypatch.setenv("SSL_CERT_PATH", "/mocked/path/to/cert")
-    monkeypatch.setenv("DB_URL", "postgresql+psycopg2://user:password@localhost/testdb")
 
 
 @pytest.fixture
