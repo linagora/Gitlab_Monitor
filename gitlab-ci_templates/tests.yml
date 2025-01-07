@@ -7,6 +7,7 @@
 
 .py-pytest:
   script:
+    - export PYTHONPATH=$PYTHONPATH:$(pwd)
     - pytest --cov=gitlab_monitor --cov-report=xml --junitxml=pytest_results.xml tests/unit/*
   artifacts:
     reports:
