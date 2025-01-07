@@ -53,6 +53,7 @@ def get_projects_command(gitlab_service, project_repository):
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
+    command.db._initialize_database = _initialize_database
     return command
 
 
@@ -62,6 +63,7 @@ def get_project_command(gitlab_service, project_repository):
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
+    command.db._initialize_database = _initialize_database
     return command
 
 
