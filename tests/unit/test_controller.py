@@ -28,6 +28,11 @@ def mock_env_vars(monkeypatch):
 
 
 @pytest.fixture
+def _initialize_database():
+    return MagicMock()
+
+
+@pytest.fixture
 def gitlab_service():
     return MagicMock()
 
