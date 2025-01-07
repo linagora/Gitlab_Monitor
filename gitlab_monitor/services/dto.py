@@ -7,6 +7,7 @@
 """
 
 from dataclasses import dataclass
+from datetime import datetime
 
 
 @dataclass
@@ -22,8 +23,8 @@ class ProjectDTO:  # pylint: disable=too-many-instance-attributes
     description: str
     release: str
     visibility: str
-    created_at: str
-    updated_at: str
+    created_at: datetime
+    updated_at: datetime
 
 
 @dataclass
@@ -36,3 +37,5 @@ class CommitDTO:
     commit_id: str
     project_id: int
     message: str
+    date: datetime
+    author: str

@@ -29,7 +29,7 @@ class CLICommand:
         :param command_class: Class of the command to execute
         :type command_class: Type
         """
-        command_instance = command_class()
+        command_instance = command_class(kwargs)
         if kwargs:
             command_instance.execute(kwargs)
         else:

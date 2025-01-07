@@ -19,11 +19,11 @@ from gitlab_monitor.services.bdd.models import Base
 load_dotenv()
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
-db_host = os.getenv("DB_HOST")
-db_port = os.getenv("DB_PORT")
+k8s_ip = os.getenv("K8S_IP")
+k8s_port = os.getenv("K8S_PORT")
 db_name = os.getenv("DB_NAME")
 
-DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{k8s_ip}:{k8s_port}/{db_name}"
 
 
 class Database:  # pylint: disable=too-few-public-methods
@@ -33,7 +33,7 @@ class Database:  # pylint: disable=too-few-public-methods
         """Constructor of the the database connection."""
         self._session = None
 
-    def _initialize_database(self):
+    def _initialize_database(self) -> Session:
         """Initialize the database connection."""
         # Create a database engine
         engine = create_engine(DB_URL)
@@ -43,7 +43,7 @@ class Database:  # pylint: disable=too-few-public-methods
 
         # Connect to the database session
         session = sessionmaker(bind=engine)
-        self._session = session()
+        return session()
 
     @property
     def session(self) -> Session:
@@ -55,5 +55,6 @@ class Database:  # pylint: disable=too-few-public-methods
         :rtype: Session
         """
         if self._session is None:
-            self._initialize_database()
+            self._session = self._initialize_database()
+            return self._session
         return self._session

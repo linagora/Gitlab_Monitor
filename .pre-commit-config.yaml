@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 repos:
   - repo: local
     hooks:
@@ -22,6 +23,7 @@ repos:
         types: [python]
         language: python
         args: ["--filter-files", "--settings-path", "pyproject.toml"]
+        files: gitlab_monitor/
       - id: black
         name: black
         entry: black
@@ -30,10 +32,12 @@ repos:
         types: [python]
         args:
           - --config=pyproject.toml
-      - id: pylint
-        name: pylint
-        entry: pylint
-        language: python
-        language_version: python3
-        types: [python]
-        args: ["--output-format=colorized"]
+          - gitlab_monitor
+      # - id: pylint
+      #   name: pylint
+      #   entry: pylint
+      #   language: python
+      #   language_version: python3
+      #   types: [python]
+      #   args: ["--filter-files", "--output-format=colorized"]
+      #   files: gitlab_monitor/

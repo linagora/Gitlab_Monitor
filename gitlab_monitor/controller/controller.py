@@ -6,6 +6,8 @@
 """
 Module for executing commands and interfacing between the command line and the controller.
 Ensures user inputs remain consistent even if the database or API changes.
+"# pylint: disable=too-few-public-methods" this is used to avoid the warning of having
+too few public methods raised by pylint.
 """
 
 import os
@@ -31,14 +33,14 @@ from gitlab_monitor.services.pretty_print import PrintCommitDTO
 from gitlab_monitor.services.pretty_print import PrintProjectDTO
 
 
-class Command(ABC):
+class Command(ABC):  # pylint: disable=too-few-public-methods
     """Interface for the commands.
 
     :param ABC: Abstract Base Classes
     :type ABC: class
     """
 
-    def __init__(self) -> None:
+    def __init__(self, kwargs) -> None:
         """Constructor of the Command class.
 
         :raises ValueError: Handle error from the environment variables.
@@ -51,27 +53,30 @@ class Command(ABC):
             )
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
 
-        self.db = Database()
-        self.db._initialize_database()
+        # instanciate all fields that represente global options
+        self._no_db = False
+        self._global_options(kwargs)
 
         self.gitlab_service = GitlabAPIService(
             "https://ci.linagora.com", self.private_token, ssl_cert_path
         )
-        self.project_repository = SQLAlchemyProjectRepository(self.db._session)
-        self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
-        self._no_db = False
+        if not self._no_db:
+            self.db = Database()
+            self.db._initialize_database()
+            self.project_repository = SQLAlchemyProjectRepository(self.db._session)
+            self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
 
     @abstractmethod
     def execute(self, kwargs):
         """Define the method execute that will be implemented in the child classes."""
 
-    def golab_options(self, kwargs):
-        """Method used to reteieve global options (options that can be used with all
+    def _global_options(self, kwargs):
+        """Method used to retrieve global options (options that can be used with all
         commands) from the command line."""
         self._no_db = kwargs.get("no_db")
 
 
-class GetProjectsCommand(Command):
+class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
     """Class of the command scan-projects.
 
     :param Command: Interface for the commands.
@@ -80,8 +85,6 @@ class GetProjectsCommand(Command):
 
     def execute(self, kwargs):
         """Execute the command scan-projects."""
-
-        self.golab_options(kwargs)
 
         projects = self.gitlab_service.scan_projects()
         projects_dto = []
@@ -108,7 +111,7 @@ class GetProjectsCommand(Command):
         )
 
 
-class GetProjectCommand(Command):
+class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
     """Class of the command scan-project.
 
     :param Command: Interface for the commands.
@@ -123,10 +126,7 @@ class GetProjectCommand(Command):
         """
         # Retrieve arguments from the command line
         project_id = kwargs.get("id")
-
-        # Retrieve options from the command line
         get_commits = kwargs.get("get_commits")
-        self.golab_options(kwargs)
 
         # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
@@ -139,7 +139,7 @@ class GetProjectCommand(Command):
 
         # Handle options: call the according method for each
         if get_commits:
-            self._get_commits(project_id, project)
+            self._get_commits(project)
 
     def _save_project(self, dto_project: ProjectDTO) -> None:
         """Save projects in DB.
@@ -153,9 +153,7 @@ class GetProjectCommand(Command):
             dto_project.name,
         )
 
-    def _get_commits(
-        self, project_id: int, project_restobject_data: RESTObject
-    ) -> None:
+    def _get_commits(self, project_restobject_data: RESTObject) -> None:
         """Retrieve commits from a project and transform them into DTOs.
 
         :param project_id: id of the project from which we retrieve the commits.
@@ -170,8 +168,11 @@ class GetProjectCommand(Command):
         if project_commits:
             dto_commits_list = []
             for commit in project_commits:
+                commit_details = self.gitlab_service.get_commit_details(
+                    project_restobject_data, commit.id
+                )
                 dto_commits_list.append(
-                    Mapper().commit_from_gitlab_api(commit, project_id)
+                    Mapper().commit_from_gitlab_api(commit, commit_details)
                 )
             if self._no_db:
                 PrintCommitDTO().print_dto_list(dto_commits_list, "Commits")
@@ -192,7 +193,7 @@ class GetProjectCommand(Command):
             self.commit_repository.create(dto_commit)
         logger.info(
             '%d commits from project "%s" have been retrieved and saved or updated \
-                in the database.',
+in the database.',
             len(dto_commits_list),
             project_restobject_data.name,
         )

@@ -5,9 +5,6 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
-
-
-
 include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
@@ -20,16 +17,18 @@ include:
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
+  PROJECT_NAME: "gitlab-monitor"
   HARBOR_REGISTRY: "docker-registry.linagora.com"
-  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
+  IMAGE_CACHE: "gitlab-monitor-dev"
   DOCKER_TLS_CERTDIR: "/certs"
   CACHE_TAG: "1.0.0-dev"
   CODE_SOURCE: "./gitlab_monitor/"
+  IMAGE_CACHE_DEPLOY: "gitlab-monitor-deploy-cache"
 
 default:
   tags:
     - stage
-  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
+  image: $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
   - build
@@ -38,6 +37,7 @@ stages:
   - publish
   - production
   - release
+
 
 # ##################################################################
 # #                 BUILD STAGE: BUILD & TESTS                     #
@@ -148,4 +148,6 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
+    branch: k8s-deploy
+    strategy: depend
   needs: [build-prod-env]

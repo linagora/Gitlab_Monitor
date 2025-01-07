@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
@@ -7,7 +11,6 @@ from gitlab import exceptions as gitlab_exceptions
 from requests.exceptions import ConnectionError
 
 from gitlab_monitor.services.call_gitlab import GitlabAPIService
-from gitlab_monitor.services.dto import ProjectDTO
 
 
 # === Mock return types of gitlab methods ===
@@ -305,7 +308,7 @@ def test_get_project_by_id_without_certificate(mock_gitlab, gitlab_service, capl
 # === Tests  get_project_commit ===
 
 
-def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
+def test_good_data_from_api_to_get_project_commit(gitlab_service):
     commits_list = [
         {
             "id": 1,
@@ -340,4 +343,4 @@ def test_good_data_from_api_to_scan_projects(mock_gitlab, gitlab_service):
 
         assert len(result) == 3
 
-        mock_commits.list.assert_called_once_with(get_all=True)
+        mock_commits.list.assert_called_once_with(get_all=True, all=True)

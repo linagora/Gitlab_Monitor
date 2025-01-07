@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 """Module for pretty printing the data retrieved from the GitLab API, when we use
 the --no-database option."""
 
@@ -75,4 +79,6 @@ class PrintCommitDTO(MyPrettyPrint):
         print("\nCommitDTO:")
         print(f"  Commit ID  : {dto.commit_id}")
         print(f"  Project ID : {dto.project_id}")
-        print(f"  Message    : {dto.message}\n")
+        print(f"  Message    : {dto.message}")
+        print(f"  Date       : {dto.date}")
+        print(f"  Author     : {dto.author}\n")

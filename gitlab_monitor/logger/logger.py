@@ -15,7 +15,7 @@ logging.basicConfig(
     format="%(message)s",
 )
 
-# DEBUG MODE: à utiliser si avec un --verbose ?
+# # DEBUG MODE: à utiliser si avec un --verbose ?
 # logging.basicConfig(
 #     level=logging.DEBUG,
 #     format="%(levelname)s: %(message)s",

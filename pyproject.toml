@@ -4,10 +4,11 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 [tool.poetry]
 name = "gitlab_monitor"
 version = "1.0.0"
-description = "Application ayant pour but de monitorer gitlab"
+description = "Monitoring application for Gitlab"
 license = "GNU GENERAL PUBLIC LICENSE v3"
 authors = ["Flavien Perez, Maïlys Jara"]
 readme = "README.md"
@@ -26,6 +27,7 @@ psycopg2-binary = "^2.9.10"
 python-dotenv = "^1.0.1"
 pytest = "^8.3.3"
 sqlalchemy = "^2.0.36"
+types-requests = "^2.32.0.20241016"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = ">=3.6.2"
@@ -40,6 +42,7 @@ pytest = ">=8.0.2"
 sphinx = ">=7.2.6"
 pytest-cov = ">=4.1.0"
 sqlalchemy-stubs = "^0.4"
+coverage = "^7.6.10"
 
 [tool.mypy]
 ignore_missing_imports = true
@@ -54,6 +57,9 @@ skip = [".gitignore", ".dockerignore", "doc/conf.py", ".venv/"]
 
 [tool.pylint.MASTER]
 ignore-paths = '^doc/.*$'
+disable = [
+    "redefined-builtin"
+]
 
 [tool.bandit]
 exclude = ['*/tests/*']
