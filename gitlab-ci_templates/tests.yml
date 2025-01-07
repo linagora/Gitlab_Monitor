@@ -7,7 +7,7 @@
 
 .py-pytest:
   script:
-    - pytest tests/unit/* --cov-report=xml --junitxml=pytest_results.xml || true
+    - pytest --cov=gitlab_monitor --cov-report=xml --junitxml=pytest_results.xml tests/unit/*
   artifacts:
     reports:
       junit: pytest_results.xml
