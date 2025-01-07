@@ -20,6 +20,13 @@ from gitlab_monitor.services.pretty_print import PrintProjectDTO
 # === Fixtures ===
 
 
+@pytest.fixture(autouse=True)
+def mock_env_vars(monkeypatch):
+    """Set required environment variables for tests."""
+    monkeypatch.setenv("GITLAB_PRIVATE_TOKEN", "mocked_token")
+    monkeypatch.setenv("SSL_CERT_PATH", "/mocked/path/to/cert")
+
+
 @pytest.fixture
 def gitlab_service():
     return MagicMock()
@@ -51,11 +58,6 @@ def get_project_command(gitlab_service, project_repository):
     command.project_repository = project_repository
     command._no_db = False
     return command
-
-
-@pytest.fixture(autouse=True)
-def set_env_vars(monkeypatch):
-    monkeypatch.setenv("GITLAB_PRIVATE_TOKEN", "fake_token")
 
 
 # === Tests  GetProjectsCommand execute ===
