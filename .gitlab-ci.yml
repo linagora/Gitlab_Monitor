@@ -17,8 +17,9 @@ include:
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
+  PROJECT_NAME: "gitlab-monitor"
   HARBOR_REGISTRY: "docker-registry.linagora.com"
-  IMAGE_CACHE: "gitlab-monitor/gitlab-monitor-dev"
+  IMAGE_CACHE: "gitlab-monitor-dev"
   DOCKER_TLS_CERTDIR: "/certs"
   CACHE_TAG: "1.0.0-dev"
   CODE_SOURCE: "./gitlab_monitor/"
@@ -27,7 +28,7 @@ variables:
 default:
   tags:
     - stage
-  image: $HARBOR_REGISTRY/$IMAGE_CACHE:$CACHE_TAG
+  image: $HARBOR_REGISTRY/$PROJECT_NAME/$IMAGE_CACHE:$CACHE_TAG
 
 stages:
   - build
