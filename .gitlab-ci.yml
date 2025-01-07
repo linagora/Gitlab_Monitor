@@ -148,6 +148,7 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
+    branch: k8s-deploy
   needs: [build-prod-env]
   variables:
     CACHE_VERSION_2: "test.0.0-dev"
