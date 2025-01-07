@@ -150,3 +150,6 @@ trigger_multiproject:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
     strategy: depend
   needs: [build-prod-env]
+  variables:
+    CACHE_VERSION: "1.0.0-dev"
+    IMAGE_CACHE_DEPLOY: "gitlab-monitor-deploy-cache"
