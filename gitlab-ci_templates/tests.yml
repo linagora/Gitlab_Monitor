@@ -7,7 +7,6 @@
 
 .py-pytest:
   script:
-    - export PYTHONPATH=$PYTHONPATH:$(pwd)
     - pytest --cov=gitlab_monitor --cov-report=xml --junitxml=pytest_results.xml tests/unit/*
   artifacts:
     reports:
@@ -15,3 +14,4 @@
     paths:
       - coverage.xml
       - pytest_results.xml
+  coverage: '/TOTAL\s+\d+\s+\d+\s+(\d+)%/'
