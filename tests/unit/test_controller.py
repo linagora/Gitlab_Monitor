@@ -53,6 +53,11 @@ def get_project_command(gitlab_service, project_repository):
     return command
 
 
+@pytest.fixture(autouse=True)
+def set_env_vars(monkeypatch):
+    monkeypatch.setenv("GITLAB_PRIVATE_TOKEN", "fake_token")
+
+
 # === Tests  GetProjectsCommand execute ===
 
 
