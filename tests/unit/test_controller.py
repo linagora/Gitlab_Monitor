@@ -33,11 +33,6 @@ def gitlab_service():
 
 
 @pytest.fixture
-def db():
-    return MagicMock()
-
-
-@pytest.fixture
 def project_repository():
     return MagicMock()
 
@@ -48,7 +43,13 @@ def commit_repository():
 
 
 @pytest.fixture
+def db():
+    return MagicMock()
+
+
+@pytest.fixture
 def get_projects_command(gitlab_service, project_repository, db):
+    db._initialize_database = MagicMock()
     command = GetProjectsCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
