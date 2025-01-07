@@ -53,7 +53,7 @@ class Command(ABC):
 
         # instanciate all fields that represente global options
         self._no_db = False
-        self.global_options(kwargs)
+        self._global_options(kwargs)
 
         self.gitlab_service = GitlabAPIService(
             "https://ci.linagora.com", self.private_token, ssl_cert_path
@@ -68,7 +68,7 @@ class Command(ABC):
     def execute(self, kwargs):
         """Define the method execute that will be implemented in the child classes."""
 
-    def global_options(self, kwargs):
+    def _global_options(self, kwargs):
         """Method used to retrieve global options (options that can be used with all
         commands) from the command line."""
         self._no_db = kwargs.get("no_db")

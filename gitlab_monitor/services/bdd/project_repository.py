@@ -18,8 +18,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from gitlab_monitor.exc import ProjectNotFoundError
 from gitlab_monitor.logger.logger import logger
-from gitlab_monitor.services.bdd.mapper_from_db import MapperFromDB
-from gitlab_monitor.services.bdd.mapper_from_dto import MapperFromDTO
+from gitlab_monitor.services.bdd.mapper_from_db import DatabaseToDTOMapper
+from gitlab_monitor.services.bdd.mapper_from_dto import DTOToDatabaseMapper
 from gitlab_monitor.services.bdd.models import Project
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import ProjectDTO
@@ -44,7 +44,7 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
             self.session.query(Project).filter(Project.project_id == object_id).first()
         )
         if project:
-            return MapperFromDB().project_from_db(project)
+            return DatabaseToDTOMapper().map_project_to_dto(project)
         return None
 
     def check_in_db(self, object_dto: ProjectDTO) -> None | Project:
@@ -59,7 +59,7 @@ class SQLAlchemyProjectRepository(Repository[ProjectDTO]):
             .first()
         )
         if not existing_project:
-            return MapperFromDTO().project_from_dto(object_dto)
+            return DTOToDatabaseMapper().map_project_to_database(object_dto)
         return None
 
     def update(self, object_dto: ProjectDTO) -> None:  # pylint: disable=duplicate-code

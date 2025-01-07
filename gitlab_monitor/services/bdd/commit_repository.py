@@ -17,8 +17,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from gitlab_monitor.exc import CommitNotFoundError
 from gitlab_monitor.logger.logger import logger
-from gitlab_monitor.services.bdd.mapper_from_db import MapperFromDB
-from gitlab_monitor.services.bdd.mapper_from_dto import MapperFromDTO
+from gitlab_monitor.services.bdd.mapper_from_db import DatabaseToDTOMapper
+from gitlab_monitor.services.bdd.mapper_from_dto import DTOToDatabaseMapper
 from gitlab_monitor.services.bdd.models import Commit
 from gitlab_monitor.services.bdd.repository import Repository
 from gitlab_monitor.services.dto import CommitDTO
@@ -43,7 +43,7 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             self.session.query(Commit).filter(Commit.commit_id == object_id).first()
         )
         if commit:
-            return MapperFromDB().commit_from_db(commit)
+            return DatabaseToDTOMapper().map_commit_to_dto(commit)
         return None
 
     def check_in_db(self, object_dto: CommitDTO) -> Optional[Commit]:
@@ -58,7 +58,7 @@ class SQLAlchemyCommitRepository(Repository[CommitDTO]):
             .first()
         )
         if not existing_commit:
-            return MapperFromDTO().commit_from_dto(object_dto)
+            return DTOToDatabaseMapper().map_commit_to_database(object_dto)
         return None
 
     def update(self, object_dto: CommitDTO) -> None:

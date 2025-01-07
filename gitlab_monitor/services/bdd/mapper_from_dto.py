@@ -10,10 +10,10 @@ from gitlab_monitor.services.dto import CommitDTO
 from gitlab_monitor.services.dto import ProjectDTO
 
 
-class MapperFromDTO:
+class DTOToDatabaseMapper:
     """Transform DTOs objects into database models objects."""
 
-    def project_from_dto(self, project_dto: ProjectDTO) -> Project:
+    def map_project_to_database(self, project_dto: ProjectDTO) -> Project:
         """Transform the data of a project from a ProjectDTO to a Project.
 
         :param project_dto: project in DTO format
@@ -32,7 +32,7 @@ class MapperFromDTO:
             updated_at=project_dto.updated_at,
         )
 
-    def commit_from_dto(self, commit_dto: CommitDTO) -> Commit:
+    def map_commit_to_database(self, commit_dto: CommitDTO) -> Commit:
         """Transform the data of a commit from a CommitDTO to a Commit.
 
         :param commit_dto: commit in DTO format
