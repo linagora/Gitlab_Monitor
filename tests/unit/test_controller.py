@@ -45,18 +45,20 @@ def commit_repository():
 
 @pytest.fixture
 def db():
-    return MagicMock()
+    with patch("gitlab_monitor.controller.controller.Database") as MockDatabase:
+        mock_db = MockDatabase.return_value
+        mock_db._initialize_database = MagicMock()
+        mock_db._session = MagicMock()
+        yield mock_db
 
 
 @pytest.fixture
 def get_projects_command(gitlab_service, project_repository, db):
-    db._initialize_database = MagicMock()
     command = GetProjectsCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
     command.db = db
-    command.db._initialize_database = MagicMock()
     return command
 
 
