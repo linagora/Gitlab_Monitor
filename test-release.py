@@ -1,24 +1,36 @@
 import requests
-
-url = f"https://ci.linagora.com/api/v4/projects/4073/repository/changelog"
-headers = {"PRIVATE-TOKEN": "glpat-65cKxEgdVqiYC59qAqEB"}
-params = {"version": "v1.0.0"}
-
 import json
+import os
 
+api_token = os.getenv("TOKEN")
+version = os.getenv("VERSION")
+gitlab_url = os.getenv("GITLAB_URL")
+project_id = os.getenv("PROJECT_ID")
 
-# Faire la requête GET
+if not api_token:
+    print("Erreur : La variable d'environnement TOKEN est manquante.")
+    exit(1)
+if not version:
+    print("Erreur : La variable d'environnement VERSION est manquante.")
+    exit(1)
+if not gitlab_url:
+    print("Erreur : La variable d'environnement GITLAB_URL est manquante.")
+    exit(1)
+if not project_id:
+    print("Erreur : La variable d'environnement PROJECT_ID est manquante.")
+    exit(1)
+
+url = f"{gitlab_url}/api/v4/projects/{project_id}/repository/changelog"
+headers = {"PRIVATE-TOKEN": api_token}
+params = {"version": version}
+
 response = requests.get(url, headers=headers, params=params)
 
-# Vérifier le statut de la réponse
 if response.status_code == 200:
     try:
-        # Analyser la réponse JSON
         data = response.json()
-        # Extraire la clé "notes"
         release_notes = data.get("notes", "")
 
-        # Écrire les notes dans un fichier release_notes.md
         with open("release_notes.md", "w", encoding="utf-8") as file:
             file.write(release_notes)
         print("Les notes de version ont été écrites dans release_notes.md.")
