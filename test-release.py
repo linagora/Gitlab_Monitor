@@ -1,24 +1,13 @@
 import requests
 import json
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 api_token = os.getenv("TOKEN")
 version = os.getenv("VERSION")
 gitlab_url = os.getenv("GITLAB_URL")
 project_id = os.getenv("PROJECT_ID")
-
-if not api_token:
-    print("Erreur : La variable d'environnement TOKEN est manquante.")
-    exit(1)
-if not version:
-    print("Erreur : La variable d'environnement VERSION est manquante.")
-    exit(1)
-if not gitlab_url:
-    print("Erreur : La variable d'environnement GITLAB_URL est manquante.")
-    exit(1)
-if not project_id:
-    print("Erreur : La variable d'environnement PROJECT_ID est manquante.")
-    exit(1)
 
 url = f"{gitlab_url}/api/v4/projects/{project_id}/repository/changelog"
 headers = {"PRIVATE-TOKEN": api_token}
