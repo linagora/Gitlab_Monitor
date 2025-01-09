@@ -18,9 +18,9 @@
     # - echo "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
     # - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"'
     # - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG" | jq -r .notes > release_notes.md'
-    - python test-release.py
-    - cat release_notes.md
-  artifacts:
+    # - python test-release.py
+    # - cat release_notes.md
+    - "curl -H \"PRIVATE-TOKEN: $CI_API_TOKEN\" \"$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG\" | jq -r .notes > release_notes.md"  artifacts:
     paths:
     - release_notes.md
 
