@@ -1,15 +1,14 @@
 import requests
 import json
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
 api_token = os.getenv("TOKEN")
 version = os.getenv("VERSION")
 gitlab_url = os.getenv("GITLAB_URL")
 project_id = os.getenv("PROJECT_ID")
 
 url = f"{gitlab_url}/api/v4/projects/{project_id}/repository/changelog"
+print(url)
 headers = {"PRIVATE-TOKEN": api_token}
 params = {"version": version}
 
