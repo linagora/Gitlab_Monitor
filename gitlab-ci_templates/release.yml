@@ -29,6 +29,5 @@
     ref: '$CI_COMMIT_SHA'
     assets:
       links:
-        - name: 'Container Image $CI_COMMIT_TAG'
-          # url: $NEXUS_PYPI_URLpackages/gitlab-monitor/$CI_COMMIT_TAG/gitlab_monitor-$CI_COMMIT_TAG-py3-none-any.whl
-          url: https://nexus-repository.linagora.com/repository/gitlab-monitor/packages/gitlab-monitor/1.0.0/gitlab_monitor-1.0.0-py3-none-any.whl
+        - name: 'Package python de la version $CI_COMMIT_TAG'
+          url: '$NEXUS_PYPI_URLpackages/gitlab-monitor/$CI_COMMIT_TAG/gitlab_monitor-$CI_COMMIT_TAG-py3-none-any.whl'
