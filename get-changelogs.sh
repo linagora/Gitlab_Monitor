@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Variables d'environnement
-API_TOKEN="glpat-65cKxEgdVqiYC59qAqEB" #"${TOKEN}"
-VERSION="v1.0.0" #"${CI_COMMIT_TAG}"
-GITLAB_URL="https://ci.linagora.com" #"${GITLAB_URL}"
-PROJECT_ID="4073" #"${PROJECT_ID}"
+API_TOKEN="${TOKEN}"
+VERSION="${CI_COMMIT_TAG}"
+GITLAB_URL="${GITLAB_URL}"
+PROJECT_ID="${PROJECT_ID}"
 
 # URL pour récupérer le changelog
 URL="${GITLAB_URL}/api/v4/projects/${PROJECT_ID}/repository/changelog"
