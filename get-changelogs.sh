@@ -9,10 +9,10 @@ URL="https://ci.linagora.com/api/v4/projects/4073/repository/changelog?version=v
 
 echo "${URL}"
 
-# RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: ${API_TOKEN}" -O - "${URL}")
+RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: $CI_API_TOKEN" -O - "${URL}")
 # RESPONSE=$(curl -s -H "PRIVATE-TOKEN: ${$CI_API_TOKEN}" "${URL}")
 
-RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: glpat-65cKxEgdVqiYC59qAqEB" -O - "${URL}")
+# RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: glpat-65cKxEgdVqiYC59qAqEB" -O - "${URL}")
 # RESPONSE=$(curl -s -H "PRIVATE-TOKEN: glpat-65cKxEgdVqiYC59qAqEB" "${URL}")
 
 
