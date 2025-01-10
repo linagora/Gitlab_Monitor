@@ -4,12 +4,17 @@ echo "$CI_API_TOKEN - $CI_COMMIT_TAG - $CI_API_URL - $CI_PROJECT_ID"
 
 
 # URL pour récupérer le changelog
-URL="$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
+# URL="$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
+URL="https://ci.linagora.com/api/v4/projects/4073/repository/changelog?version=v1.0.0"
 
 echo "${URL}"
 
-# Effectuer la requête avec curl
-RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: ${API_TOKEN}" -O - "${URL}")
+# RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: ${API_TOKEN}" -O - "${URL}")
+# RESPONSE=$(curl -s -H "PRIVATE-TOKEN: ${$CI_API_TOKEN}" "${URL}")
+
+RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: glpat-65cKxEgdVqiYC59qAqEB" -O - "${URL}")
+# RESPONSE=$(curl -s -H "PRIVATE-TOKEN: glpat-65cKxEgdVqiYC59qAqEB" "${URL}")
+
 
 # Vérifier si la réponse est valide
 if [ $? -eq 0 ]; then
