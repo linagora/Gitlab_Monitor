@@ -12,7 +12,6 @@
   script:
     - chmod u+x scripts/get-changelogs.sh
     - ./scripts/get-changelogs.sh
-    - cat release_notes.md
   artifacts:
     paths:
       - release_notes.md
