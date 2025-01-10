@@ -24,6 +24,6 @@ if [ $? -eq 0 ]; then
         echo "Erreur : Aucune note de version trouvée ou réponse vide."
     fi
 else
-    echo "Erreur lors de la requête avec curl."
+    echo "Erreur lors de la requête avec wget."
     echo "${RESPONSE}"
 fi
