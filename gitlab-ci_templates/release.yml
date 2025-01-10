@@ -27,8 +27,7 @@
     description: release_notes.md
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_SHA'
-# TODO: récupérer le code source sur nexus + lien vers le site du projet
     # assets:
     #   links:
     #     - name: 'Container Image $CI_COMMIT_TAG'
-    #       url: "https://$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
+    #       url: "$NEXUS_PYPI_URLpackages/gitlab-monitor/1.0.0/gitlab_monitor-1.0.0-py3-none-any.whl"
