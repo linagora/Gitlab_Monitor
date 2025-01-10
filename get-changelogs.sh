@@ -1,12 +1,14 @@
 #!/bin/bash
 
 # Variables d'environnement
-API_TOKEN="${TOKEN}"
+API_TOKEN="${CI_API_TOKEN}"
 VERSION="${CI_COMMIT_TAG}"
-GITLAB_URL="${GITLAB_URL}"
-PROJECT_ID="${PROJECT_ID}"
+GITLAB_URL="${CI_API_URL}"
+PROJECT_ID="${CI_PROJECT_ID}"
 
-echo "API_TOKEN - VERSION - GITLAB_URL - PROJECT_ID"
+echo "${API_TOKEN} - ${VERSION} - ${GITLAB_URL} - ${PROJECT_ID}"
+echo "$CI_API_TOKEN - $CI_COMMIT_TAG - $CI_API_URL - $CI_PROJECT_ID"
+
 
 # URL pour récupérer le changelog
 URL="${GITLAB_URL}/api/v4/projects/${PROJECT_ID}/repository/changelog"
