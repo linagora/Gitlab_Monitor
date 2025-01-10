@@ -4,8 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-# TODO: personaliser ces 2 jobs
 .prepare_job:
   rules:
   - if: '$CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+$/'
@@ -13,25 +11,12 @@
     - apt-get update
     - apt-get install -y jq wget
   script:
-    # - echo "CI_API_URL $CI_API_URL"
-    # - echo "CI_PROJECT_ID $CI_PROJECT_ID"
-    # - echo "CI_COMMIT_TAG $CI_COMMIT_TAG"
-    # - echo "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
-    # - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"'
-    # - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG" | jq -r .notes > release_notes.md'
-    # - python test-release.py
-    # - cat release_notes.md
-    - chmod u+x get-changelogs.sh
-    - ./get-changelogs.sh
+    - chmod u+x scripts/get-changelogs.sh
+    - ./scripts/get-changelogs.sh
     - cat release_notes.md
   artifacts:
     paths:
       - release_notes.md
-  variables:
-    TOKEN: $CI_JOB_TOKEN
-    VERSION: $CI_COMMIT_TAG
-    GITLAB_URL: $CI_API_URL
-    PROJECT_ID: $CI_PROJECT_ID
 
 .release_job:
   rules:
@@ -44,7 +29,8 @@
     description: release_notes.md
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_SHA'
-    # assets: # TODO: récupérer le code source sur nexus + lien vers le site du projet
+# TODO: récupérer le code source sur nexus + lien vers le site du projet
+    # assets:
     #   links:
     #     - name: 'Container Image $CI_COMMIT_TAG'
     #       url: "https://$CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA"
