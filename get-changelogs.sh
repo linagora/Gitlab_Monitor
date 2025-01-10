@@ -1,20 +1,15 @@
 #!/bin/bash
 
-# Variables d'environnement
-API_TOKEN="${CI_API_TOKEN}"
-VERSION="${CI_COMMIT_TAG}"
-GITLAB_URL="${CI_API_URL}"
-PROJECT_ID="${CI_PROJECT_ID}"
-
-echo "${API_TOKEN} - ${VERSION} - ${GITLAB_URL} - ${PROJECT_ID}"
 echo "$CI_API_TOKEN - $CI_COMMIT_TAG - $CI_API_URL - $CI_PROJECT_ID"
 
 
 # URL pour récupérer le changelog
-URL="${GITLAB_URL}/api/v4/projects/${PROJECT_ID}/repository/changelog"
+URL="$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
+
+echo "${URL}"
 
 # Effectuer la requête avec curl
-RESPONSE=$(curl -s -H "PRIVATE-TOKEN: ${API_TOKEN}" "${URL}?version=${VERSION}")
+RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: ${API_TOKEN}" -O - "${URL}")
 
 # Vérifier si la réponse est valide
 if [ $? -eq 0 ]; then
