@@ -6,6 +6,8 @@ VERSION="${CI_COMMIT_TAG}"
 GITLAB_URL="${GITLAB_URL}"
 PROJECT_ID="${PROJECT_ID}"
 
+echo "API_TOKEN - VERSION - GITLAB_URL - PROJECT_ID"
+
 # URL pour récupérer le changelog
 URL="${GITLAB_URL}/api/v4/projects/${PROJECT_ID}/repository/changelog"
 
