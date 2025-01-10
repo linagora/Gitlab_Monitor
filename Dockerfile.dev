@@ -23,6 +23,7 @@ RUN apt update &&\
     python3-dev \
     curl \
     jq \
+    wget \
     git && \
     python3 -m venv $VIRTUAL_ENV && \
     pip install --no-cache-dir \
