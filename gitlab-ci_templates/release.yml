@@ -30,4 +30,4 @@
     assets:
       links:
         - name: 'Container Image $CI_COMMIT_TAG'
-          url: "$NEXUS_PYPI_URLpackages/gitlab-monitor/$CI_COMMIT_TAG/gitlab_monitor-$CI_COMMIT_TAG-py3-none-any.whl"          
+          url: $NEXUS_PYPI_URLpackages/gitlab-monitor/$CI_COMMIT_TAG/gitlab_monitor-$CI_COMMIT_TAG-py3-none-any.whl
