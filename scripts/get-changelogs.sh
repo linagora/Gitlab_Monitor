@@ -1,6 +1,9 @@
 #!/bin/bash
 
+
 URL="$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
+
+echo "wget --quiet --header="PRIVATE-TOKEN: $CI_API_TOKEN" -O - "$URL""
 RESPONSE=$(wget --quiet --header="PRIVATE-TOKEN: $CI_API_TOKEN" -O - "${URL}")
 
 if [ $? -eq 0 ]; then
