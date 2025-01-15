@@ -17,7 +17,6 @@
 .publish-package:
   before_script:
     - twine --version
-    - wheel version
   script:
     - rm -rf dist/*
     - poetry build
