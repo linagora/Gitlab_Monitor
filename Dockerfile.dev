@@ -1,0 +1,41 @@
+# Docker image containing the project sources used to optimize
+# the execution speed of a pipeline.
+
+FROM python:3.12-slim-bullseye AS builder
+WORKDIR /app
+ENV POETRY_HOME="/opt/poetry"
+ENV VIRTUAL_ENV="/opt/project"
+ENV PATH="$VIRTUAL_ENV/bin:$POETRY_HOME/bin:$PATH"
+
+LABEL licence="GPL v3"
+LABEL description="Image servant de cache pour les dépendances du projet"
+LABEL equipe="Flavien Perez, Maïlys Jara"
+LABEL version="1.0.0"
+
+COPY ./pyproject.toml .
+
+RUN apt update &&\
+    apt install --no-install-recommends -y \
+    libsecret-1-dev \
+    build-essential \
+    libffi-dev \
+    libssh-dev \
+    python3-dev \
+    curl \
+    jq \
+    wget \
+    git && \
+    python3 -m venv $VIRTUAL_ENV && \
+    pip install --no-cache-dir \
+    poetry==2.0.0 \ 
+    setuptools==65.3.0 \
+    pip==24.3.1 --upgrade && \
+    poetry install --no-root
+
+RUN pip install --no-cache-dir \
+    sphinx \
+    sphinx-rtd-theme \
+    sphinx-autodoc-typehints \
+    twine
+
+CMD ["/bin/bash"]
