@@ -10,7 +10,6 @@ from typing import Type
 
 from gitlab_monitor.controller.controller import GetProjectCommand
 from gitlab_monitor.controller.controller import GetProjectsCommand
-from gitlab_monitor.controller.controller import GetProjectsSinceCommand
 
 
 class CommandMapper:
@@ -48,4 +47,3 @@ class CommandMapper:
 # Enregistrement des commandes
 CommandMapper.register("scan_projects", GetProjectsCommand)
 CommandMapper.register("scan_project", GetProjectCommand)
-CommandMapper.register("scan_projects_since", GetProjectsSinceCommand)
