@@ -2,6 +2,7 @@
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
 """Module for pretty printing the data retrieved from the GitLab API, when we use
 the --no-database option."""
 

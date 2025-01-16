@@ -11,4 +11,4 @@ This module defines global constants for the application.
 """
 
 __app_name__ = "gitlab_monitor"
-__version__ = "0.0.0"
+__version__ = "1.0.0"
