@@ -8,6 +8,7 @@
 :raises typer.Exit: mean that nothing else needs to be executed after this.
 """
 
+from datetime import datetime
 from typing import Optional
 
 import typer
@@ -39,7 +40,6 @@ def _verbose_callback(verbose) -> None:
     :param verbose: True if the verbose option is set.
     :type verbose: bool
     """
-    typer.echo("Verbose mode enabled.")
     logger.set_verbose(verbose)
 
 
@@ -50,11 +50,24 @@ def scan_projects(
         "--no-database",
         help="Retrieve project without saving or updating it in the database",
     ),
+    unused_since: datetime = typer.Option(
+        None,
+        "--unused-since",
+        help="Retrieve projects unused since the specified date (format: YYYY-MM-DD)",
+    ),
+    save_in_file: str = typer.Option(
+        None,
+        "--save-in-file",
+        help="Would store the projects retrieved in a json file with the specified name, \
+            stored in the project's “saved_datas/projects” folder.",
+    ),
 ):
     """Scan and retrieve all projects from GitLab"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_projects")
-    cli_command.handle_command(command, no_db=no_db)
+    cli_command.handle_command(
+        command, no_db=no_db, unused_since=unused_since, save_in_file=save_in_file
+    )
 
 
 @app.command(name="scan-project")
@@ -68,11 +81,23 @@ def scan_project(
         "--no-database",
         help="Retrieve project without saving or updating it in the database",
     ),
+    save_in_file: str = typer.Option(
+        None,
+        "--save-in-file",
+        help="Would store the project retrieved in a json file with the specified name, \
+            stored in the project's “saved_datas/projects” folder.",
+    ),
 ):
     """Scan and retrieve a GitLab project by its ID"""
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
-    cli_command.handle_command(command, id=project_id, get_commits=commit, no_db=no_db)
+    cli_command.handle_command(
+        command,
+        id=project_id,
+        get_commits=commit,
+        no_db=no_db,
+        save_in_file=save_in_file,
+    )
 
 
 @app.callback()
