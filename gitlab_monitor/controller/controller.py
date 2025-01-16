@@ -13,6 +13,7 @@ too few public methods raised by pylint.
 import os
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 
 from dotenv import load_dotenv
 from gitlab.base import RESTObject
@@ -200,4 +201,35 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
 in the database.',
             len(dto_commits_list),
             project_restobject_data.name,
+        )
+
+
+class GetProjectsSinceCommand(Command):  # pylint: disable=too-few-public-methods
+    """Class of the command scan-projects-since.
+
+    :param Command: Interface for the commands.
+    :type Command: class
+    """
+
+    def execute(self, kwargs):
+        """Execute the command scan-projects-since [DATE] [OPTIONS].
+
+        :param date: date from which we retrieve the projects.
+        """
+
+        # Retrieve arguments from the command line
+        date = kwargs.get("date")
+
+        projects = self.gitlab_service.scan_projects()
+        projects_dto = []
+        for project in projects:
+            if datetime.fromisoformat(project.updated_at).replace(tzinfo=None) < date:
+                project_dto = Mapper().project_from_gitlab_api(project)
+                projects_dto.append(project_dto)
+
+        PrintProjectDTO().print_dto_list(projects_dto, f"Projects unused since {date}")
+        logger.info(
+            "\n%s projects have not been updated since %s.",
+            len(projects_dto),
+            date,
         )

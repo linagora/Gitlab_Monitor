@@ -8,6 +8,7 @@
 :raises typer.Exit: mean that nothing else needs to be executed after this.
 """
 
+from datetime import datetime
 from typing import Optional
 
 import typer
@@ -39,7 +40,6 @@ def _verbose_callback(verbose) -> None:
     :param verbose: True if the verbose option is set.
     :type verbose: bool
     """
-    typer.echo("Verbose mode enabled.")
     logger.set_verbose(verbose)
 
 
@@ -73,6 +73,18 @@ def scan_project(
     cli_command = CLICommand()
     command = cli_command.create_command("scan_project")
     cli_command.handle_command(command, id=project_id, get_commits=commit, no_db=no_db)
+
+
+@app.command(name="scan-projects-since")
+def scan_projects_since(
+    date: datetime = typer.Argument(
+        ..., help="It will return all projects unused since this date"
+    ),
+):
+    """Scan and retrieve all GitLab projects unused since a given date"""
+    cli_command = CLICommand()
+    command = cli_command.create_command("scan_projects_since")
+    cli_command.handle_command(command, date=date)
 
 
 @app.callback()
