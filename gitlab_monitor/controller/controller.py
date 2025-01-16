@@ -172,7 +172,6 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
         project_id = kwargs.get("id")
         get_commits = kwargs.get("get_commits")
 
-        # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
         dto_project = Mapper().project_from_gitlab_api(project)
 
