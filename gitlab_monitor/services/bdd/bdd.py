@@ -38,6 +38,7 @@ class Database:  # pylint: disable=too-few-public-methods
         # Create a database engine
         engine = create_engine(DB_URL)
 
+        # engine.connect()
         engine.connect()
         Base.metadata.create_all(bind=engine)
 

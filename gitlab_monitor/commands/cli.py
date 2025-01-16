@@ -15,6 +15,7 @@ import typer
 from gitlab_monitor import __app_name__
 from gitlab_monitor import __version__
 from gitlab_monitor.commands.commands import CLICommand
+from gitlab_monitor.logger import logger
 
 
 app = typer.Typer()
@@ -30,6 +31,16 @@ def _version_callback(value: bool) -> None:
     if value:
         typer.echo(f"{__app_name__} v{__version__}")
         raise typer.Exit()
+
+
+def _verbose_callback(verbose) -> None:
+    """Handle the verbose option.
+
+    :param verbose: True if the verbose option is set.
+    :type verbose: bool
+    """
+    typer.echo("Verbose mode enabled.")
+    logger.set_verbose(verbose)
 
 
 @app.command(name="scan-projects")
@@ -73,8 +84,17 @@ def main(
         callback=_version_callback,
         help="Show the application's version and exit.",
         is_eager=True,
-    )
+    ),
+    verbose: Optional[bool] = typer.Option(
+        None,
+        "--verbose",
+        "-vb",
+        callback=_verbose_callback,
+        help="Enable verbose mode for detailed logging.",
+    ),
 ) -> None:
     """Main entry point for the CLI application."""
     if version:
         _version_callback(version)
+    if verbose:
+        _verbose_callback(verbose)

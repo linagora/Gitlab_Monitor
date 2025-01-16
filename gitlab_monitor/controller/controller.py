@@ -62,7 +62,11 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
         )
         if not self._no_db:
             self.db = Database()
-            self.db._initialize_database()
+            self.db._session = self.db._initialize_database()
+            if not self.db._session:
+                raise ValueError(
+                    "Session is None, database is not initialized correctly"
+                )
             self.project_repository = SQLAlchemyProjectRepository(self.db._session)
             self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
 
