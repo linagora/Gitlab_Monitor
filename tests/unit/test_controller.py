@@ -2,12 +2,16 @@
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+import json
 from datetime import datetime
 from unittest.mock import MagicMock
+from unittest.mock import call
+from unittest.mock import mock_open
 from unittest.mock import patch
 
 import pytest
 
+from gitlab_monitor.controller.controller import ArchiveProjectCommand
 from gitlab_monitor.controller.controller import GetProjectCommand
 from gitlab_monitor.controller.controller import GetProjectsCommand
 from gitlab_monitor.logger.logger import logger
@@ -65,6 +69,16 @@ def get_projects_command(gitlab_service, project_repository, db):
 @pytest.fixture
 def get_project_command(gitlab_service, project_repository, db):
     command = GetProjectCommand(kwargs={"no_db": False})
+    command.gitlab_service = gitlab_service
+    command.project_repository = project_repository
+    command._no_db = False
+    command.db = db
+    return command
+
+
+@pytest.fixture
+def archive_project_command(gitlab_service, project_repository, db):
+    command = ArchiveProjectCommand(kwargs={"no_db": False})
     command.gitlab_service = gitlab_service
     command.project_repository = project_repository
     command._no_db = False
@@ -602,3 +616,43 @@ def test_save_commits(get_project_command, caplog):
                 len(commits_dto),
                 mock_project_name,
             ) in record.message
+
+
+# === Tests ArchiveProjectCommand execute ===
+
+
+def test_archive_project_by_id(archive_project_command):
+    project_id = "123"
+    project_mock = MagicMock()
+
+    archive_project_command.gitlab_service.get_project_by_id.return_value = project_mock
+
+    archive_project_command.execute({"project": project_id})
+
+    archive_project_command.gitlab_service.get_project_by_id.assert_called_once_with(
+        project_id
+    )
+    archive_project_command.gitlab_service.archive_project.assert_called_once_with(
+        project_mock
+    )
+
+
+def test_archive_projects_from_json_file(archive_project_command):
+    projects = [{"project_id": "123"}, {"project_id": "456"}]
+    project_mocks = [MagicMock(), MagicMock()]
+
+    archive_project_command.gitlab_service.get_project_by_id.side_effect = project_mocks
+
+    with patch("builtins.open", mock_open(read_data=json.dumps(projects))):
+        archive_project_command.execute({"project": "projects.json"})
+
+    expected_calls = [call(project["project_id"]) for project in projects]
+    archive_project_command.gitlab_service.get_project_by_id.assert_has_calls(
+        expected_calls
+    )
+    assert archive_project_command.gitlab_service.get_project_by_id.call_count == len(
+        projects
+    )
+    assert archive_project_command.gitlab_service.archive_project.call_count == len(
+        projects
+    )
