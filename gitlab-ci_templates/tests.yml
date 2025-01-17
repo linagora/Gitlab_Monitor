@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 .py-pytest:
   script:
     - export PYTHONPATH=$PYTHONPATH:$(pwd)

@@ -1,3 +1,7 @@
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from datetime import datetime
 from unittest.mock import MagicMock
 

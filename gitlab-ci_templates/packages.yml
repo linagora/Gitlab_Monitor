@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 .build-package:
   before_script:
     - poetry --version

@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 # !! The release token (gitlab access token) used in those jobs will expire on 07/02/2025. !!
 
 .prepare_job:
