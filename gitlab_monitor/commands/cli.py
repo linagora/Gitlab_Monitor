@@ -9,6 +9,7 @@
 """
 
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
 
 import typer
@@ -59,7 +60,7 @@ def scan_projects(
         None,
         "--save-in-file",
         help="Would store the projects retrieved in a json file with the specified name, \
-            stored in the project's “saved_datas/projects” folder.",
+stored in the project's “saved_datas/projects” folder.",
     ),
 ):
     """Scan and retrieve all projects from GitLab"""
@@ -85,7 +86,7 @@ def scan_project(
         None,
         "--save-in-file",
         help="Would store the project retrieved in a json file with the specified name, \
-            stored in the project's “saved_datas/projects” folder.",
+stored in the project's “saved_datas/projects” folder.",
     ),
 ):
     """Scan and retrieve a GitLab project by its ID"""
@@ -98,6 +99,43 @@ def scan_project(
         no_db=no_db,
         save_in_file=save_in_file,
     )
+
+
+def validate_project(project: str):
+    """Valid if the project is a valid ID or path."""
+    if project.isdigit():
+        return int(project)
+    if Path(project).exists():
+        return Path(project)
+    raise typer.BadParameter(
+        "The argument must be a valid ID (integer) or a valid JSON file (path)."
+    )
+
+
+@app.command(name="archive-project")
+def archive_project(
+    project: str = typer.Argument(
+        ...,
+        help="Id of the project to archive or the path to a json file containing \
+the projects to archive",
+    ),
+):
+    """Archive a GitLab project by its ID or archive all the project \
+        saved in the file passed as argument"""
+    try:
+        is_valid_project = validate_project(project)
+        if isinstance(is_valid_project, int):
+            typer.echo(f"Given ID : {is_valid_project}")
+        elif isinstance(is_valid_project, Path):
+            typer.echo(f"Given Path : {is_valid_project}")
+
+        cli_command = CLICommand()
+        command = cli_command.create_command("archive_project")
+        cli_command.handle_command(command, project=project)
+
+    except typer.BadParameter as e:
+        typer.echo(f"Error : {e}", err=True)
+        raise typer.Exit(code=1)
 
 
 @app.callback()

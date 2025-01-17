@@ -1,10 +1,15 @@
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
+from unittest.mock import patch
+
 import pytest
 import typer
 from typer.testing import CliRunner
 
-from gitlab_monitor.commands.cli import app, _version_callback, _verbose_callback
+from gitlab_monitor.commands.cli import _verbose_callback
+from gitlab_monitor.commands.cli import _version_callback
+from gitlab_monitor.commands.cli import app
 from gitlab_monitor.logger import logger
+
 
 runner = CliRunner()
 

@@ -1,6 +1,10 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
+from unittest.mock import patch
+
 from sqlalchemy.orm import Session
-from gitlab_monitor.services.bdd.bdd import Database, DB_URL
+
+from gitlab_monitor.services.bdd.bdd import DB_URL
+from gitlab_monitor.services.bdd.bdd import Database
 
 
 def test_database_initialization():

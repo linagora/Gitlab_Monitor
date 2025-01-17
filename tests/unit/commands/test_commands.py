@@ -1,6 +1,8 @@
-from unittest.mock import MagicMock, patch
-from gitlab_monitor.commands.commands import CLICommand
+from unittest.mock import MagicMock
+from unittest.mock import patch
+
 from gitlab_monitor.commands.command_mapper import CommandMapper
+from gitlab_monitor.commands.commands import CLICommand
 
 
 def test_create_command():

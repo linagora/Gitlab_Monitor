@@ -154,3 +154,17 @@ class GitlabAPIService:
             )
             logger.debug(e)
             sys.exit(1)
+
+    def archive_project(self, project: RESTObject) -> None:
+        """Archive a project in GitLab.
+
+        :param project: project to archive
+        :type project: RESTObject
+        """
+        logger.info("Archiving project %s...", project.name)
+        try:
+            project.archive()
+        except gitlab.GitlabError as e:
+            logger.error("Error when archiving project %s", project.name)
+            logger.debug(e)
+            sys.exit(1)
