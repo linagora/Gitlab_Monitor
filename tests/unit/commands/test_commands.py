@@ -1,6 +1,12 @@
-from unittest.mock import MagicMock, patch
-from gitlab_monitor.commands.commands import CLICommand
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+from unittest.mock import MagicMock
+from unittest.mock import patch
+
 from gitlab_monitor.commands.command_mapper import CommandMapper
+from gitlab_monitor.commands.commands import CLICommand
 
 
 def test_create_command():

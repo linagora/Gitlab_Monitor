@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 
 
+
 .py-lint:
   before_script:
     - pylint --version

@@ -1,5 +1,11 @@
-import pytest
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from unittest.mock import MagicMock
+
+import pytest
+
 from gitlab_monitor.commands.command_mapper import CommandMapper
 
 

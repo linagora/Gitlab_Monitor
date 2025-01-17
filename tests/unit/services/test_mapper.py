@@ -1,8 +1,13 @@
-from unittest.mock import MagicMock
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
 from datetime import datetime
+from unittest.mock import MagicMock
 
+from gitlab_monitor.services.dto import CommitDTO
+from gitlab_monitor.services.dto import ProjectDTO
 from gitlab_monitor.services.mapper import Mapper
-from gitlab_monitor.services.dto import ProjectDTO, CommitDTO
 
 
 def test_project_from_gitlab_api():

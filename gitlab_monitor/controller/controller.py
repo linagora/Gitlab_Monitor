@@ -179,7 +179,7 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
             with open(
                 f"saved_datas/projects/{self._save_in_file}.json", "w", encoding="utf-8"
             ) as file:
-                json.dump(dto_project.__dict__, file, indent=4, default=str)
+                json.dump([dto_project.__dict__], file, indent=4, default=str)
             logger.info(
                 "Project with id %d has been retrieved and saved \
                     in the file saved_datas/projects/%s.json.",
@@ -255,32 +255,33 @@ in the database.',
         )
 
 
-# class GetProjectsSinceCommand(Command):  # pylint: disable=too-few-public-methods
-#     """Class of the command scan-projects-since.
+class ArchiveProjectCommand(Command):  # pylint: disable=too-few-public-methods
+    """Class of the command archive-project.
 
-#     :param Command: Interface for the commands.
-#     :type Command: class
-#     """
+    :param Command: Interface for the commands.
+    :type Command: class
+    """
 
-#     def execute(self, kwargs):
-#         """Execute the command scan-projects-since [DATE] [OPTIONS].
+    def execute(self, kwargs):
+        """Execute the command archive-project [PROJECT].
 
-#         :param date: date from which we retrieve the projects.
-#         """
+        :param project: project(s) to archive. Can be the path to a json file that \
+            contain one or more projects or just an ID.
+        """
 
-#         # Retrieve arguments from the command line
-#         date = kwargs.get("date")
+        # Retrieve arguments from the command line
+        project = kwargs.get("project")
 
-#         projects = self.gitlab_service.scan_projects()
-#         projects_dto = []
-#         for project in projects:
-#             if datetime.fromisoformat(project.updated_at).replace(tzinfo=None) < date:
-#                 project_dto = Mapper().project_from_gitlab_api(project)
-#                 projects_dto.append(project_dto)
-
-#         PrintProjectDTO().print_dto_list(projects_dto, f"Projects unused since {date}")
-#         logger.info(
-#             "\n%s projects have not been updated since %s.",
-#             len(projects_dto),
-#             date,
-#         )
+        if project.isdigit():
+            # Retrieve the project from the API
+            project_from_gitlab_api = self.gitlab_service.get_project_by_id(project)
+            self.gitlab_service.archive_project(project_from_gitlab_api)
+        else:
+            # Retrieve the project(s) from the json file
+            with open(project, "r", encoding="utf-8") as file:
+                projects = json.load(file)
+                for project in projects:
+                    project_from_gitlab_api = self.gitlab_service.get_project_by_id(
+                        project["project_id"]
+                    )
+                    self.gitlab_service.archive_project(project_from_gitlab_api)
