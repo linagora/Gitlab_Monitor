@@ -4,9 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
-
+# # --- Script used in the pipeline to generate the provenance of the source code.
 
 #!/bin/sh
 set -e
