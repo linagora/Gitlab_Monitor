@@ -1,6 +1,9 @@
 # Tutorials
 
 ## How to connect our Gitlab instance ?
+
+### For Source Code Usage
+
 Create an .env file in the project root with the following contents:
 ```bash
 # auth_token of user's Gitlab account
@@ -19,7 +22,7 @@ K8S_IP=X
 K8S_PORT=X
 DB_NAME=X
 ```
-This file will contain all sensitive information, such as authentication details. Don't forget to add it to your gitignore.
+This file will contain all sensitive information, such as authentication details. It is included in the gitignore to prevent it from being publicly exposed.
 
 GITLAB_PRIVATE_TOKEN is your Gitlab access token, linked to your Gitlab account. From the Gitlab interface, go to Edit profile > Access tokens, create your token and select the following scopes: api, read_api, read_user, create_runner, manage_runner, k8s_proxy, read_repository, write_repository, ai_features.
 

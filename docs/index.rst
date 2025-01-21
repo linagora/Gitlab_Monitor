@@ -10,7 +10,6 @@ Add your content using ``reStructuredText`` syntax. See the
 `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
 documentation for details.
 
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -18,9 +17,8 @@ documentation for details.
    sources/otherview
    sources/licence
    sources/architecture
-   sources/code-source
+   sources/contribute
    sources/contact
-
    sources/tutorials
-   sources/development
-   
+   sources/metabase
+   sources/module_doc
