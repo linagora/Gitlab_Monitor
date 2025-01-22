@@ -47,6 +47,9 @@ coverage = "^7.6.10"
 myst-parser = "^4.0.0"
 sphinx-rtd-theme = "^3.0.2"
 
+[tool.poetry.scripts]
+gitlab-monitor = "gitlab_monitor.__main__:main"
+
 [tool.mypy]
 ignore_missing_imports = true
 exclude = ['tests/', 'doc/*.*', 'gitlab_monitor/__pycache__/*.*']
