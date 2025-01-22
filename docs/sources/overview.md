@@ -1,4 +1,4 @@
-# Otherview
+# Overview
 
 Gitlab Monitor is an open source project published by LINAGORA. This tool is used in conjunction with Gitlab to analyze and monitor the Gitlab instance in use.
 

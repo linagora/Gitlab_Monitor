@@ -32,8 +32,9 @@ GITLAB_URL corresponds to the url to which your gitlab instance can be accessed.
 
 The following variables concern the database connection, and are used to build the following url: postgresql+psycopg2://{db_user}:{db_password}@{k8s_ip}:{k8s_port}/{db_name}, you can adapt them to the database used in your case and to your deployment.
 
-## How to use commands of the application ?
-Command lign : python -m gitlab_monitor [OPTIONS] [COMMAND]
+## Command Line Usage
+
+Command line : python -m gitlab_monitor [OPTIONS] [COMMAND]
 
 gitlab_monitor options :
 - '--version' or '-v' : Show the application's version and exit.
@@ -64,3 +65,16 @@ Allows you to archive one or more projects.
 
 Argument:
 - Only one argument is accepted: Can be an ID of project (int) or a path to a JSON file (path). The json file must have a list containing at least 1 project.
+
+## FAQ
+
+### How to Use the Application Without a Database?
+Each command that saves data to the database by default comes with two options:
+- *--no-database*: Instead of saving the data to the database, this option displays the retrieved information directly in the console.
+- *--save-in-file=[JSON_FILE]*: Saves the data as a list of records in a JSON file. This file will be stored in a folder named saved_datas.
+
+### How to Archive Unused Projects?
+The *--unused-since=[DATE]* option of the scan-projects command allows you to retrieve projects that have been unused since a specific date. By saving them to a file, you can then use the archive-project command and pass the file containing the unused projects as an argument to archive them.
+
+### How to Retrieve and Analyze One or More Projects?
+The scan-projects and scan-project commands allow you to retrieve your projects and save them to the database. Options provided with these commands enable you to fetch more detailed or specific elements if needed. Once the data is saved in the database, you can analyze it using Metabase.

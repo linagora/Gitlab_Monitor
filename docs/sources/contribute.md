@@ -3,7 +3,7 @@
 ## Code source
 
 ### Downloads
-TODO (git clone, fork etc)
+TODO (github&gitlab links, fork, clone)
 
 ### Componments explanation
 - docs/ : Documentation directory, using sphynx
@@ -21,3 +21,24 @@ In order for the code proposed by a contribution to be accepted, it must comply 
 
 ## Copyright Notice
 TODO
+
+## Tutorial
+
+### Adding a New Command:
+- The logic for adding a command is handled in the *commands* directory. First, add the command to ***cli.py***, specifying the options and arguments it should accept, and register it in ***command_mapper.py***. In principle, the logic in the ***commands.py*** module should work for any command.
+- As for the command's service, it is implemented in the *services* module. Any interaction with GitLab is handled in the **GitlabAPIService**, located in ***call_gitlab.py***. The methods in this service are called from the controller, which manages the service logic for a command apart from interactions with GitLab. In the controller, create a new subclass of **Command** for each new command.
+
+### Adding a New Option:
+- Adding an option follows a similar logic to adding a command. Options should be added in the ***cli.py*** module. There is no need to modify ***command_mapper.py*** or ***commands.py***.
+- The service for the option should be managed in ***controller.py*** and/or in ***call_gitlab.py*** if it requires interaction with the GitLab API.
+
+### Notes:
+- Commands or options that retrieve information must, by default, save the retrieved data to the project's database. They must also include the options **--no-database** and **--save-in-file=[FILE_NAME]**. Use the **scan-projects** and **scan-project** commands as examples for this behavior. To display an object in the console, use the ***pretty_print.py*** module.
+- For processing data retrieved from GitLab, use the existing types as a reference, found in the ***dto.py*** module. **RESTObjects** are also used since they are often the types returned by the GitLab API. See the mappers in the following modules for guidance: ***mapper.py***, ***bdd/mapper_from_db.py***, ***bdd/mapper_from_dto.py***. If new objects are retrieved, declare a new DTO and corresponding mappers in the same way as done for projects and commits.
+
+### Database:
+- The database connection logic is found in the ***bdd.py*** module. The database model is in the ***models.py*** module, and it is highly recommended to review it to understand how the database operates.
+
+### Additional Information:
+- For services or features unrelated to GitLab, logs and the **--verbose** option are managed in the ***logger.py*** module.
+- Error handling must remain precise and follow the existing examples in the code (see ***call_gitlab.py*** for examples). The ***exc.py*** module at the root of the source code allows for customizing errors raised by the application.

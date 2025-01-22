@@ -14,7 +14,7 @@ documentation for details.
    :maxdepth: 2
    :caption: Contents:
 
-   sources/otherview
+   sources/overview
    sources/licence
    sources/architecture
    sources/contribute
