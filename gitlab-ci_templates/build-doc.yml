@@ -8,7 +8,7 @@
 
 .build_documentation:
   variables:
-    SPHINX_SOURCE: "./doc"
+    SPHINX_SOURCE: "./docs"
     SPHINX_OUTPUT: "doc_build"
   script:
     - sphinx-build -b html ${SPHINX_SOURCE} ${SPHINX_OUTPUT}
