@@ -53,15 +53,16 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
             raise ValueError(
                 "GITLAB_PRIVATE_TOKEN is not set in the environment variables"
             )
+        url = os.getenv("GITLAB_URL")
+        if not url:
+            raise ValueError("GITLAB_URL is not set in the environment variables")
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
 
         # instanciate all fields that represente global options
         self._no_db = False
         self._global_options(kwargs)
 
-        self.gitlab_service = GitlabAPIService(
-            "https://ci.linagora.com", self.private_token, ssl_cert_path
-        )
+        self.gitlab_service = GitlabAPIService(url, self.private_token, ssl_cert_path)
         if not self._no_db:
             self.db = Database()
             self.db._session = self.db._initialize_database()

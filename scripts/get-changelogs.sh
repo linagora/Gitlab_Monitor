@@ -5,6 +5,7 @@
 # # - Maïlys Jara mjara@linagora.com
 #!/bin/bash
 
+# # --- Script used in the pipeline (release job) to get the changelogs of the project.
 
 URL="$CI_API_URL/api/v4/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
 

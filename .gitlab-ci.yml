@@ -4,8 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
 include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
