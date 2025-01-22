@@ -78,7 +78,6 @@ class Repository(ABC, Generic[T]):
         :return: the existing object or None.
         :rtype: Optional[T]
         """
-        pass
 
     @abstractmethod
     def update(self, object_dto: T) -> None:
@@ -87,7 +86,6 @@ class Repository(ABC, Generic[T]):
         :param object_dto: the object with the updated data.
         :type object_dto: T
         """
-        pass
 
     # @abstractmethod
     # def delete(self, object_id: int) -> None:
