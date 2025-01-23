@@ -6,6 +6,7 @@
 
 
 
+
 [tool.poetry]
 name = "gitlab_monitor"
 version = "1.0.0"

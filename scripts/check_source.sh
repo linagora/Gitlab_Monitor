@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 # # --- Script used in the pipeline to check the provenance of the source code.
 
 #!/bin/sh

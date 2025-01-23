@@ -6,6 +6,7 @@
 
 
 
+
 .build-package:
   before_script:
     - poetry --version
@@ -20,4 +21,4 @@
     - twine --version
   script:
     - ls dist/
-    - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/
+    - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/*
