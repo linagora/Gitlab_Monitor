@@ -13,6 +13,7 @@ include:
  - local: '/gitlab-ci_templates/release.yml'
  - local: '/gitlab-ci_templates/security.yml'
  - local: '/gitlab-ci_templates/tests.yml'
+ - local: '/gitlab-ci_templates/sync.yml'
 
 variables:
   PROJECT_PATH: ./gitlab_monitor
@@ -121,6 +122,11 @@ publish-package:
   stage: publish
   extends: .publish-package
   needs: [build-package]
+  when: manual
+
+sync-to-github:
+  stage: publish
+  extends: .sync-to-github
   when: manual
 
 # ##################################################################

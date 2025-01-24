@@ -1,0 +1,18 @@
+
+# # --- Copyright (c) 2024 Linagora
+# # licence       : GPL v3
+# # - Flavien Perez fperez@linagora.com
+# # - Maïlys Jara mjara@linagora.com
+
+.sync-to-github:
+  image: alpine:latest
+  before_script:
+    # Installe Git et SSH
+    - apk add --no-cache git
+    - git remote add github https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/linagora/Gitlab_Monitor.git
+  script:
+    - git push github --mirror
+
+  rules:
+    # Exécute ce job uniquement pour les branches dev et master
+    # - if: '$CI_COMMIT_BRANCH == "dev" || $CI_COMMIT_BRANCH == "master"'
