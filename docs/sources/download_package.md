@@ -1,5 +1,11 @@
 # Download the package
 
+## Using pipx
+
+We recommend to use pipx so that you can use the application without having to worry about being in the manually created virtual environment. However, pipx doesn't seem to work on ubuntu versions prior to 23.04. To use pipx, please refer to its [documentation](https://pipx.pypa.io/stable/getting-started/).
+
+## Using pip
+
 You can install the GitLab Monitor package in a virtual environment where you can directly use the application.
 
 Follow these steps:

@@ -1,6 +1,6 @@
 # Gitlab Monitor Dev
 
-**Description**:  Application de monitor pour l'outil Gitlab.
+**Description**:  Monitoring application for your Gitlab instance.
 
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)][pre-commit]
 [![Black](https://img.shields.io/badge/code%20style-black-000000.svg)][black]
@@ -10,25 +10,20 @@
 [black]: https://github.com/psf/black
 
 ## Features
-
-- TODO
-
-## Requirements
-
-- TODO
-
-## Devoleppement
+### v1.0.0
+- scan-projects, command used to retrieve all projects from Gitlab
+- scan-project [ID], command used to retrieve one project by knowing its ID
+- options --commit and --no-database
 
 
+## Documentation
+
+- TODO: add link to the documentation's website
 
 
 ## Installation
 
-You can install _Gitlab Monitor_ via :
-
-```console
-$ pip install Gitlab Monitor
-```
+An easy installation of the application will be set up for version 2, for the moment you can refer to the [Installation Guide](TODO: doc link).
 
 ## Usage
 
@@ -37,7 +32,7 @@ python -m gitlab_monitor [COMMAND] --[OPTIONS] [ARGS]
 ## Contributing
 
 Contributions are very welcome.
-To learn more, see the [Contributor Guide].
+To learn more, see the [Contributor Guide](TODO: doc link).
 
 ## License
 
@@ -46,8 +41,7 @@ _Gitlab Monitor_ is free and open source software.
 
 ## Issues
 
-If you encounter any problems,
-please [file an issue] along with a detailed description.
+TODO
 
 ## Credits
 
