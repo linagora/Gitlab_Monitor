@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 # # --- Runs this script to check the code quality of the project.
 
 #!/bin/bash

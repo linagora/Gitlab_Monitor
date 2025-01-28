@@ -34,7 +34,10 @@ The following variables concern the database connection, and are used to build t
 
 ## Command Line Usage
 
-Command line : python -m gitlab_monitor [OPTIONS] [COMMAND]
+Command line :
+```bash
+python -m gitlab_monitor [OPTIONS] [COMMAND]
+```
 
 gitlab_monitor options :
 - '--version' or '-v' : Show the application's version and exit.
@@ -44,6 +47,10 @@ gitlab_monitor options :
 ### scan-projects [OPTIONS]
 This command retrieves all projects and saves them in the database.
 
+```bash
+python -m gitlab_monitor [OPTIONS] scan-projects [OPTIONS]
+```
+
 Options :
 - '--no-database' : Retrieve project without saving or updating it in the database
 - '--unused-since=[DATE]' : Retrieve projects unused since the specified date (format: YYYY-MM-DD)
@@ -51,6 +58,10 @@ Options :
 
 ### scan-project [ARG] [OPTIONS]
 This command retrieves the project whose id has been passed as a parameter and stores it in the database.
+
+```bash
+python -m gitlab_monitor [OPTIONS] scan-project [ARG] [OPTIONS]
+```
 
 Argument:
 - ID of the project : Integer
@@ -63,18 +74,44 @@ Options:
 ### archive-project [ARG]
 Allows you to archive one or more projects.
 
+```bash
+python -m gitlab_monitor [OPTIONS] archive-project [ARG]
+```
+
 Argument:
 - Only one argument is accepted: Can be an ID of project (int) or a path to a JSON file (path). The json file must have a list containing at least 1 project.
 
 ## FAQ
 
+### How to see options explanation of a command by command lign ?
+Use the *--help* option with the command.
+```bash
+python -m gitlab_monitor scan-projects --help
+```
+
 ### How to Use the Application Without a Database?
 Each command that saves data to the database by default comes with two options:
 - *--no-database*: Instead of saving the data to the database, this option displays the retrieved information directly in the console.
+```bash
+python -m gitlab_monitor scan-projects --no-database
+```
 - *--save-in-file=[JSON_FILE]*: Saves the data as a list of records in a JSON file. This file will be stored in a folder named saved_datas.
+```bash
+python -m gitlab_monitor scan-projects --save-in-file=my-inexistant-file
+```
 
 ### How to Archive Unused Projects?
 The *--unused-since=[DATE]* option of the scan-projects command allows you to retrieve projects that have been unused since a specific date. By saving them to a file, you can then use the archive-project command and pass the file containing the unused projects as an argument to archive them.
+```bash
+python -m gitlab_monitor scan-projects --unused-since=2023-01-01 --save-in-file=unused-projects
+
+python -m gitlab_monitor archive-project saved_datas/projects/unused-projects.json
+```
 
 ### How to Retrieve and Analyze One or More Projects?
 The scan-projects and scan-project commands allow you to retrieve your projects and save them to the database. Options provided with these commands enable you to fetch more detailed or specific elements if needed. Once the data is saved in the database, you can analyze it using Metabase.
+```bash
+python -m gitlab_monitor scan-projects
+python -m gitlab_monitor scan-project 4130
+python -m gitlab_monitor scan-project 4130 --commit # will retrieve prject id 4130 and the commits of this project
+```

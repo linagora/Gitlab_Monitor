@@ -4,8 +4,6 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-
-
 .build-package:
   before_script:
     - poetry --version
@@ -19,6 +17,5 @@
   before_script:
     - twine --version
   script:
-    - rm -rf dist/*
-    - poetry build
+    - ls dist/
     - twine upload -u $NEXUS_PYPI_BOT_USERNAME -p $NEXUS_PYPI_BOT_PASSWORD --repository-url $NEXUS_PYPI_URL dist/*

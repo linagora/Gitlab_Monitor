@@ -4,6 +4,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
+
 include:
  - local: '/gitlab-ci_templates/build-dev.yml'
  - local: '/gitlab-ci_templates/build-doc.yml'
@@ -139,6 +140,18 @@ release:
     - job: prepare
       artifacts: true
 
+pages:
+  stage: release
+  script:
+    - mkdir -p public
+    - cp -r build_docs/* public
+  artifacts:
+    name: $CI_COMMIT_TAG
+    paths:
+      - public
+  needs:
+  - job: build-documentation
+
 # ##################################################################
 # #                 PRODUCTION STAGE -> DEPLOY                     #
 # ##################################################################
@@ -147,6 +160,6 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
-    branch: k8s-deploy
+    branch: integration
     strategy: depend
   needs: [build-prod-env]
