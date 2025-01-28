@@ -23,6 +23,9 @@ Gitlab Monitor offers several benefits :
 - scan-project [ID], command used to retrieve one project by knowing its ID
 - options --commit and --no-database
 
+## Documentation
+
+See the entire Gitlab Monitor Documentation [here](TODO: add documentation website link).
 
 ## Installation
 
