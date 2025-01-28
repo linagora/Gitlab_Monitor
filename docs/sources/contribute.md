@@ -1,9 +1,19 @@
 # Contribute
 
+## What to do ?
+- Find the github project [here](TODO: put github link).
+- Read the following documentation.
+- Fork the repository.
+- Clone your fork locally.
+- Create your new branch.
+- Once your finished, create a pull request.
+
+
 ## Code source
 
 ### Downloads
-TODO (github&gitlab links, fork, clone)
+
+TODO: put github&gitlab links
 
 ### Componments explanation
 - docs/ : Documentation directory, using sphynx
@@ -25,16 +35,154 @@ TODO
 ## Tutorials
 
 ### Adding a New Command:
-- The logic for adding a command is handled in the *commands* directory. First, add the command to ***cli.py***, specifying the options and arguments it should accept, and register it in ***command_mapper.py***. In principle, the logic in the ***commands.py*** module should work for any command.
-- As for the command's service, it is implemented in the *services* module. Any interaction with GitLab is handled in the **GitlabAPIService**, located in ***call_gitlab.py***. The methods in this service are called from the controller, which manages the service logic for a command apart from interactions with GitLab. In the controller, create a new subclass of **Command** for each new command.
+- The logic for adding a command is handled in the *commands* directory. First, add the command to ***cli.py***, specifying the options and arguments it should accept.
+
+```python
+@app.command(name="new-command")
+def new_command(
+    an_option: str = typer.Option(
+        None,
+        "--an-option",
+        help="Option description",
+    ),
+):
+    """Don't forget the doctring"""
+    cli_command = CLICommand()
+    command = cli_command.create_command("new_command")
+    cli_command.handle_command(
+        command, option=option
+    )
+```
+
+Then register it in ***command_mapper.py***.
+
+```python
+CommandMapper.register("new_command", NewCommandCommand)
+```
+
+In principle, the logic in the ***commands.py*** module should work for any command.
+
+- As for the command's service, it is implemented in the *services* module. Any interaction with GitLab is handled in the **GitlabAPIService**, located in ***call_gitlab.py***.
+
+```python
+class GitlabAPIService:
+    """Service that calls the GitLab API."""
+
+    def my_new_interaction_with_GitlabAPI(self) -> RESTObject:
+        """Don't forget the doctsring
+        """
+```
+
+The methods in this service are called from the controller, which manages the service logic for a command apart from interactions with GitLab. In the controller, create a new subclass of **Command** for each new command.
+
+```python
+class NewCommandCommand(Command):  # pylint: disable=too-few-public-methods
+    """Class of the command new command.
+
+    :param Command: Interface for the commands.
+    :type Command: class
+    """
+
+    def execute(self, kwargs):
+        """Execute the command new command.
+        """
+        pass
+
+```
 
 ### Adding a New Option:
 - Adding an option follows a similar logic to adding a command. Options should be added in the ***cli.py*** module. There is no need to modify ***command_mapper.py*** or ***commands.py***.
-- The service for the option should be managed in ***controller.py*** and/or in ***call_gitlab.py*** if it requires interaction with the GitLab API.
+
+```python
+@app.command(name="scan-projects")
+def scan_projects(
+    no_db: bool = typer.Option(
+        False,
+        "--no-database",
+        help="Retrieve project without saving or updating it in the database",
+    ),
+    unused_since: datetime = typer.Option(
+        None,
+        "--unused-since",
+        help="Retrieve projects unused since the specified date (format: YYYY-MM-DD)",
+    ),
+    save_in_file: str = typer.Option(
+        None,
+        "--save-in-file",
+        help="Would store the projects retrieved in a json file with the specified name, \
+stored in the project's “saved_datas/projects” folder.",
+    ),
+    my_new_option: str = typer.Option(
+        None,
+        "--my-new-option",
+        help="option description",
+    ),
+):
+    """Scan and retrieve all projects from GitLab"""
+    cli_command = CLICommand()
+    command = cli_command.create_command("scan_projects")
+    cli_command.handle_command(
+        command, no_db=no_db, unused_since=unused_since, save_in_file=save_in_file, my_new_option=my_new_option
+    )
+```
+
+- The service for the option should be managed in ***controller.py***
+
+```python
+class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
+    """Class of the command scan-projects.
+
+    :param Command: Interface for the commands.
+    :type Command: class
+    """
+
+    def execute(self, kwargs):
+        """Execute the command scan-projects."""
+
+        my_new_option = kwargs.get("my_new_option")
+
+        if my_new_option:
+            self.gitlab_service.my_api_interaction()
+        pass
+```
+and/or in ***call_gitlab.py*** if it requires interaction with the GitLab API.
+```python
+class GitlabAPIService:
+    """Service that calls the GitLab API."""
+
+    def my_api_interaction(self) -> RESTObject:
+        """Don't forget the doctsring
+        """
+```
+
+PS: if its a global option : an option that can be used with all commands, you can retrieve the option from kwargs in the global method of the **Command** class ***_global_option(self, kwargs)***.
+```python
+class Command(ABC):  # pylint: disable=too-few-public-methods
+    """Interface for the commands.
+
+    :param ABC: Abstract Base Classes
+    :type ABC: class
+    """
+    def _global_options(self, kwargs):
+        """Method used to retrieve global options (options that can be used with all
+        commands) from the command line."""
+        self._no_db = kwargs.get("no_db")
+        self._save_in_file = kwargs.get("save_in_file")
+        self._my_new_option = kwargs.get("my_new_option")
+```
 
 ### Notes:
 - Commands or options that retrieve information must, by default, save the retrieved data to the project's database. They must also include the options **--no-database** and **--save-in-file=[FILE_NAME]**. Use the **scan-projects** and **scan-project** commands as examples for this behavior. To display an object in the console, use the ***pretty_print.py*** module.
 - For processing data retrieved from GitLab, use the existing types as a reference, found in the ***dto.py*** module. **RESTObjects** are also used since they are often the types returned by the GitLab API. See the mappers in the following modules for guidance: ***mapper.py***, ***bdd/mapper_from_db.py***, ***bdd/mapper_from_dto.py***. If new objects are retrieved, declare a new DTO and corresponding mappers in the same way as done for projects and commits.
+```python
+@dataclass
+class NewObject:  # pylint: disable=too-many-instance-attributes
+    """This is a data transfer object, used to store information
+    in memory to serialize data more easily.
+    It adds an additional layer of abstraction to better
+    decouple the code before storing it in the database."""
+    pass
+```
 
 ### Database:
 - The database connection logic is found in the ***bdd.py*** module. The database model is in the ***models.py*** module, and it is highly recommended to review it to understand how the database operates.
