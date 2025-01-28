@@ -47,11 +47,11 @@ TODO
 This project was generated from [@linagora]'s Python Cookiecutter template.
 
 ## References
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)]pre-commit
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)]
 
-[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)]black
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)]
 
-[read-the-docs](https://Gitlab Monitor.readthedocs.io/)
+[Read the docs](https://docs.readthedocs.com/platform/stable/)
 
 [pre-commit](https://github.com/pre-commit/pre-commit)
 
