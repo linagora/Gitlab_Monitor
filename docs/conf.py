@@ -12,8 +12,8 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "Gitlab Monitor"
-copyright = "2024, Maïlys Jara"
-author = "Maïlys Jara"
+copyright = "2024-2025, Linagora"
+author = "Maïlys Jara, Flavien Perez"
 release = "1.0.0"
 
 # -- General configuration ---------------------------------------------------

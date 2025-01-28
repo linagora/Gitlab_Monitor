@@ -22,7 +22,7 @@ In order for the code proposed by a contribution to be accepted, it must comply 
 ## Copyright Notice
 TODO
 
-## Tutorial
+## Tutorials
 
 ### Adding a New Command:
 - The logic for adding a command is handled in the *commands* directory. First, add the command to ***cli.py***, specifying the options and arguments it should accept, and register it in ***command_mapper.py***. In principle, the logic in the ***commands.py*** module should work for any command.

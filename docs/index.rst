@@ -17,7 +17,7 @@ documentation for details.
    sources/overview
    sources/licence
    sources/architecture
-   sources/download_package
+   sources/installation
    sources/contribute
    sources/contact
    sources/tutorials
