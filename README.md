@@ -50,7 +50,11 @@ TODO
 
 ## Credits
 
-This project was generated from [@linagora]'s Python Cookiecutter template.
+Authors: Maïlys Jara, Flavien Perez
+
+Copyright: Linagora 2024-2025
+
+To contact the core contributors, see the [Contact section](TODO: add doc link) of the documentation.
 
 ## Links
 
