@@ -1,7 +1,6 @@
 # Gitlab Monitor
 
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
-
 ![Black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 ## Overview
