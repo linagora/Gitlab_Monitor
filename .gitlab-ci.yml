@@ -140,6 +140,18 @@ release:
     - job: prepare
       artifacts: true
 
+pages:
+  stage: release
+  script:
+    - mkdir -p public
+    - cp -r build_docs/* public
+  artifacts:
+    name: $CI_COMMIT_TAG
+    paths:
+      - public
+  needs:
+  - job: build-documentation
+
 # ##################################################################
 # #                 PRODUCTION STAGE -> DEPLOY                     #
 # ##################################################################
