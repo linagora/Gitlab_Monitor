@@ -10,9 +10,11 @@
 .build_documentation:
   variables:
     SPHINX_SOURCE: "./docs"
-    SPHINX_OUTPUT: "doc_build"
+    SPHINX_OUTPUT: "public"
   script:
     - sphinx-build -b html ${SPHINX_SOURCE} ${SPHINX_OUTPUT}
   artifacts:
     paths:
       - ${SPHINX_OUTPUT}
+  only:
+    - dev
