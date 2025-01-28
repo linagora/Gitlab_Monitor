@@ -148,6 +148,6 @@ trigger_multiproject:
   stage: production
   trigger:
     project: linagora/devops/gitlab-manager/gitlab-monitor-deploy
-    branch: k8s-deploy
+    branch: integration
     strategy: depend
   needs: [build-prod-env]
