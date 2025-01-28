@@ -1,0 +1,47 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+env:
+  PROJECT_PATH: ./gitlab_monitor
+  PROJECT_NAME: gitlab-monitor
+  HARBOR_REGISTRY: docker-registry.linagora.com
+  IMAGE_CACHE: gitlab-monitor-dev
+  DOCKER_TLS_CERTDIR: /certs
+  CACHE_TAG: 1.0.0-dev
+  CODE_SOURCE: ./gitlab_monitor/
+  IMAGE_CACHE_DEPLOY: gitlab-monitor-deploy-cache
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container:
+      image: docker-registry.linagora.com/gitlab-monitor/gitlab-monitor-dev:1.0.0-dev
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run linters
+        run: |
+          pylint --version
+          pylint --output-format=colorized $CODE_SOURCE/*
+          black --version
+          black $CODE_SOURCE/* --check --diff
+          isort --version
+          isort $CODE_SOURCE/* --check-only
+          pycln --version
+          pycln --check $CODE_SOURCE/*
+
+      - name: Run mypy
+        run: |
+          mypy --version
+          mypy $CODE_SOURCE --junit-xml report_mypy.xml
+
+      - name: Run tests
+        run: |
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
+          pytest --cov=gitlab_monitor --cov-report=html --cov-report=xml --junitxml=pytest_results.xml tests/unit/
+
