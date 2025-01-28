@@ -8,7 +8,7 @@ The Gitlab Monitor v1.0.0 package is already available, allowing you to interact
 
 Gitlab Monitor works as follows, simplified interactions between the Gitlab API, your Gitlab Monitor database and a data visualization program called metabase, for which you use your own instance.
 
-![Gitlab Monitor overview Diagram](../_static/gitlab_monitor.drawio.png)
+![Gitlab Monitor overview Diagram](docs/_static/gitlab_monitor.drawio.png)
 
 Gitlab Monitor offers several benefits :
 - remove the projects you want, apply filters to specify your request (date filter, retrieve precise information such as commits)
