@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -50,5 +50,6 @@ html_static_path = ["_static"]
 
 import os
 import sys
+
 
 sys.path.insert(0, os.path.abspath(".."))
