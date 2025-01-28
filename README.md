@@ -35,7 +35,7 @@ To learn more, see the [Contributor Guide](TODO: add link).
 
 ## License
 
-Distributed under the terms of the [GPL v3 license](LICENCE),
+Distributed under the terms of the [GPL v3 license](LICENSE),
 _Gitlab Monitor_ is free and open source software.
 
 ## Issues
