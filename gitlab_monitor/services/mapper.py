@@ -3,8 +3,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-"""This module can map data from the API to a DTO.
-"""
+"""This module can map data from the API to a DTO."""
 
 from datetime import datetime
 

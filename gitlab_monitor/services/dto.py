@@ -3,8 +3,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-"""Module that contains data object transfer logic for the project object from gitlab.
-"""
+"""Module that contains data object transfer logic for the project object from gitlab."""
 
 from dataclasses import dataclass
 from datetime import datetime
