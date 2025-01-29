@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -19,11 +19,11 @@ from gitlab_monitor.services.bdd.models import Base
 load_dotenv()
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
-k8s_ip = os.getenv("K8S_IP")
-k8s_port = os.getenv("K8S_PORT")
 db_name = os.getenv("DB_NAME")
+db_host = os.getenv("DB_HOST")
+db_port = os.getenv("DB_PORT")
 
-DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{k8s_ip}:{k8s_port}/{db_name}"
+DB_URL = f"postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 
 class Database:  # pylint: disable=too-few-public-methods
@@ -38,6 +38,7 @@ class Database:  # pylint: disable=too-few-public-methods
         # Create a database engine
         engine = create_engine(DB_URL)
 
+        # engine.connect()
         engine.connect()
         Base.metadata.create_all(bind=engine)
 

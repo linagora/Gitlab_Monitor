@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -10,9 +10,11 @@ Ensures user inputs remain consistent even if the database or API changes.
 too few public methods raised by pylint.
 """
 
+import json
 import os
 from abc import ABC
 from abc import abstractmethod
+from datetime import datetime
 
 from dotenv import load_dotenv
 from gitlab.base import RESTObject
@@ -51,18 +53,23 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
             raise ValueError(
                 "GITLAB_PRIVATE_TOKEN is not set in the environment variables"
             )
+        url = os.getenv("GITLAB_URL")
+        if not url:
+            raise ValueError("GITLAB_URL is not set in the environment variables")
         ssl_cert_path = os.getenv("SSL_CERT_PATH")
 
         # instanciate all fields that represente global options
         self._no_db = False
         self._global_options(kwargs)
 
-        self.gitlab_service = GitlabAPIService(
-            "https://ci.linagora.com", self.private_token, ssl_cert_path
-        )
+        self.gitlab_service = GitlabAPIService(url, self.private_token, ssl_cert_path)
         if not self._no_db:
             self.db = Database()
-            self.db._initialize_database()
+            self.db._session = self.db._initialize_database()
+            if not self.db._session:
+                raise ValueError(
+                    "Session is None, database is not initialized correctly"
+                )
             self.project_repository = SQLAlchemyProjectRepository(self.db._session)
             self.commit_repository = SQLAlchemyCommitRepository(self.db._session)
 
@@ -74,6 +81,7 @@ class Command(ABC):  # pylint: disable=too-few-public-methods
         """Method used to retrieve global options (options that can be used with all
         commands) from the command line."""
         self._no_db = kwargs.get("no_db")
+        self._save_in_file = kwargs.get("save_in_file")
 
 
 class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
@@ -86,15 +94,52 @@ class GetProjectsCommand(Command):  # pylint: disable=too-few-public-methods
     def execute(self, kwargs):
         """Execute the command scan-projects."""
 
+        unused_since = kwargs.get("unused_since")
+
         projects = self.gitlab_service.scan_projects()
         projects_dto = []
         for project in projects:
-            project_dto = Mapper().project_from_gitlab_api(project)
-            projects_dto.append(project_dto)
+            if (
+                not unused_since
+                or datetime.fromisoformat(project.updated_at).replace(tzinfo=None)
+                < unused_since
+            ):
+                project_dto = Mapper().project_from_gitlab_api(project)
+                projects_dto.append(project_dto)
 
-        if self._no_db:
+        if self._save_in_file:
+            with open(
+                f"saved_datas/projects/{self._save_in_file}.json", "w", encoding="utf-8"
+            ) as file:
+                json.dump(
+                    [project.__dict__ for project in projects_dto],
+                    file,
+                    indent=4,
+                    default=str,
+                )
+            logger.info(
+                "%s Projects have been retrieved and saved in the file \
+                    saved_datas/projects/%s.json.",
+                len(projects_dto),
+                self._save_in_file,
+            )
+
+        elif self._no_db:
             PrintProjectDTO().print_dto_list(projects_dto, "Projects")
+            if unused_since:
+                logger.info(
+                    "%s projects have not been updated since %s.",
+                    len(projects_dto),
+                    unused_since,
+                )
+
         else:
+            if unused_since:
+                logger.info(
+                    "\n%s projects have not been updated since %s.",
+                    len(projects_dto),
+                    unused_since,
+                )
             self._save_projects(projects_dto)
 
     def _save_projects(self, projects_dto: list[ProjectDTO]) -> None:
@@ -128,12 +173,24 @@ class GetProjectCommand(Command):  # pylint: disable=too-few-public-methods
         project_id = kwargs.get("id")
         get_commits = kwargs.get("get_commits")
 
-        # Original command comportment : retrieve project and save (or updated) it in the database
         project = self.gitlab_service.get_project_by_id(project_id)
         dto_project = Mapper().project_from_gitlab_api(project)
 
-        if self._no_db:
+        if self._save_in_file:
+            with open(
+                f"saved_datas/projects/{self._save_in_file}.json", "w", encoding="utf-8"
+            ) as file:
+                json.dump([dto_project.__dict__], file, indent=4, default=str)
+            logger.info(
+                "Project with id %d has been retrieved and saved \
+                    in the file saved_datas/projects/%s.json.",
+                project_id,
+                self._save_in_file,
+            )
+
+        elif self._no_db:
             PrintProjectDTO().print_dto(dto_project)
+
         else:
             self._save_project(dto_project)
 
@@ -197,3 +254,35 @@ in the database.',
             len(dto_commits_list),
             project_restobject_data.name,
         )
+
+
+class ArchiveProjectCommand(Command):  # pylint: disable=too-few-public-methods
+    """Class of the command archive-project.
+
+    :param Command: Interface for the commands.
+    :type Command: class
+    """
+
+    def execute(self, kwargs):
+        """Execute the command archive-project [PROJECT].
+
+        :param project: project(s) to archive. Can be the path to a json file that \
+            contain one or more projects or just an ID.
+        """
+
+        # Retrieve arguments from the command line
+        project = kwargs.get("project")
+
+        if project.isdigit():
+            # Retrieve the project from the API
+            project_from_gitlab_api = self.gitlab_service.get_project_by_id(project)
+            self.gitlab_service.archive_project(project_from_gitlab_api)
+        else:
+            # Retrieve the project(s) from the json file
+            with open(project, "r", encoding="utf-8") as file:
+                projects = json.load(file)
+                for project in projects:
+                    project_from_gitlab_api = self.gitlab_service.get_project_by_id(
+                        project["project_id"]
+                    )
+                    self.gitlab_service.archive_project(project_from_gitlab_api)

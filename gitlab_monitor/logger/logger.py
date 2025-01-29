@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -9,16 +9,23 @@
 import logging
 
 
-# BASIC MODE
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(message)s",
-)
+def set_verbose(verbose) -> None:
+    """Set the verbose mode.
 
-# # DEBUG MODE: à utiliser si avec un --verbose ?
-# logging.basicConfig(
-#     level=logging.DEBUG,
-#     format="%(levelname)s: %(message)s",
-# )
+    :type value: bool
+    """
+    if verbose:
+        # DEBUG MODE
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format="%(levelname)s: %(message)s",
+        )
+    else:
+        # BASIC MODE
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(message)s",
+        )
+
 
 logger = logging.getLogger("simple_logger")

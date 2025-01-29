@@ -2,13 +2,17 @@
 # # licence       : GNU GENERAL PUBLIC LICENSE
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+"""
+Run this script to add or replace the copyright notice of all file of this project.
+Only for files with one of those extension : ".py", ".yaml", ".yml", ".toml", ".sh".
+"""
 
 import os
 import re
 
 
 COPYRIGHT_NOTICE = """
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com

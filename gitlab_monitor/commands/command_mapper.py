@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -8,6 +8,7 @@
 
 from typing import Type
 
+from gitlab_monitor.controller.controller import ArchiveProjectCommand
 from gitlab_monitor.controller.controller import GetProjectCommand
 from gitlab_monitor.controller.controller import GetProjectsCommand
 
@@ -47,3 +48,4 @@ class CommandMapper:
 # Enregistrement des commandes
 CommandMapper.register("scan_projects", GetProjectsCommand)
 CommandMapper.register("scan_project", GetProjectCommand)
+CommandMapper.register("archive_project", ArchiveProjectCommand)

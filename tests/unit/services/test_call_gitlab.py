@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -344,3 +344,36 @@ def test_good_data_from_api_to_get_project_commit(gitlab_service):
         assert len(result) == 3
 
         mock_commits.list.assert_called_once_with(get_all=True, all=True)
+
+
+# === Tests archive_project ===
+
+
+def test_archive_project_success(mock_gitlab, gitlab_service, caplog):
+    """Test successful project archiving."""
+    mock_project_data = {"id": 1, "name": "Project 1"}
+    mock_project = MockRESTObject(mock_project_data)
+    mock_project.archive = MagicMock()
+
+    gitlab_service.archive_project(mock_project)
+
+    mock_project.archive.assert_called_once()
+    for record in caplog.records:
+        assert record.levelname == "INFO"
+        assert f"Archiving project {mock_project.name}..." in record.message
+
+
+def test_archive_project_failure(mock_gitlab, gitlab_service, caplog):
+    """Test project archiving failure due to GitLab error."""
+    mock_project_data = {"id": 1, "name": "Project 1"}
+    mock_project = MockRESTObject(mock_project_data)
+    mock_project.archive = MagicMock(side_effect=gitlab.GitlabError("Archiving error"))
+
+    with pytest.raises(SystemExit) as e:
+        gitlab_service.archive_project(mock_project)
+    assert e.value.code == 1
+
+    mock_project.archive.assert_called_once()
+    for record in caplog.records:
+        assert record.levelname == "ERROR"
+        assert f"Error when archiving project {mock_project.name}" in record.message

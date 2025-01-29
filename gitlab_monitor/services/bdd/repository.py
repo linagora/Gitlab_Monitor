@@ -1,4 +1,4 @@
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
@@ -71,29 +71,27 @@ class Repository(ABC, Generic[T]):
 
     @abstractmethod
     def check_in_db(self, object_dto: T) -> Optional[Project]:
-        """create an objects in database.
+        """Check if an object exists in the database.
 
-                :param object_dto
-        : objects to create.
-                :type object_dto
-        : Type
+        :param object_dto: the object to check.
+        :type object_dto: T
+        :return: the existing object or None.
+        :rtype: Optional[T]
         """
 
     @abstractmethod
     def update(self, object_dto: T) -> None:
-        """update an objects in database.
+        """Update an object in the database.
 
-                :param object_dto
-        : objects with the updated data.
-                :type object_dto
-        : Type
+        :param object_dto: the object with the updated data.
+        :type object_dto: T
         """
 
     # @abstractmethod
     # def delete(self, object_id: int) -> None:
-    #     """delete an objects in database.
+    #     """Delete an object in the database.
 
-    #     :param objects_id: id of the objects to delete.
-    #     :type objects_id: int
+    #     :param object_id: id of the object to delete.
+    #     :type object_id: int
     #     """
     #     raise NotImplementedError("Subclasses must implement this method")

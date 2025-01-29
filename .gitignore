@@ -181,3 +181,4 @@ poetry.toml
 
 # Certificats
 .ssl_gitlab_cert.pem
+saved_datas/

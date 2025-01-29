@@ -1,8 +1,12 @@
 
-# # --- Copyright (c) 2024 Linagora
+# # --- Copyright (c) 2024-2025 Linagora
 # # licence       : GPL v3
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
+
+
+
+# # --- Runs this script to check the code quality of the project.
 
 #!/bin/bash
 
