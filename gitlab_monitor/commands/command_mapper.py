@@ -3,8 +3,7 @@
 # # - Flavien Perez fperez@linagora.com
 # # - Maïlys Jara mjara@linagora.com
 
-"""Module Command Mapper: used to manage commands available in gitlab_monitor.
-"""
+"""Module Command Mapper: used to manage commands available in gitlab_monitor."""
 
 from typing import Type
 
