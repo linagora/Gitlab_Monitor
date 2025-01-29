@@ -88,7 +88,7 @@ Choix de technologie :
 - miligram pour le front (framework css)
 Le site doit rester simple et rapide à modifier ainsi que respecter la charte graphique de Linagora
 
-### 1 Déploiement automatique k8s (force pull image)
+### 1 - Déploiement automatique k8s (force pull image)
 Forcer le pull d'une image lors d'une mise à jour, sans avoir à redémarrer le déploiement k8s. Voir Deployment Strategy.
 
 ## Credits
