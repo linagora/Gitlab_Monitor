@@ -46,7 +46,50 @@ _Gitlab Monitor_ is free and open source software.
 
 ## Issues
 
-TODO
+### 17 - Régler le problème d'accès distant à la base de donnée avec kubernetes
+Afin de pouvoir accéder à la base donnée présent sur le pod k8s depuis l'exterieur une première solution (non sécurisé) peut être envisagé pour tester.
+Créer un service NodePort qui ressemblerai à ça :
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432        # Port utilisé par PostgreSQL
+      targetPort: 5432  # Port dans le conteneur
+      nodePort: 30000   # Port exposé par Kubernetes (entre 30000 et 32767)
+```
+Ensuite il faut vérifier que la base de donnée accepte les connexions depuis l’extérieur en modifiant le fichier de config de postgres :
+pg_hba.conf en y ajoutant les lignes suivantes :
+- host all all 0.0.0.0/0 md5
+- listen_addresses = '*'
+Enfin pour s'y connecter depuis l'application python :
+import psycopg2
+Remplace par l'IP de ton nœud et le NodePort configuré
+HOST = "192.168.1.100"  # IP du nœud Kubernetes
+PORT = 30000            # NodePort exposé
+DATABASE = "nom_de_ta_base"
+USER = "ton_utilisateur"
+PASSWORD = "ton_mot_de_passe"
+
+### 8 - Mettre en place un outil de signalement de BUG et de demande d'évolution
+A réfléchir. Eventuellement Discourse ?
+
+### 7 - Création d'un site vitrine pour le projet
+Créer un site vitrine pour le projet à destination du public :
+Choix de technologie :
+- pelican pour le backend (framework python léger)
+- miligram pour le front (framework css)
+Le site doit rester simple et rapide à modifier ainsi que respecter la charte graphique de Linagora
+
+### 1 Déploiement automatique k8s (force pull image)
+Forcer le pull d'une image lors d'une mise à jour, sans avoir à redémarrer le déploiement k8s. Voir Deployment Strategy.
 
 ## Credits
 
